@@ -282,7 +282,31 @@ body:not(.is-admin) .det-edit{display:none}
 .det-edit{padding:7px 14px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);font-size:.82rem;font-weight:500;color:var(--tx2);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s}
 .det-edit:hover{border-color:var(--gr);color:var(--gr)}
 .user-badge{display:inline-block;font-size:.6rem;font-weight:600;padding:2px 6px;border-radius:4px;background:rgba(186,241,135,.2);color:var(--gr);margin-left:6px;vertical-align:middle}
-@media(max-width:480px){.frm-row{grid-template-columns:1fr}.frm-row.tri{grid-template-columns:1fr 1fr}}
+/* DETAIL SECTIONS */
+.det-section{margin:20px 0 12px;padding:12px 14px;background:var(--bg);border-radius:8px;border:1px solid var(--bd2)}
+.det-section-title{font-family:'Playfair Display',serif;font-size:.92rem;font-weight:600;color:var(--dk);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--bd2)}
+.det-field{display:flex;gap:8px;padding:5px 0;font-size:.84rem}
+.det-field-label{font-weight:600;color:var(--tx3);min-width:105px;flex-shrink:0}
+.det-field-value{color:var(--tx);line-height:1.5}
+/* GALLERY */
+.det-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
+.det-gallery-item{aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--bg);border:1px solid var(--bd2);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
+.det-gallery-item img{width:100%;height:100%;object-fit:cover}
+.det-gallery-item .gallery-empty{color:var(--tx4);font-size:.7rem;text-align:center;padding:8px}
+/* FORM GALLERY */
+.frm-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.frm-gallery-slot{aspect-ratio:1;border:2px dashed var(--bd);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;transition:all .15s}
+.frm-gallery-slot:hover{border-color:var(--gr);background:var(--grl2)}
+.frm-gallery-slot.has-img{border-style:solid;padding:0}
+.frm-gallery-slot img{width:100%;height:100%;object-fit:cover}
+.frm-gallery-slot .slot-placeholder{text-align:center;font-size:.65rem;color:var(--tx4);padding:6px}
+.frm-gallery-slot .slot-placeholder svg{display:block;margin:0 auto 4px;opacity:.4}
+.frm-gallery-remove{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;border:none;font-size:.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;display:none;align-items:center;justify-content:center;cursor:pointer}
+.lightbox.open{display:flex}
+.lightbox img{max-width:90%;max-height:90%;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,.5)}
+@media(max-width:480px){.frm-row{grid-template-columns:1fr}.frm-row.tri{grid-template-columns:1fr 1fr}.det-field{flex-direction:column;gap:2px}.det-field-label{min-width:auto}}
 </style>
 </head>
 <body>
@@ -314,68 +338,69 @@ body:not(.is-admin) .det-edit{display:none}
 <button class="sr-toggle" id="srToggle" onclick="document.getElementById('sideR').classList.toggle('open')" title="Chi hoa">🌱</button>
 <div class="cmpf" id="cmpf"><span id="cmpn">0</span> <button class="cg" onclick="openCmp()">So sánh</button><button class="cc" onclick="clrCmp()">Xoá</button></div>
 <div class="mo" id="dmo" onclick="if(event.target===this)clD()"><div class="det" id="dcon"></div></div>
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('open')"><img id="lbImg" src="" alt=""></div>
 <div class="mo" id="cmo" onclick="if(event.target===this)clC()"><div class="det" style="max-width:880px" id="ccon"></div></div>
 <script>
 // ============ FAMILIES ============
 const FAM=[
-{id:"asteraceae",name:"Họ Cúc",latin:"Asteraceae",aka:"Compositae",emoji:"🌼",color:"#E6A817",
+{id:"asteraceae",name:"Họ Cúc",latin:"Asteraceae",aka:"Compositae",emoji:"🌼",order:"Asterales",color:"#E6A817",
 genera:"~1.900 chi",species:"~32.000 loài",
 desc:"Họ Cúc là họ thực vật có hoa lớn nhất hành tinh. Đặc trưng bởi cụm hoa hình đầu (capitulum) — mỗi 'bông hoa' thực ra là tập hợp hàng trăm hoa nhỏ. Phân bố toàn cầu, từ đồng cỏ đến sa mạc."},
-{id:"rosaceae",name:"Họ Hồng",latin:"Rosaceae",emoji:"🌹",color:"#D64B6A",
+{id:"rosaceae",name:"Họ Hồng",latin:"Rosaceae",emoji:"🌹",order:"Rosales",color:"#D64B6A",
 genera:"~90 chi",species:"~3.000 loài",
 desc:"Họ Hồng gồm nhiều loài hoa đẹp nhất và cây ăn quả quan trọng nhất (táo, đào, mận, lê, dâu tây). Hoa thường có 5 cánh, nhiều nhị, đối xứng toả tròn."},
-{id:"orchidaceae",name:"Họ Lan",latin:"Orchidaceae",emoji:"🌺",color:"#9C27B0",
+{id:"orchidaceae",name:"Họ Lan",latin:"Orchidaceae",emoji:"🌺",order:"Asparagales",color:"#9C27B0",
 genera:"~880 chi",species:"~28.000 loài",
 desc:"Họ Lan là một trong hai họ thực vật có hoa lớn nhất (cùng Asteraceae). Nổi tiếng với hình dạng hoa kỳ lạ, cơ chế thụ phấn phức tạp và quan hệ cộng sinh với nấm. Phần lớn là phong lan (epiphyte)."},
-{id:"solanaceae",name:"Họ Cà",latin:"Solanaceae",emoji:"🌙",color:"#5C6BC0",
+{id:"solanaceae",name:"Họ Cà",latin:"Solanaceae",emoji:"🌙",order:"Solanales",color:"#5C6BC0",
 genera:"~100 chi",species:"~2.700 loài",
 desc:"Họ Cà chứa nhiều loài kinh tế quan trọng (cà chua, khoai tây, ớt) lẫn loài cực độc (cà độc dược, belladonna). Hoa thường hình phễu hoặc hình sao, 5 cánh dính nhau."},
-{id:"fabaceae",name:"Họ Đậu",latin:"Fabaceae",aka:"Leguminosae",emoji:"🦋",color:"#FF7043",
+{id:"fabaceae",name:"Họ Đậu",latin:"Fabaceae",aka:"Leguminosae",emoji:"🦋",order:"Fabales",color:"#FF7043",
 genera:"~750 chi",species:"~20.000 loài",
 desc:"Họ Đậu là họ lớn thứ 3 trong thực vật có hoa. Đặc trưng bởi quả dạng đậu (legume) và khả năng cố định đạm nhờ vi khuẩn cộng sinh Rhizobium ở rễ. Hoa dạng bướm đặc trưng."},
-{id:"liliaceae",name:"Họ Huệ",latin:"Liliaceae",emoji:"🌷",color:"#E91E63",
+{id:"liliaceae",name:"Họ Huệ",latin:"Liliaceae",emoji:"🌷",order:"Liliales",color:"#E91E63",
 genera:"~16 chi",species:"~600 loài",
 desc:"Họ Huệ (nghĩa hẹp hiện đại) gồm các loài hoa từ củ với hoa 6 cánh xếp thành 2 vòng, 6 nhị. Tulip, lily, và nhiều loài hoa cắt cành quan trọng thuộc họ này."},
-{id:"lamiaceae",name:"Họ Hoa Môi",latin:"Lamiaceae",aka:"Labiatae",emoji:"💜",color:"#7B1FA2",
+{id:"lamiaceae",name:"Họ Hoa Môi",latin:"Lamiaceae",aka:"Labiatae",emoji:"💜",order:"Lamiales",color:"#7B1FA2",
 genera:"~236 chi",species:"~7.200 loài",
 desc:"Họ Hoa Môi đặc trưng bởi thân vuông, lá mọc đối, hoa dạng môi (2 môi trên-dưới) và chứa nhiều tinh dầu thơm. Gồm hầu hết các loài thảo mộc gia vị và hương liệu nổi tiếng."},
-{id:"malvaceae",name:"Họ Cẩm Quỳ",latin:"Malvaceae",emoji:"🌺",color:"#E53935",
+{id:"malvaceae",name:"Họ Cẩm Quỳ",latin:"Malvaceae",emoji:"🌺",order:"Malvales",color:"#E53935",
 genera:"~244 chi",species:"~4.300 loài",
 desc:"Họ Cẩm Quỳ gồm nhiều loài hoa nhiệt đới rực rỡ. Đặc trưng: hoa lớn, 5 cánh, cột nhị hợp (staminal column) — nhị dính thành ống bao quanh nhuỵ. Bao gồm cả cây bông vải."},
-{id:"apocynaceae",name:"Họ Trúc Đào",latin:"Apocynaceae",emoji:"🤍",color:"#78909C",
+{id:"apocynaceae",name:"Họ Trúc Đào",latin:"Apocynaceae",emoji:"🤍",order:"Gentianales",color:"#78909C",
 genera:"~400 chi",species:"~5.000 loài",
 desc:"Họ Trúc Đào nổi tiếng với hoa thơm đẹp nhưng nhiều loài cực độc. Đặc trưng bởi nhựa trắng (latex) và hoa 5 cánh xoắn. Bao gồm cả nhóm cây mọng nước cũ (Asclepiadaceae)."},
-{id:"amaryllidaceae",name:"Họ Thuỷ Tiên",latin:"Amaryllidaceae",emoji:"💛",color:"#FDD835",
+{id:"amaryllidaceae",name:"Họ Thuỷ Tiên",latin:"Amaryllidaceae",emoji:"💛",order:"Asparagales",color:"#FDD835",
 genera:"~73 chi",species:"~1.600 loài",
 desc:"Họ Thuỷ Tiên gồm các loài hoa từ củ (bulb) với hoa xếp thành tán (umbel) trên cuống không lá. Bao gồm thuỷ tiên, trinh nữ hoàng cung và cả hành tỏi (Allium)."},
-{id:"hydrangeaceae",name:"Họ Cẩm Tú Cầu",latin:"Hydrangeaceae",emoji:"💠",color:"#42A5F5",
+{id:"hydrangeaceae",name:"Họ Cẩm Tú Cầu",latin:"Hydrangeaceae",emoji:"💠",order:"Cornales",color:"#42A5F5",
 genera:"~17 chi",species:"~260 loài",
 desc:"Họ nhỏ nhưng nổi bật với Hydrangea — loài hoa đổi màu theo pH đất. Đặc trưng: cụm hoa lớn, hoa ở rìa thường bất thụ với đài lớn tạo hiệu ứng thị giác."},
-{id:"magnoliaceae",name:"Họ Ngọc Lan",latin:"Magnoliaceae",emoji:"🤍",color:"#A1887F",
+{id:"magnoliaceae",name:"Họ Ngọc Lan",latin:"Magnoliaceae",emoji:"🤍",order:"Magnoliales",color:"#A1887F",
 genera:"~18 chi",species:"~300 loài",
 desc:"Họ Ngọc Lan là một trong những họ thực vật có hoa cổ xưa nhất — hoá thạch 95 triệu năm. Hoa lớn, nhiều cánh xếp xoắn ốc, thơm. Được coi là 'sống hoá thạch' của thế giới thực vật."},
-{id:"ranunculaceae",name:"Họ Mao Lương",latin:"Ranunculaceae",emoji:"✨",color:"#66BB6A",
+{id:"ranunculaceae",name:"Họ Mao Lương",latin:"Ranunculaceae",emoji:"✨",order:"Ranunculales",color:"#66BB6A",
 genera:"~43 chi",species:"~2.300 loài",
 desc:"Họ Mao Lương gồm nhiều loài hoa cắt cành cao cấp. Đặc trưng: lá xẻ thuỳ, hoa đa dạng hình dạng, nhiều nhị và nhuỵ rời. Phần lớn loài có độc tính."},
-{id:"oleaceae",name:"Họ Nhài",latin:"Oleaceae",emoji:"⚪",color:"#4DB6AC",
+{id:"oleaceae",name:"Họ Nhài",latin:"Oleaceae",emoji:"⚪",order:"Lamiales",color:"#4DB6AC",
 genera:"~25 chi",species:"~600 loài",
 desc:"Họ Nhài gồm các loài nổi tiếng về hương thơm (nhài, tử đinh hương) và kinh tế (ô-liu). Hoa thường 4 cánh dính, 2 nhị. Nhiều loài là cây cảnh quan trọng."},
-{id:"caryophyllaceae",name:"Họ Cẩm Chướng",latin:"Caryophyllaceae",emoji:"💮",color:"#EC407A",
+{id:"caryophyllaceae",name:"Họ Cẩm Chướng",latin:"Caryophyllaceae",emoji:"💮",order:"Caryophyllales",color:"#EC407A",
 genera:"~86 chi",species:"~2.200 loài",
 desc:"Họ Cẩm Chướng đặc trưng bởi thân phình ở đốt, lá mọc đối, hoa 5 cánh thường xẻ. Gồm cẩm chướng, baby's breath và nhiều loài hoa cắt cành phổ biến."},
-{id:"iridaceae",name:"Họ Diên Vĩ",latin:"Iridaceae",emoji:"⚜️",color:"#5E35B1",
+{id:"iridaceae",name:"Họ Diên Vĩ",latin:"Iridaceae",emoji:"⚜️",order:"Asparagales",color:"#5E35B1",
 genera:"~65 chi",species:"~2.200 loài",
 desc:"Họ Diên Vĩ gồm các loài hoa từ củ/thân rễ với hoa 3 cánh đài + 3 cánh tràng thường rất sặc sỡ. Iris, gladiolus, crocus và nghệ tây (saffron) đều thuộc họ này."},
-{id:"nelumbonaceae",name:"Họ Sen",latin:"Nelumbonaceae",emoji:"🪷",color:"#F48FB1",
+{id:"nelumbonaceae",name:"Họ Sen",latin:"Nelumbonaceae",emoji:"🪷",order:"Proteales",color:"#F48FB1",
 genera:"1 chi",species:"2 loài",
 desc:"Họ Sen chỉ có 1 chi (Nelumbo) với 2 loài — sen Á (N. nucifera) và sen Mỹ (N. lutea). Dù nhỏ, họ này có ý nghĩa văn hoá khổng lồ trong Phật giáo và Hindu giáo. Lá sen có hiệu ứng siêu kỵ nước (lotus effect)."},
-{id:"convolvulaceae",name:"Họ Bìm Bìm",latin:"Convolvulaceae",emoji:"🌀",color:"#26A69A",
+{id:"convolvulaceae",name:"Họ Bìm Bìm",latin:"Convolvulaceae",emoji:"🌀",order:"Solanales",color:"#26A69A",
 genera:"~60 chi",species:"~1.900 loài",
 desc:"Họ Bìm Bìm gồm các loài dây leo với hoa hình phễu đặc trưng. Morning Glory nở rạng sáng và tàn trước trưa. Họ này cũng bao gồm khoai lang — cây lương thực quan trọng toàn cầu."},
-{id:"nyctaginaceae",name:"Họ Hoa Giấy",latin:"Nyctaginaceae",emoji:"🌸",color:"#D81B60",
+{id:"nyctaginaceae",name:"Họ Hoa Giấy",latin:"Nyctaginaceae",emoji:"🌸",order:"Caryophyllales",color:"#D81B60",
 genera:"~33 chi",species:"~400 loài",
 desc:"Họ Hoa Giấy nổi bật nhất với Bougainvillea — nhưng phần sặc sỡ không phải cánh hoa mà là lá bắc (bract). Tên họ từ 'nyctis' (đêm) vì nhiều loài nở hoa ban đêm."},
-{id:"papaveraceae",name:"Họ Anh Túc",latin:"Papaveraceae",emoji:"🔴",color:"#FF5722",
+{id:"papaveraceae",name:"Họ Anh Túc",latin:"Papaveraceae",emoji:"🔴",order:"Ranunculales",color:"#FF5722",
 genera:"~42 chi",species:"~800 loài",
 desc:"Họ Anh Túc gồm các loài hoa cánh mỏng như giấy lụa, thường 4 cánh, nhiều nhị. Papaver somniferum là nguồn thuốc phiện và morphine. Poppy đỏ là biểu tượng tưởng niệm chiến tranh ở nhiều nước."}
 ];
@@ -387,6 +412,7 @@ const SP=[
 grad:"linear-gradient(135deg,#FFF8E1,#FFCC80)",colors:["Vàng","Trắng","Tím","Hồng","Đỏ"],
 season:"Mùa thu",origin:"Đông Á",height:"30–120 cm",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Màu mỡ, thoát nước",
 meaning:"Trường thọ, cao quý, lòng trung thành",
+order:"Asterales",plantType:"Cây thân thảo",stem:"Thân thảo, mọc thẳng đứng, phân nhánh nhiều, cao 30–120 cm",rootType:"Rễ chùm",flower:"Cụm hoa hình đầu (capitulum), gồm hoa lưỡi ở rìa và hoa ống ở giữa, trên đế hoa phẳng",reproduction:"Bằng giâm cành, tách bụi, gieo hạt",
 desc:"Cúc là một trong tứ quý (mai, lan, cúc, trúc) — biểu tượng mùa thu Á Đông. Hoàng gia Nhật dùng cúc 16 cánh làm quốc huy. Trà cúc đã được dùng trong y học Trung Hoa hơn 2.500 năm.",
 care:"Bấm ngọn khi cây cao 15 cm. Ưa nắng, tưới đều, không úng. Bón phân kali để hoa to và bền.",
 fact:"Lễ hội cúc Nhật Bản có truyền thống mặc kimono cho búp bê bằng hoa cúc — mỗi búp bê dùng hàng nghìn bông.",
@@ -396,6 +422,7 @@ tags:["Tứ quý","Trà thảo mộc","Quốc huy Nhật"]},
 grad:"linear-gradient(135deg,#FFF9C4,#FFD54F)",colors:["Vàng","Cam"],
 season:"Mùa hè",origin:"Bắc Mỹ",height:"1–3 m",life:"Một năm",sun:"Đầy đủ",water:"Trung bình",soil:"Nhiều loại",
 meaning:"Trung thành, ngưỡng mộ, hạnh phúc",
+order:"Asterales",plantType:"Cây thân thảo",stem:"Thân thảo thô, thẳng đứng, có lông cứng, cao 1–3 m",rootType:"Rễ cọc",flower:"Cụm hoa hình đầu lớn, hoa lưỡi vàng ở rìa, hoa ống ở đĩa giữa xếp theo dãy Fibonacci",reproduction:"Bằng hạt",
 desc:"Mỗi bông hướng dương là tập hợp 1.000–2.000 hoa nhỏ xếp theo dãy Fibonacci. Cây non có tính hướng nhật (quay theo mặt trời), cây trưởng thành cố định hướng đông để ấm sớm hơn, thu hút ong thụ phấn.",
 care:"Gieo hạt trực tiếp ngoài trời sau sương giá cuối. Cần 6–8 giờ nắng. Tưới sâu mỗi tuần.",
 fact:"Ukraine trồng hướng dương nhiều nhất thế giới. Hạt hướng dương từng được gửi lên trạm vũ trụ ISS để nghiên cứu tăng trưởng trong vũ trụ.",
@@ -405,6 +432,7 @@ tags:["Fibonacci","Dầu ăn","Hướng nhật"]},
 grad:"linear-gradient(135deg,#FFF3E0,#FF8A65)",colors:["Đỏ","Vàng","Cam","Hồng","Trắng"],
 season:"Quanh năm",origin:"Nam Phi",height:"20–40 cm",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp, thoát nước",
 meaning:"Niềm vui, hồn nhiên, vẻ đẹp trong sáng",
+order:"Asterales",plantType:"Cây thân thảo",stem:"Thân thảo ngắn, mọc thành bụi, không lá trên cuống hoa, cao 20–40 cm",rootType:"Rễ chùm",flower:"Cụm hoa hình đầu đơn trên cuống dài, hoa lưỡi rực rỡ nhiều màu, đĩa hoa nhỏ",reproduction:"Bằng hạt, tách bụi",
 desc:"Gerbera nằm top 5 hoa cắt cành bán chạy nhất thế giới. Nằm trong nhóm cây lọc không khí tốt nhất theo NASA — hấp thụ benzene và trichloroethylene hiệu quả.",
 care:"Ưa nắng, đất thoát nước. Tránh tưới lên lá (dễ nấm). Cắt hoa tàn để kích thích ra hoa liên tục.",
 fact:"Gerbera được đặt theo tên nhà tự nhiên học người Đức Traugott Gerber — người chưa bao giờ thấy loài hoa này.",
@@ -414,6 +442,7 @@ tags:["Hoa cắt cành","NASA","Rực rỡ"]},
 grad:"linear-gradient(135deg,#FFF8E1,#FF8F00)",colors:["Vàng","Cam","Đỏ cam"],
 season:"Quanh năm",origin:"Mexico",height:"20–90 cm",life:"Một năm",sun:"Đầy đủ",water:"Ít–TB",soil:"Nhiều loại",
 meaning:"Sự nhiệt thành, lòng tưởng nhớ",
+order:"Asterales",plantType:"Cây thân thảo",stem:"Thân thảo, thẳng đứng, phân nhánh, có mùi hăng đặc trưng, cao 20–90 cm",rootType:"Rễ chùm",flower:"Cụm hoa hình đầu kép, nhiều lớp hoa lưỡi xếp chồng, màu vàng cam rực rỡ",reproduction:"Bằng hạt",
 desc:"Vạn thọ là hoa truyền thống trong Lễ hội Người Chết (Día de los Muertos) của Mexico — hương thơm dẫn lối linh hồn. Ở Việt Nam, vạn thọ là hoa Tết phổ biến mang ý nghĩa trường thọ.",
 care:"Cực dễ trồng. Chịu nắng nóng, ít sâu bệnh. Mùi hoa đuổi côn trùng — trồng xen bảo vệ rau.",
 fact:"Lutein trong cánh vạn thọ được chiết xuất cho thực phẩm bổ sung mắt. Ngành công nghiệp lutein toàn cầu phụ thuộc chủ yếu vào Tagetes.",
@@ -423,6 +452,7 @@ tags:["Tết","Día de los Muertos","Đuổi sâu"]},
 grad:"linear-gradient(135deg,#FCE4EC,#E91E63)",colors:["Đỏ","Hồng","Trắng","Vàng","Tím","Cam"],
 season:"Hè – Thu",origin:"Mexico",height:"30–150 cm",life:"Lâu năm (củ)",sun:"Đầy đủ",water:"Trung bình",soil:"Giàu mùn, thoát nước",
 meaning:"Vẻ đẹp đa dạng, sự cao quý, lòng biết ơn",
+order:"Asterales",plantType:"Cây thân thảo",stem:"Thân thảo rỗng, phân nhánh, cao 30–150 cm, mọc từ củ",rootType:"Rễ củ (tuber)",flower:"Cụm hoa hình đầu rất đa dạng hình dạng, từ đơn đến kép, đường kính 5–30+ cm",reproduction:"Bằng củ, giâm cành, gieo hạt",
 desc:"Dahlia là quốc hoa Mexico với hơn 42 loài hoang dại và hàng nghìn giống lai tạo. Hoa có đường kính từ 5 cm đến hơn 30 cm (dahlia 'dinner plate'). Người Aztec dùng thân rỗng làm ống dẫn nước.",
 care:"Trồng củ sau sương giá cuối. Cắm cọc cho giống cao. Ngắt nụ phụ để hoa chính to hơn.",
 fact:"Dahlia đầu tiên đến châu Âu năm 1789 như cây lương thực (củ ăn được) — nhưng thất bại vì vị dở; may thay, hoa quá đẹp nên được giữ lại làm cảnh.",
@@ -433,6 +463,7 @@ tags:["Quốc hoa Mexico","42 loài","Dinner plate"]},
 grad:"linear-gradient(135deg,#FFE4E9,#FBB1BD)",colors:["Đỏ","Hồng","Trắng","Vàng","Cam"],
 season:"Quanh năm",origin:"Châu Á",height:"30–180 cm",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp, thoát nước",
 meaning:"Tình yêu, lãng mạn, vẻ đẹp vĩnh cửu",
+order:"Rosales",plantType:"Cây bụi",stem:"Thân gỗ nhỏ, mọc bụi hoặc leo, có gai, cao 30–180 cm",rootType:"Rễ cọc",flower:"Hoa đơn hoặc chùm, 5 cánh (dạng hoang) đến hàng trăm cánh (dạng kép), thơm",reproduction:"Bằng giâm cành, chiết cành, ghép mắt, gieo hạt",
 desc:"Nữ hoàng các loài hoa với hơn 30.000 giống. Tinh dầu hoa hồng là nguyên liệu đắt giá nhất ngành nước hoa — cần 10.000 bông để chưng cất 5ml. Thung lũng Hoa Hồng ở Bulgaria sản xuất 85% tinh dầu hồng thế giới.",
 care:"Đất thoát nước, pH 6–6.5. Tưới sáng sớm, tránh ướt lá. Cắt tỉa cuối đông, bón phân hàng tháng.",
 fact:"Hoa hồng đỏ 1.000 tuổi ở nhà thờ Hildesheim, Đức, sống sót cả trận bom Thế chiến II — mọc lại từ rễ trong đống đổ nát.",
@@ -442,6 +473,7 @@ tags:["30.000 giống","Tinh dầu","Bulgaria"]},
 grad:"linear-gradient(135deg,#FFF0F5,#FFB6D3)",colors:["Hồng nhạt","Trắng"],
 season:"Đầu xuân",origin:"Nhật Bản",height:"4–12 m",life:"30–50 năm",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp",
 meaning:"Vẻ đẹp phù du, sự vô thường",
+order:"Rosales",plantType:"Cây thân gỗ",stem:"Thân gỗ, vỏ nâu xám bóng, tán rộng, cao 4–12 m",rootType:"Rễ cọc",flower:"Hoa mọc thành chùm 2–5 bông, 5 cánh hồng nhạt hoặc trắng, nở trước khi ra lá",reproduction:"Bằng ghép cành, giâm cành, gieo hạt",
 desc:"Sakura là quốc hoa Nhật Bản — mùa hoa chỉ 2 tuần, thể hiện triết lý 'mono no aware'. Mỗi năm, cơ quan khí tượng Nhật công bố bản đồ 'sakura zensen' (mặt trận hoa anh đào) di chuyển từ nam ra bắc.",
 care:"Cần mùa đông lạnh (vernalization). Đất thoáng, tránh cắt tỉa mạnh. Phòng bệnh nấm lá.",
 fact:"Năm 2008, hạt anh đào được gửi lên ISS 8 tháng. Khi trồng lại, cây nở hoa sớm hơn 6 năm so với bình thường — vẫn chưa có lời giải thích.",
@@ -451,6 +483,7 @@ tags:["Nhật Bản","Hanami","2 tuần"]},
 grad:"linear-gradient(135deg,#FFEEF2,#FFBCC9)",colors:["Hồng","Đỏ nhạt","Trắng"],
 season:"Cuối đông – đầu xuân",origin:"Trung Quốc",height:"3–8 m",life:"15–25 năm",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp",
 meaning:"May mắn, thịnh vượng, khởi đầu mới",
+order:"Rosales",plantType:"Cây thân gỗ",stem:"Thân gỗ, vỏ nâu đỏ, phân cành nhiều, cao 3–8 m",rootType:"Rễ cọc",flower:"Hoa đơn hoặc đôi, 5 cánh hồng đỏ, mọc sát cành, nở trước hoặc cùng lá",reproduction:"Bằng ghép cành, chiết cành, gieo hạt",
 desc:"Hoa đào là biểu tượng Tết miền Bắc Việt Nam. Nhật Tân (Hà Nội) là 'thủ phủ' đào Tết nổi tiếng. Trong văn hoá Trung Hoa, đào tượng trưng cho trường thọ — quả đào tiên trong thần thoại ban sự bất tử.",
 care:"Cắt tỉa tạo dáng sau mùa hoa. Lặt lá trước Tết 20–25 ngày. Bón phân hữu cơ sau thu hoạch.",
 fact:"'Đào Nguyên' (vườn đào thiên đàng) là biểu tượng utopia trong văn học Trung Hoa — bài thơ của Đào Tiềm ảnh hưởng văn hoá Á Đông suốt 1.600 năm.",
@@ -460,6 +493,7 @@ tags:["Tết miền Bắc","Nhật Tân","Đào Nguyên"]},
 grad:"linear-gradient(135deg,#FFF,#E8D5E0)",colors:["Trắng","Hồng nhạt"],
 season:"Cuối đông",origin:"Trung Quốc",height:"4–10 m",life:"30+ năm",sun:"Đầy đủ",water:"Trung bình",soil:"Nhiều loại đất",
 meaning:"Kiên cường, thanh cao, tiết tháo",
+order:"Rosales",plantType:"Cây thân gỗ",stem:"Thân gỗ, vỏ xám xanh, cành mảnh, cao 4–10 m",rootType:"Rễ cọc",flower:"Hoa đơn hoặc đôi, 5 cánh trắng hoặc hồng nhạt, rất thơm, nở giữa mùa đông",reproduction:"Bằng ghép cành, chiết cành, gieo hạt",
 desc:"Mai (mận) nở sớm nhất trong tứ quý — giữa mùa đông lạnh giá, khi mọi cây khác trụi lá. Chính vì vậy, mai tượng trưng cho khí tiết quân tử không khuất phục trước nghịch cảnh. Mai là quốc hoa Trung Hoa (Đài Loan).",
 care:"Chịu lạnh tốt, đất nhiều loại. Cắt tỉa sau mùa hoa. Quả mận xanh dùng ngâm rượu (umeshu Nhật).",
 fact:"Ô mai Việt Nam chính là quả Prunus mume ngâm muối — 'ô' nghĩa là đen, 'mai' là mận. Món ăn vặt quốc dân gắn liền với loài hoa quý tộc.",
@@ -470,6 +504,7 @@ tags:["Tứ quý","Quốc hoa TW","Ô mai"]},
 grad:"linear-gradient(135deg,#F3E5F5,#E1BEE7)",colors:["Trắng","Hồng","Tím","Vàng"],
 season:"Quanh năm",origin:"ĐNA & Đông Á",height:"20–60 cm",life:"Lâu năm",sun:"Gián tiếp",water:"Ít",soil:"Vỏ thông, than",
 meaning:"Thanh lịch, tinh tế, tình yêu thuần khiết",
+order:"Asparagales",plantType:"Cây thân thảo phụ sinh",stem:"Thân ngắn, mọng nước, không phân nhánh, cao 20–60 cm",rootType:"Rễ khí sinh (velamen), bám trên thân cây chủ",flower:"Cụm hoa chùm cong, 2–15 hoa hình bướm, cánh môi lớn, 3 đài + 3 cánh",reproduction:"Bằng tách keiki (cây con), nuôi cấy mô",
 desc:"Phalaenopsis là lan phổ biến nhất thế giới — chiếm 75% thị trường lan toàn cầu. Tên gọi từ tiếng Hy Lạp 'phalaina' (bướm đêm) vì hoa giống cánh bướm. Có thể nở liên tục 2–3 tháng.",
 care:"Ánh sáng gián tiếp, tưới khi giá thể khô (7–10 ngày). Bón phân loãng 2 tuần/lần. Nhiệt 18–28°C.",
 fact:"Phalaenopsis không mọc trong đất mà bám trên thân cây (epiphyte). Rễ có lớp velamen hấp thụ ẩm từ không khí.",
@@ -479,6 +514,7 @@ tags:["75% thị trường","Epiphyte","Dễ trồng"]},
 grad:"linear-gradient(135deg,#E8EAF6,#7C4DFF)",colors:["Xanh","Tím","Hồng","Vàng"],
 season:"Quanh năm",origin:"ĐNA & Nam Á",height:"30–100 cm",life:"Lâu năm",sun:"Sáng nhiều",water:"Hàng ngày",soil:"Rễ trần hoặc giá thể thô",
 meaning:"Sự quý phái, vẻ đẹp hiếm có",
+order:"Asparagales",plantType:"Cây thân thảo phụ sinh",stem:"Thân đơn thẳng đứng, có nhiều rễ khí sinh to, cao 30–100 cm",rootType:"Rễ khí sinh trần, to, bám hoặc lơ lửng trong không khí",flower:"Cụm hoa chùm thẳng hoặc cong, hoa lớn phẳng 5–10 cm, cánh tròn, nhiều đốm",reproduction:"Bằng tách nhánh, giâm ngọn, nuôi cấy mô",
 desc:"Vanda nổi tiếng với màu xanh tím hiếm có trong thế giới lan. Rễ Vanda to, trần, treo lơ lửng trong không khí — cấu trúc hoàn toàn thích nghi với đời sống phong lan nhiệt đới.",
 care:"Cần nắng sáng (nhưng tránh nắng giữa trưa). Tưới phun mỗi ngày. Rễ trần không cần giá thể.",
 fact:"Vanda Miss Joaquim là quốc hoa Singapore — giống lan lai đầu tiên được tạo ra ở Đông Nam Á (1893) bởi Agnes Joaquim.",
@@ -488,6 +524,7 @@ tags:["Xanh tím","Quốc hoa SG","Rễ trần"]},
 grad:"linear-gradient(135deg,#F3E5F5,#CE93D8)",colors:["Trắng","Tím","Hồng","Vàng"],
 season:"Xuân – Hè",origin:"Châu Á – Thái Bình Dương",height:"15–120 cm",life:"Lâu năm",sun:"Sáng",water:"TB",soil:"Vỏ thông, than, xơ dừa",
 meaning:"Sức mạnh, vẻ đẹp tinh thần",
+order:"Asparagales",plantType:"Cây thân thảo phụ sinh",stem:"Thân giả dạng bẹ lá (pseudobulb) hình trụ hoặc thon, cao 15–120 cm",rootType:"Rễ khí sinh, bám trên giá thể hoặc vỏ cây",flower:"Cụm hoa chùm mọc từ đốt thân, nhiều hoa nhỏ đến trung bình, cánh mỏng",reproduction:"Bằng tách bụi, giâm thân, nuôi cấy mô",
 desc:"Dendrobium là chi lan lớn nhất với hơn 1.800 loài — từ Himalaya đến Australia. Tên từ tiếng Hy Lạp 'dendron' (cây) + 'bios' (sống), mô tả lối sống phong lan bám cây. Nhiều loài dùng trong dược liệu.",
 care:"Tuỳ nhóm — nobile cần mùa khô lạnh, phalaenopsis thích ấm quanh năm. Tránh úng rễ.",
 fact:"Dendrobium nobile (thạch hộc) là một trong 50 dược liệu quý nhất Trung Hoa — được mệnh danh 'tiên thảo' (cỏ tiên).",
@@ -497,6 +534,7 @@ tags:["1.800 loài","Tiên thảo","Đa dạng"]},
 grad:"linear-gradient(135deg,#FFF8E1,#FFE082)",colors:["Xanh nhạt","Vàng nhạt"],
 season:"Mùa khô",origin:"Mexico",height:"Dây leo >30 m",life:"Lâu năm",sun:"Bán bóng",water:"Nhiều",soil:"Mùn, thoát nước",
 meaning:"Sự tinh tế, hương vị cuộc sống",
+order:"Asparagales",plantType:"Dây leo phụ sinh",stem:"Thân leo mọng nước, dạng dây, có rễ bám, dài >30 m",rootType:"Rễ khí sinh bám trên thân cây chủ",flower:"Cụm hoa chùm, hoa xanh vàng nhạt, cánh môi hình phễu, nở 1 ngày",reproduction:"Bằng giâm cành, nuôi cấy mô",
 desc:"Vanilla là loài lan kinh tế nhất — quả (trái) cho ra hương liệu vanilla phổ biến nhất thế giới. Đây là gia vị đắt thứ 2 sau saffron vì quy trình thụ phấn tay và chế biến phức tạp kéo dài nhiều tháng.",
 care:"Dây leo cần giàn. Thích ẩm nóng. Tự thụ phấn bằng tay vì ong Melipona (thụ phấn tự nhiên) chỉ có ở Mexico.",
 fact:"Trước năm 1841, vanilla chỉ có ở Mexico vì thiếu ong thụ phấn. Edmond Albius, một cậu bé nô lệ 12 tuổi ở Réunion, phát minh kỹ thuật thụ phấn tay mà toàn thế giới dùng đến ngày nay.",
@@ -507,6 +545,7 @@ tags:["Gia vị đắt","Thụ phấn tay","Mexico"]},
 grad:"linear-gradient(135deg,#F3E5F5,#AB47BC)",colors:["Tím","Hồng","Đỏ","Trắng","Xanh"],
 season:"Xuân – Thu",origin:"Nam Mỹ",height:"15–45 cm",life:"Một năm",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp",
 meaning:"Niềm an ủi, sự hiện diện nhẹ nhàng",
+order:"Solanales",plantType:"Cây thân thảo",stem:"Thân thảo mềm, phân nhánh, có lông dính, cao 15–45 cm",rootType:"Rễ chùm",flower:"Hoa đơn hình phễu, 5 cánh dính nhau, đường kính 5–10 cm, có gân màu đậm",reproduction:"Bằng hạt, giâm cành",
 desc:"Petunia là hoa trồng ban công phổ biến nhất thế giới nhờ dễ trồng, nhiều màu và nở rất bền. Tên gọi từ 'petun' — tiếng Tupi (thổ dân Brazil) chỉ thuốc lá, vì Petunia là họ hàng gần của cây thuốc lá.",
 care:"Nắng ít nhất 6 giờ. Tưới khi đất khô. Bón phân hàng tuần. Ngắt hoa tàn để nở liên tục.",
 fact:"Petunia là mô hình nghiên cứu di truyền quan trọng. Gen tạo màu tím của Petunia giúp các nhà khoa học hiểu cơ chế tắt gen (gene silencing) — phát hiện đoạt Nobel 2006.",
@@ -516,6 +555,7 @@ tags:["Ban công","Nobel 2006","Họ hàng thuốc lá"]},
 grad:"linear-gradient(135deg,#E8EAF6,#5C6BC0)",colors:["Trắng","Tím nhạt"],
 season:"Hè – Thu",origin:"Trung Mỹ",height:"50–150 cm",life:"Một năm",sun:"Đầy đủ",water:"Ít",soil:"Nhiều loại",
 meaning:"Bí ẩn, nguy hiểm, ảo giác",
+order:"Solanales",plantType:"Cây thân thảo",stem:"Thân thảo thô, phân nhánh hình nĩa, có gai, cao 50–150 cm",rootType:"Rễ cọc",flower:"Hoa đơn hình kèn dài 15–20 cm, 5 cánh dính, trắng hoặc tím nhạt, thơm ban đêm",reproduction:"Bằng hạt",
 desc:"Cà độc dược mang vẻ đẹp quyến rũ nhưng cực kỳ nguy hiểm — mọi bộ phận đều chứa alkaloid gây ảo giác, mê sảng và tử vong. Được gọi là 'Devil's Trumpet' (kèn quỷ), loài này gắn liền với phù thuỷ và y học cổ xưa.",
 care:"Mọc hoang, không khuyến khích trồng. Cảnh báo trẻ em không tiếp xúc.",
 fact:"Tên 'Jimson weed' (một tên gọi khác) bắt nguồn từ sự kiện 1676 ở Jamestown, Virginia — lính Anh ăn nhầm lá Datura trong salad và mê sảng tập thể 11 ngày.",
@@ -525,6 +565,7 @@ tags:["Cực độc","Kèn quỷ","Alkaloid"]},
 grad:"linear-gradient(135deg,#FFF3E0,#FF7043)",colors:["Cam đỏ (đài quả)"],
 season:"Thu",origin:"Á – Âu",height:"40–80 cm",life:"Lâu năm",sun:"Bán bóng–đầy đủ",water:"Trung bình",soil:"Tơi xốp",
 meaning:"Sự bảo vệ, bí ẩn được hé lộ",
+order:"Solanales",plantType:"Cây thân thảo",stem:"Thân thảo, mọc thẳng đứng, lan bằng thân ngầm, cao 40–80 cm",rootType:"Rễ thân rễ (rhizome), lan mạnh",flower:"Hoa đơn nhỏ hình chuông, 5 cánh trắng kem, đài phình thành lồng đèn bao quả",reproduction:"Bằng thân ngầm, gieo hạt",
 desc:"Đặc trưng nhất của Physalis alkekengi không phải hoa mà là đài quả — phình thành 'lồng đèn' giấy cam đỏ bao quanh quả mọng. Khi khô, đài trở nên trong suốt như ren, để lộ quả đỏ bên trong.",
 care:"Mọc mạnh, lan bằng thân ngầm. Cần kiểm soát. Thích bán bóng, đất ẩm.",
 fact:"Ở Nhật, lễ hội Hōzuki-ichi (chợ hoa lồng đèn) tại chùa Senso-ji, Tokyo, tổ chức hàng năm từ thế kỷ 16. Người Nhật tin quả Physalis xua đuổi tà ma.",
@@ -535,6 +576,7 @@ tags:["Lồng đèn","Senso-ji","Đài phồng"]},
 grad:"linear-gradient(135deg,#FFAB91,#FF5722)",colors:["Đỏ cam"],
 season:"Mùa hè",origin:"Madagascar",height:"8–15 m",life:"50+ năm",sun:"Đầy đủ",water:"Trung bình",soil:"Nhiều loại",
 meaning:"Tuổi trẻ, chia ly, kỷ niệm học trò",
+order:"Fabales",plantType:"Cây thân gỗ",stem:"Thân gỗ lớn, vỏ nhẵn xám, tán rộng hình ô, cao 8–15 m",rootType:"Rễ cọc, rễ bàng mạnh",flower:"Cụm hoa chùm lớn, 5 cánh đỏ cam không đều, nhị dài vươn ra ngoài",reproduction:"Bằng hạt, giâm cành",
 desc:"Phượng vĩ gắn liền với tuổi học trò Việt Nam — 'Flame of the Forest' nở đỏ rực sân trường khi mùa hè đến. Có nguồn gốc Madagascar nhưng hầu như tuyệt chủng ngoài tự nhiên ở đó.",
 care:"Cây lớn, cần không gian rộng. Chịu nắng nóng, ít sâu bệnh. Rễ mạnh — tránh trồng gần công trình.",
 fact:"Quả phượng vĩ dài đến 60 cm — trẻ con Việt Nam hay gọi là 'cá mè' và dùng làm kiếm đánh nhau.",
@@ -544,6 +586,7 @@ tags:["Tuổi thơ","Madagascar","Sân trường"]},
 grad:"linear-gradient(135deg,#FFFDE7,#FFD600)",colors:["Vàng"],
 season:"Hè",origin:"Nam Á",height:"10–20 m",life:"50+ năm",sun:"Đầy đủ",water:"Trung bình",soil:"Nhiều loại",
 meaning:"Hạnh phúc, sự rạng rỡ",
+order:"Fabales",plantType:"Cây thân gỗ",stem:"Thân gỗ, vỏ nhẵn xám, tán tròn rộng, cao 10–20 m",rootType:"Rễ cọc",flower:"Cụm hoa chùm rủ dài 30–60 cm, hoa 5 cánh vàng rực, gần đều nhau",reproduction:"Bằng hạt",
 desc:"Muồng hoàng yến (cây Golden Shower) là quốc hoa Thái Lan (ราชพฤกษ์). Khi nở, cây trút xuống thác hoa vàng dài 30–60 cm trông tuyệt đẹp. Quả dài hình trụ chứa cơm quả đen dùng làm thuốc nhuận tràng.",
 care:"Cây lớn, dễ trồng. Chịu nắng hạn. Lá rụng trước khi hoa nở, tạo hiệu ứng vàng rực.",
 fact:"Trong y học Ayurveda, vỏ và quả Cassia fistula được dùng 3.000 năm để chữa bệnh tiêu hoá.",
@@ -553,6 +596,7 @@ tags:["Quốc hoa Thái","Golden Shower","Ayurveda"]},
 grad:"linear-gradient(135deg,#E3F2FD,#1565C0)",colors:["Xanh biếc","Tím"],
 season:"Quanh năm (nhiệt đới)",origin:"ĐNA",height:"Dây leo 3–5 m",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Nhiều loại",
 meaning:"Trí tuệ, sự thanh tao",
+order:"Fabales",plantType:"Dây leo",stem:"Thân thảo leo quấn, mảnh, phân nhánh nhiều, dài 3–5 m",rootType:"Rễ cọc, có nốt sần cố định đạm (Rhizobium)",flower:"Hoa đơn dạng bướm đặc trưng, cánh cờ lớn xoè ra, xanh biếc đậm, 3–5 cm",reproduction:"Bằng hạt",
 desc:"Hoa đậu biếc có màu xanh biếc tự nhiên ấn tượng nhất thế giới thực vật. Anthocyanin trong hoa thay đổi màu theo pH — xanh trong nước, tím khi thêm chanh. Đặc tính này tạo nên trào lưu đồ uống 'đổi màu' toàn cầu.",
 care:"Dây leo, cần giàn. Cực dễ trồng ở vùng nhiệt đới. Cố định đạm cho đất (họ Đậu).",
 fact:"Ở Malaysia, hoa đậu biếc nhuộm màu cho cơm nếp 'nasi kerabu' — món ăn truyền thống với cơm màu xanh biếc tuyệt đẹp.",
@@ -563,6 +607,7 @@ tags:["Đổi màu pH","Anthocyanin","Nasi kerabu"]},
 grad:"linear-gradient(135deg,#FFF3E0,#FFAB91)",colors:["Trắng","Hồng","Vàng","Cam","Đỏ"],
 season:"Hè",origin:"Bắc bán cầu",height:"60–180 cm",life:"Lâu năm (củ)",sun:"Đầy đủ",water:"Trung bình",soil:"Giàu mùn, thoát nước",
 meaning:"Sự thuần khiết, trang trọng, lòng kính trọng",
+order:"Liliales",plantType:"Cây thân thảo",stem:"Thân thảo thẳng đứng, không phân nhánh, mọc từ củ vảy, cao 60–180 cm",rootType:"Rễ củ vảy (bulb), rễ co kéo ở đáy củ",flower:"Hoa lớn hình phễu hoặc chuông, 6 cánh (3 đài + 3 cánh), nhị 6, rất thơm",reproduction:"Bằng củ con, tách vảy, gieo hạt",
 desc:"Hoa ly nổi bật với dáng thanh lịch và hương thơm nồng nàn — loài hoa không thể thiếu trong dịp Tết Việt Nam. Trắng lily tượng trưng cho trinh trắng trong Công giáo — gắn với Đức Mẹ Maria.",
 care:"Trồng củ sâu 15 cm, đất giàu mùn. Giữ ẩm nhưng tránh úng. Cắt hoa tàn, giữ lá để nuôi củ.",
 fact:"Hoa ly RẤT ĐỘC với mèo — chỉ cần liếm phấn hoa, uống nước cắm hoa, thậm chí hít phấn cũng có thể gây suy thận cấp tử vong.",
@@ -572,6 +617,7 @@ tags:["Lễ Tết","Độc với mèo","Hương nồng"]},
 grad:"linear-gradient(135deg,#FFEBEE,#EF5350)",colors:["Đỏ","Vàng","Tím","Trắng","Cam","Hồng"],
 season:"Mùa xuân",origin:"Trung Á",height:"15–60 cm",life:"Lâu năm (củ)",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp, thoát nước",
 meaning:"Tình yêu hoàn hảo, sự duyên dáng",
+order:"Liliales",plantType:"Cây thân thảo",stem:"Thân thảo ngắn, thẳng đứng, mọc từ củ, cao 15–60 cm",rootType:"Rễ củ vảy (bulb) có áo bao",flower:"Hoa đơn hình chuông hoặc cốc, 6 cánh (3 đài + 3 cánh), nhiều màu sắc",reproduction:"Bằng củ con, gieo hạt",
 desc:"Tulip gây ra cơn sốt kinh tế đầu tiên trong lịch sử — 'Tulip Mania' (Hà Lan, 1637). Một củ tulip 'Semper Augustus' bán bằng giá 10 ngôi nhà ven kênh Amsterdam. Ngày nay, Hà Lan xuất khẩu hàng tỷ bông tulip mỗi năm.",
 care:"Trồng củ mùa thu, sâu 15 cm. Cần rét để kích mầm (vernalization). Sau tàn, để lá tự héo.",
 fact:"Sọc lửa trên tulip 'Semper Augustus' huyền thoại thực ra do virus Tulip Breaking Virus tạo ra — bệnh lý thành nghệ thuật.",
@@ -582,6 +628,7 @@ tags:["Tulip Mania","Hà Lan","Virus đẹp"]},
 grad:"linear-gradient(135deg,#F3E5F5,#B39DDB)",colors:["Tím","Xanh tím"],
 season:"Hè",origin:"Địa Trung Hải",height:"30–90 cm",life:"Lâu năm",sun:"Đầy đủ",water:"Ít",soil:"Kiềm, thoát nước",
 meaning:"Tĩnh lặng, thuần khiết, sùng kính",
+order:"Lamiales",plantType:"Cây bụi thấp",stem:"Thân bán gỗ, mọc bụi, vuông ở phần non, có lông, cao 30–90 cm",rootType:"Rễ cọc",flower:"Cụm hoa bông dạng gié, hoa nhỏ dạng môi, 2 môi trên-dưới, tím xanh",reproduction:"Bằng giâm cành, gieo hạt, tách bụi",
 desc:"Lavender chứa linalool và linalyl acetate — hợp chất đã được chứng minh khoa học có tác dụng giảm cortisol (hormone stress) và cải thiện chất lượng giấc ngủ. Provence, Pháp trồng lavender trên 20.000 hecta.",
 care:"Đất kiềm thoát nước là bắt buộc. Rất chịu hạn. Cắt tỉa 1/3 sau mùa hoa. Ghét ẩm ướt.",
 fact:"Tinh dầu lavender cứu sống nhà hoá học René-Maurice Gattefossé (1910) khi ông bị bỏng nặng — từ đó ông sáng lập ngành aromatherapy (liệu pháp hương thơm).",
@@ -591,6 +638,7 @@ tags:["Aromatherapy","Provence","Giảm stress"]},
 grad:"linear-gradient(135deg,#FFEBEE,#E53935)",colors:["Đỏ tươi","Tím","Trắng","Hồng"],
 season:"Quanh năm",origin:"Brazil",height:"25–60 cm",life:"Lâu năm (thường trồng 1 năm)",sun:"Đầy đủ–bán bóng",water:"Trung bình",soil:"Tơi xốp",
 meaning:"Sự nhiệt huyết, trí tuệ",
+order:"Lamiales",plantType:"Cây thân thảo",stem:"Thân thảo vuông, phân nhánh, có lông mịn, cao 25–60 cm",rootType:"Rễ chùm",flower:"Cụm hoa chùm dày, hoa dạng ống dài 3–5 cm, 2 môi, đỏ tươi rực rỡ",reproduction:"Bằng hạt, giâm cành",
 desc:"Salvia splendens với chùm hoa đỏ rực là cây trang trí công viên phổ biến nhất thế giới. Chi Salvia (sage) là chi lớn nhất họ Lamiaceae với hơn 1.000 loài — bao gồm cả sage gia vị và sage thảo dược.",
 care:"Dễ trồng, ưa ẩm nhẹ. Ngắt hoa tàn để kích thích đợt hoa mới. Tránh nắng trưa quá gắt.",
 fact:"Tên Salvia từ Latin 'salvare' — cứu chữa. Người La Mã coi sage là 'thảo dược của sự bất tử'.",
@@ -601,6 +649,7 @@ tags:["1.000 loài Salvia","Công viên","Salvare"]},
 grad:"linear-gradient(135deg,#FFEBEE,#F44336)",colors:["Đỏ","Hồng","Vàng","Cam","Trắng"],
 season:"Quanh năm (nhiệt đới)",origin:"Đông Á",height:"1–4 m",life:"Lâu năm",sun:"Đầy đủ",water:"Nhiều",soil:"Giàu mùn",
 meaning:"Vẻ đẹp thoáng qua, sự duyên dáng",
+order:"Malvales",plantType:"Cây bụi",stem:"Thân gỗ nhỏ, phân nhánh nhiều, cao 1–4 m",rootType:"Rễ cọc",flower:"Hoa đơn lớn hình phễu, 5 cánh, cột nhị hợp vươn dài, đường kính 10–15 cm",reproduction:"Bằng giâm cành, chiết cành, ghép",
 desc:"Hibiscus là quốc hoa Malaysia (Bunga Raya). Mỗi bông chỉ nở 1 ngày rồi tàn, nhưng cây ra hoa liên tục. Đặc trưng với cột nhị hợp (staminal column) — tất cả nhị dính thành ống, đây là dấu hiệu nhận biết họ Malvaceae.",
 care:"Ưa nắng ấm, tưới nhiều. Bón phân giàu kali. Cắt tỉa mạnh đầu xuân để tạo dáng và kích hoa.",
 fact:"Trà hibiscus (trà atiso đỏ) chứa anthocyanin giúp hạ huyết áp — nhiều nghiên cứu cho thấy hiệu quả tương đương thuốc tây.",
@@ -610,6 +659,7 @@ tags:["Quốc hoa Malaysia","Nở 1 ngày","Trà hibiscus"]},
 grad:"linear-gradient(135deg,#FFF,#F8BBD0)",colors:["Trắng → Hồng → Đỏ"],
 season:"Thu",origin:"Trung Quốc",height:"2–5 m",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Nhiều loại",
 meaning:"Vẻ đẹp thay đổi, sự khiêm nhường",
+order:"Malvales",plantType:"Cây bụi lớn",stem:"Thân gỗ nhỏ, phân nhánh nhiều, rụng lá mùa đông, cao 2–5 m",rootType:"Rễ cọc",flower:"Hoa đơn lớn, 5 cánh xếp chồng, đổi màu từ trắng sang hồng rồi đỏ trong ngày",reproduction:"Bằng giâm cành, gieo hạt",
 desc:"Phù dung là loài hoa 'biến sắc' kỳ diệu — sáng nở trắng, trưa chuyển hồng, chiều ngả đỏ. Hiện tượng do thay đổi pH trong tế bào cánh hoa theo nhiệt độ trong ngày. Tên 'mutabilis' nghĩa là 'hay thay đổi'.",
 care:"Dễ trồng, chịu bóng nhẹ. Lá rụng mùa đông. Cắt tỉa mạnh cuối đông để tạo dáng.",
 fact:"Thành Đô (Trung Quốc) có biệt danh 'Thành phố Phù Dung' (Rong Cheng) vì vua Mạnh Sưởng thời Hậu Thục ra lệnh trồng phù dung khắp thành.",
@@ -620,6 +670,7 @@ tags:["Biến sắc","Thành Đô","Mutabilis"]},
 grad:"linear-gradient(135deg,#FFFEF5,#FFECB3)",colors:["Trắng–Vàng","Hồng","Đỏ"],
 season:"Hè – Thu",origin:"Trung Mỹ",height:"2–8 m",life:"Hàng chục năm",sun:"Đầy đủ",water:"Ít",soil:"Thoát nước tốt",
 meaning:"Chân thành, vĩnh cửu, tâm linh",
+order:"Gentianales",plantType:"Cây thân gỗ nhỏ",stem:"Thân gỗ mềm, mọng nước, ít phân nhánh, có nhựa trắng, cao 2–8 m",rootType:"Rễ cọc, rễ cọc thịt",flower:"Cụm hoa xim, hoa 5 cánh xoắn ốc khi nụ, hình phễu, rất thơm",reproduction:"Bằng giâm cành (rất dễ), gieo hạt",
 desc:"Frangipani mang hương thơm ngọt ngào nhất trong các loài hoa nhiệt đới. Ở ĐNA, hoa sứ trồng khắp chùa chiền, gắn liền với tâm linh. Đặc trưng nhựa trắng của họ Apocynaceae rỉ ra khi bẻ cành.",
 care:"Chịu nắng nóng tốt, thoát nước tuyệt đối. Giảm tưới mùa đông. Nhân giống bằng cành giâm rất dễ.",
 fact:"Hoa sứ là quốc hoa Lào (ດອກຈຳປາ — Dok Champa) và Nicaragua. Tinh dầu frangipani thuộc hàng đắt nhất thế giới nước hoa.",
@@ -629,6 +680,7 @@ tags:["Chùa chiền","Quốc hoa Lào","Frangipani"]},
 grad:"linear-gradient(135deg,#FCE4EC,#F06292)",colors:["Hồng","Trắng","Đỏ","Vàng"],
 season:"Hè",origin:"Địa Trung Hải",height:"2–6 m",life:"Lâu năm",sun:"Đầy đủ",water:"Ít",soil:"Nhiều loại",
 meaning:"Cảnh báo, vẻ đẹp nguy hiểm",
+order:"Gentianales",plantType:"Cây bụi lớn",stem:"Thân gỗ nhỏ, phân nhánh nhiều, có nhựa trắng độc, cao 2–6 m",rootType:"Rễ cọc",flower:"Cụm hoa xim, hoa 5 cánh dính dạng phễu, cánh xoắn khi nụ, hồng hoặc trắng",reproduction:"Bằng giâm cành, gieo hạt",
 desc:"Trúc đào đẹp nhưng là một trong những cây độc nhất — mọi bộ phận chứa glycoside tim (oleandrin) gây rối loạn nhịp tim và tử vong. Paradox: cây cực kỳ bền bỉ, chịu ô nhiễm, nên được trồng khắp đại lộ và xa lộ.",
 care:"Cực dễ trồng, chịu hạn–mặn–ô nhiễm. Đeo găng khi cắt tỉa. KHÔNG đốt cành (khói độc).",
 fact:"Truyền thuyết kể Alexander Đại Đế mất nhiều lính vì họ nướng thịt bằng cành trúc đào trong chiến dịch Ấn Độ.",
@@ -639,6 +691,7 @@ tags:["Cực độc","Chịu ô nhiễm","Oleandrin"]},
 grad:"linear-gradient(135deg,#FFFDE7,#FFE082)",colors:["Trắng–Vàng"],
 season:"Cuối đông – đầu xuân",origin:"Châu Âu",height:"15–50 cm",life:"Lâu năm (củ)",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp",
 meaning:"Tái sinh, khởi đầu mới, tự tin",
+order:"Asparagales",plantType:"Cây thân thảo",stem:"Không có thân khí sinh, lá và cuống hoa mọc trực tiếp từ củ, cao 15–50 cm",rootType:"Rễ củ vảy (bulb) hình trứng, có vỏ nâu",flower:"Cụm hoa tán trên cuống dài, hoa 6 cánh trắng, ống phụ (corona) vàng ở giữa",reproduction:"Bằng củ con, gieo hạt",
 desc:"Narcissus gắn liền với thần thoại Hy Lạp — chàng Narcissus đắm đuối ngắm bóng mình dưới nước và hoá thành hoa. Ở Việt Nam, thuỷ tiên là hoa Tết trồng thuỷ canh phổ biến, nở đúng giao thừa là điềm lành.",
 care:"Ngâm củ trong nước sạch, nơi sáng mát. Thay nước 2–3 ngày, thêm than hoạt tính.",
 fact:"Toàn bộ cây thuỷ tiên có độc — galantamine trong Narcissus được dùng làm thuốc trị Alzheimer (FDA approved).",
@@ -648,6 +701,7 @@ tags:["Tết","Thuỷ canh","Narcissus"]},
 grad:"linear-gradient(135deg,#FCE4EC,#F48FB1)",colors:["Trắng–Hồng"],
 season:"Hè",origin:"Sumatra",height:"60–120 cm",life:"Lâu năm (củ)",sun:"Bán bóng",water:"Nhiều",soil:"Giàu mùn, ẩm",
 meaning:"Sự thanh cao, quyền quý",
+order:"Asparagales",plantType:"Cây thân thảo",stem:"Không có thân khí sinh rõ, lá mọc từ củ lớn, cuống hoa cao 60–120 cm",rootType:"Rễ củ vảy (bulb) rất lớn, đường kính 10–15 cm",flower:"Cụm hoa tán trên cuống dài, 20–30 hoa dạng phễu, cánh hẹp trắng hồng, rất thơm ban đêm",reproduction:"Bằng củ con, gieo hạt",
 desc:"Trinh nữ hoàng cung nổi tiếng Việt Nam với hoa trắng hồng lớn, hương thơm vào đêm, và niềm tin dân gian rằng lá cây có thể chữa ung thư — chưa được khoa học chứng minh đầy đủ.",
 care:"Thích bán bóng, đất ẩm giàu mùn. Trồng củ lớn nửa nổi nửa chìm. Ít sâu bệnh.",
 fact:"Alkaloid trong Crinum đang được nghiên cứu hoạt tính chống ung thư, nhưng tự dùng lá cây rất nguy hiểm do liều lượng không kiểm soát.",
@@ -658,6 +712,7 @@ tags:["Hương đêm","Nghiên cứu","Củ lớn"]},
 grad:"linear-gradient(135deg,#E3F2FD,#42A5F5)",colors:["Xanh","Tím","Hồng","Trắng"],
 season:"Hè",origin:"Nhật Bản",height:"1–3 m",life:"Lâu năm",sun:"Bán bóng",water:"Nhiều",soil:"Giàu mùn, ẩm",
 meaning:"Lòng biết ơn, vẻ đẹp thanh nhã",
+order:"Cornales",plantType:"Cây bụi",stem:"Thân gỗ nhỏ, phân nhánh nhiều, lá lớn đối nhau, cao 1–3 m",rootType:"Rễ chùm",flower:"Cụm hoa hình cầu lớn, gồm hoa hữu thụ nhỏ ở giữa và hoa bất thụ lớn ở rìa, 4 đài to",reproduction:"Bằng giâm cành, chiết cành",
 desc:"Cẩm tú cầu là loài hoa 'nhà hoá học' — đổi màu theo pH đất: pH < 5.5 → hoa xanh (ion nhôm hoà tan), pH > 6.5 → hoa hồng. Ở Đà Lạt, cẩm tú cầu nở rực rỡ khắp phố tạo nên cảnh sắc đặc trưng.",
 care:"Bán bóng, đất ẩm giàu mùn. Tưới nhiều. Thêm phèn nhôm (aluminium sulfate) để hoa xanh, vôi để hoa hồng.",
 fact:"Tên 'Hydrangea' từ Hy Lạp 'hydor' (nước) + 'angeion' (bình chứa) — mô tả quả hình cốc nước. Cây rất 'khát nước'.",
@@ -668,6 +723,7 @@ tags:["Đổi màu pH","Đà Lạt","Nhà hoá học"]},
 grad:"linear-gradient(135deg,#FFF,#E0E0E0)",colors:["Trắng"],
 season:"Hè",origin:"ĐNA",height:"10–30 m",life:"Hàng chục năm",sun:"Đầy đủ",water:"Trung bình",soil:"Giàu mùn",
 meaning:"Sự thuần khiết, tao nhã",
+order:"Magnoliales",plantType:"Cây thân gỗ",stem:"Thân gỗ lớn, thẳng, vỏ xám trắng nhẵn, tán hình tháp, cao 10–30 m",rootType:"Rễ cọc, rễ cọc thịt",flower:"Hoa đơn mọc ở nách lá, nhiều cánh xếp xoắn ốc, trắng ngà, rất thơm",reproduction:"Bằng giâm cành, chiết cành, gieo hạt",
 desc:"Ngọc lan trắng có hương thơm ngọt ngào nhẹ nhàng nhất — hương 'sang trọng tự nhiên'. Ở Việt Nam, ngọc lan thường trồng trong sân chùa, vườn nhà truyền thống. Hoa dùng ướp trà, cài tóc, đặt trên bàn thờ.",
 care:"Cây lớn, cần không gian. Đất giàu mùn, thoát nước. Chịu nắng tốt.",
 fact:"Magnolia là chi hoá thạch sống — xuất hiện trước cả ong. Hoa Magnolia được thụ phấn bởi bọ cánh cứng (beetle), loài côn trùng cổ xưa hơn ong 100 triệu năm.",
@@ -677,6 +733,7 @@ tags:["Chùa chiền","Ướp trà","95 triệu năm"]},
 grad:"linear-gradient(135deg,#FFF,#F8BBD0)",colors:["Hồng","Trắng","Tím nhạt"],
 season:"Đầu xuân",origin:"Lai tạo (Pháp, 1820)",height:"3–8 m",life:"50+ năm",sun:"Đầy đủ",water:"Trung bình",soil:"Hơi chua, giàu mùn",
 meaning:"Sự cao quý, tình yêu với thiên nhiên",
+order:"Magnoliales",plantType:"Cây thân gỗ nhỏ",stem:"Thân gỗ, phân nhánh thấp, vỏ xám nhẵn, cao 3–8 m",rootType:"Rễ cọc, rễ cọc thịt",flower:"Hoa đơn lớn hình cốc, nhiều cánh xếp xoắn ốc, trắng hồng, nở trên cành trụi lá",reproduction:"Bằng ghép cành, chiết cành",
 desc:"Magnolia soulangeana (saucer magnolia) là giống lai phổ biến nhất thế giới — hoa lớn nở trên cành trụi lá vào đầu xuân, tạo cảnh tượng ngoạn mục. Étienne Soulange-Bodin tạo ra giống này năm 1820 tại Pháp.",
 care:"Đất hơi chua (pH 5.5–6.5), giàu mùn. Tránh cắt tỉa mạnh — vết cắt lâu lành. Che gốc giữ ẩm.",
 fact:"Họ Magnoliaceae xuất hiện từ 95 triệu năm trước — trước khi khủng long tuyệt chủng. Cấu trúc hoa Magnolia còn nguyên thuỷ: cánh hoa, nhị, nhuỵ xếp xoắn ốc trên đế hoa kéo dài.",
@@ -687,6 +744,7 @@ tags:["Hoá thạch sống","Soulange-Bodin","Nở trên cành trụi"]},
 grad:"linear-gradient(135deg,#FFF9C4,#FFE082)",colors:["Đỏ","Hồng","Vàng","Trắng","Cam"],
 season:"Xuân",origin:"Đông Địa Trung Hải",height:"20–45 cm",life:"Lâu năm (củ)",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp, thoát nước",
 meaning:"Sự quyến rũ, vẻ đẹp rạng rỡ",
+order:"Ranunculales",plantType:"Cây thân thảo",stem:"Thân thảo ngắn, mọc từ củ chùm, phân nhánh, cao 20–45 cm",rootType:"Rễ củ chùm dạng móng (claw-shaped tuber)",flower:"Hoa đơn nhiều cánh mỏng như giấy lụa xếp chồng, hình hoa hồng, 3–8 cm",reproduction:"Bằng củ, gieo hạt",
 desc:"Mao lương châu Á với nhiều lớp cánh mỏng như giấy lụa xếp chồng, là hoa cắt cành cao cấp được ưa chuộng trong hoa cưới. Dù tên 'buttercup' nghe dễ thương, toàn bộ cây có độc tính.",
 care:"Ngâm củ trước khi trồng. Thích mát, nắng nhẹ. Đất thoát nước tuyệt đối. Thu củ sau mùa hoa.",
 fact:"Tên Ranunculus từ Latin 'rana' (ếch) — vì nhiều loài mọc ven bờ nước, nơi ếch sinh sống.",
@@ -696,6 +754,7 @@ tags:["Hoa cưới","Giấy lụa","'Ếch'"]},
 grad:"linear-gradient(135deg,#E3F2FD,#1976D2)",colors:["Xanh","Tím","Trắng","Hồng"],
 season:"Hè",origin:"Bắc bán cầu",height:"60–200 cm",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Giàu mùn, thoát nước",
 meaning:"Sự vui vẻ, lòng rộng lượng",
+order:"Ranunculales",plantType:"Cây thân thảo",stem:"Thân thảo thẳng đứng, cứng, ít phân nhánh, cao 60–200 cm",rootType:"Rễ chùm",flower:"Cụm hoa chùm dài thẳng đứng, hoa có cựa (spur), 5 đài giống cánh + 4 cánh nhỏ",reproduction:"Bằng hạt, tách bụi",
 desc:"Phi yến (Delphinium) nổi bật với chùm hoa thẳng đứng dài đến 60 cm, màu xanh dương thuần khiết hiếm có trong thế giới hoa. Tên từ Hy Lạp 'delphis' (cá heo) vì nụ hoa hình cá heo.",
 care:"Cần khí hậu mát. Đất giàu mùn, thoát nước. Cắm cọc vì thân cao. Cắt sau đợt hoa 1 để có đợt 2.",
 fact:"Delphinium cực độc — alkaloid delphinine gây hạ huyết áp, suy hô hấp. Ở Mỹ, đây là nguyên nhân hàng đầu gây ngộ độc gia súc trên đồng cỏ.",
@@ -706,6 +765,7 @@ tags:["Xanh dương","Hình cá heo","Cực độc"]},
 grad:"linear-gradient(135deg,#F1F8E9,#C5E1A5)",colors:["Trắng"],
 season:"Hè",origin:"ĐNA",height:"Dây leo 1–3 m",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp",
 meaning:"Thuần khiết, duyên dáng, tình yêu ngọt ngào",
+order:"Lamiales",plantType:"Cây bụi leo",stem:"Thân bán gỗ, leo hoặc bò, phân nhánh nhiều, dài 1–3 m",rootType:"Rễ chùm",flower:"Cụm hoa xim, hoa nhỏ trắng tinh, 5–8 cánh dạng sao, cực thơm, nở ban đêm",reproduction:"Bằng giâm cành, chiết cành",
 desc:"Nhài (Jasminum sambac) là quốc hoa Philippines (Sampaguita) và Indonesia (Melati). Hương nhài ngọt ngào quyến rũ — nền tảng của nhiều nước hoa huyền thoại. Trà nhài (jasmine tea) là loại trà hương phổ biến nhất Trung Quốc.",
 care:"Leo giàn hoặc chậu. Bón phân giàu phốt pho. Cắt tỉa đều để ra hoa nhiều.",
 fact:"Cần ~7.000 bông nhài để chiết 1 ml tinh dầu tuyệt đối (absolute) — đắt hơn vàng tính theo trọng lượng. Hoa chỉ hái được lúc rạng sáng.",
@@ -715,6 +775,7 @@ tags:["7.000 bông/ml","Trà nhài","Quốc hoa PH+ID"]},
 grad:"linear-gradient(135deg,#F3E5F5,#9575CD)",colors:["Tím","Trắng","Hồng"],
 season:"Xuân",origin:"Đông Nam Âu",height:"2–7 m",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Kiềm, tơi xốp",
 meaning:"Tình yêu đầu đời, kỷ niệm xuân",
+order:"Lamiales",plantType:"Cây bụi lớn",stem:"Thân gỗ nhiều thân, phân nhánh, vỏ xám nâu, cao 2–7 m",rootType:"Rễ cọc, mọc chồi rễ mạnh",flower:"Cụm hoa chùy hình nón, hoa nhỏ 4 cánh dính hình ống, rất thơm",reproduction:"Bằng giâm cành, chồi rễ, ghép",
 desc:"Tử đinh hương nở vào giữa xuân với chùm hoa thơm ngào ngạt — mùi hương 'mùa xuân' đặc trưng nhất trong vườn ôn đới. Ở Nga và Đông Âu, lilac là biểu tượng mùa xuân và tình yêu đầu đời.",
 care:"Đất kiềm (thêm vôi nếu cần). Nắng ít nhất 6 giờ. Cắt hoa tàn ngay để năm sau nở nhiều.",
 fact:"Tên Syringa từ Hy Lạp 'syrinx' (ống sáo) — thân cây rỗng giống ống sáo. Trong thần thoại, tiên nữ Syrinx hoá thành cây sậy để trốn thần Pan.",
@@ -725,6 +786,7 @@ tags:["Mùa xuân","Ống sáo","Tình đầu"]},
 grad:"linear-gradient(135deg,#FCE4EC,#EC407A)",colors:["Đỏ","Hồng","Trắng","Vàng","Tím"],
 season:"Quanh năm",origin:"Địa Trung Hải",height:"30–80 cm",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Kiềm, thoát nước",
 meaning:"Tình yêu, sự ngưỡng mộ, lòng biết ơn mẹ",
+order:"Caryophyllales",plantType:"Cây thân thảo",stem:"Thân thảo, đốt phình, lá hẹp mọc đối, phân nhánh, cao 30–80 cm",rootType:"Rễ chùm",flower:"Hoa đơn hoặc xim, 5 cánh có rìa xẻ hoặc răng cưa, ống đài dài, thơm nhẹ",reproduction:"Bằng giâm cành, gieo hạt",
 desc:"Cẩm chướng là hoa Ngày của Mẹ — Anna Jarvis (người sáng lập Ngày Mẹ ở Mỹ, 1908) chọn cẩm chướng trắng vì mẹ bà yêu thích. Tên 'Dianthus' nghĩa là 'hoa của thần' (Hy Lạp: dios + anthos). Nằm top 3 hoa cắt cành bán chạy nhất.",
 care:"Đất kiềm, thoát nước. Ngắt nụ phụ để hoa chính to. Cắm hoa bền 2–3 tuần nếu thêm đường+giấm vào nước.",
 fact:"Cẩm chướng xanh (Moonseries) là hoa biến đổi gen đầu tiên được thương mại hoá (Suntory, Nhật) — gen tạo màu xanh lấy từ hoa pansy.",
@@ -735,6 +797,7 @@ tags:["Ngày Mẹ","Dianthus","Biến đổi gen"]},
 grad:"linear-gradient(135deg,#EDE7F6,#5E35B1)",colors:["Tím","Xanh","Vàng","Trắng"],
 season:"Xuân – Hè",origin:"Địa Trung Hải",height:"30–90 cm",life:"Lâu năm (thân rễ)",sun:"Đầy đủ",water:"Ít–TB",soil:"Thoát nước tốt",
 meaning:"Trí tuệ, hy vọng, hoàng gia",
+order:"Asparagales",plantType:"Cây thân thảo",stem:"Không có thân khí sinh rõ, lá hình kiếm mọc từ thân rễ, cao 30–90 cm",rootType:"Rễ thân rễ (rhizome) dày, mọc ngang",flower:"Hoa lớn phức tạp, 3 cánh đài rủ xuống + 3 cánh tràng dựng đứng + 3 nhánh vòi nhuỵ dạng cánh",reproduction:"Bằng tách thân rễ, gieo hạt",
 desc:"Iris là biểu tượng hoàng gia Pháp — Fleur-de-lis trên quốc huy thực ra là hoa iris, không phải lily. Nữ thần Iris trong thần thoại Hy Lạp là sứ giả cầu vồng. Thân rễ iris (orris root) dùng trong nước hoa cao cấp.",
 care:"Trồng thân rễ nông (nửa lộ trên mặt đất). Thoát nước tốt. Chia tách mỗi 3–4 năm.",
 fact:"Orris root (rễ iris) cần phơi sấy 5 năm mới dùng được trong nước hoa — đắt hơn vàng. Chanel No. 5 và Guerlain L'Heure Bleue đều dùng orris.",
@@ -744,6 +807,7 @@ tags:["Fleur-de-lis","Orris root","Nữ thần cầu vồng"]},
 grad:"linear-gradient(135deg,#FFEBEE,#FF5252)",colors:["Đỏ","Hồng","Vàng","Trắng","Tím","Cam"],
 season:"Hè",origin:"Nam Phi & Địa Trung Hải",height:"60–150 cm",life:"Lâu năm (củ)",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp",
 meaning:"Sức mạnh, danh dự, chiến thắng",
+order:"Asparagales",plantType:"Cây thân thảo",stem:"Thân thảo thẳng đứng, không phân nhánh, mọc từ củ, cao 60–150 cm",rootType:"Rễ củ tròn dẹt (corm), mọc thay thế hàng năm",flower:"Cụm hoa bông một phía, hoa hình phễu không đều, 6 cánh, nở từ dưới lên",reproduction:"Bằng củ con, gieo hạt",
 desc:"Gladiolus từ Latin 'gladius' (kiếm) — lá hình kiếm đặc trưng. Đấu sĩ La Mã (gladiator) và hoa lay ơn chia sẻ từ gốc. Ở Việt Nam, lay ơn là hoa Tết truyền thống, nở từ dưới lên trên dọc thân hoa.",
 care:"Trồng củ mùa xuân, sâu 10 cm. Nắng đầy đủ. Cắm cọc vì thân cao. Thu củ trước đông.",
 fact:"Trong arena La Mã, khi đấu sĩ thắng, khán giả tung hoa lay ơn xuống — truyền thống 'tặng hoa chiến thắng' từ đây.",
@@ -754,6 +818,7 @@ tags:["Gladiator","Kiếm","Hoa Tết"]},
 grad:"linear-gradient(135deg,#FDE8EF,#F0B8CC)",colors:["Hồng","Trắng"],
 season:"Hè",origin:"Châu Á",height:"60–150 cm",life:"Lâu năm",sun:"Đầy đủ",water:"Ngập nước",soil:"Bùn đầm lầy",
 meaning:"Thuần khiết, giác ngộ, tái sinh",
+order:"Proteales",plantType:"Cây thân thảo thuỷ sinh",stem:"Thân rễ ngầm trong bùn, cuống lá và cuống hoa dài vươn khỏi mặt nước, cao 60–150 cm",rootType:"Rễ thân rễ (rhizome) mọc trong bùn, rễ phụ bám đáy",flower:"Hoa đơn lớn trên cuống dài, nhiều cánh xếp xoắn ốc, đế hoa hình nón, 10–25 cm",reproduction:"Bằng hạt, tách thân rễ",
 desc:"Sen là quốc hoa Việt Nam và Ấn Độ. Mọc từ bùn mà không vấy bẩn — biểu tượng Phật giáo hoàn hảo. 'Lotus effect': bề mặt lá sen siêu kỵ nước (superhydrophobic) nhờ cấu trúc nano, nước lăn tròn cuốn sạch bụi bẩn.",
 care:"Ao/chậu ngập nước, nắng ≥6 giờ. Bón phân thuỷ sinh. Mùa đông ngủ nghỉ.",
 fact:"Hạt sen có thể nảy mầm sau 1.300 năm (kỷ lục thực vật). 'Lotus effect' trên lá sen truyền cảm hứng cho công nghệ sơn tự làm sạch và vải chống thấm.",
@@ -764,6 +829,7 @@ tags:["Quốc hoa VN+IN","Lotus effect","1.300 năm"]},
 grad:"linear-gradient(135deg,#E0F7FA,#00897B)",colors:["Tím","Xanh","Hồng","Trắng"],
 season:"Hè – Thu",origin:"Trung & Nam Mỹ",height:"Dây leo 2–5 m",life:"Một năm",sun:"Đầy đủ",water:"Trung bình",soil:"Nhiều loại",
 meaning:"Tình yêu ngắn ngủi, sự khởi đầu mỗi ngày",
+order:"Solanales",plantType:"Dây leo thân thảo",stem:"Dây leo, thân quấn, mảnh, 2–5 m",rootType:"Rễ cọc",flower:"Hoa hình phễu lớn, nở sáng sớm, tàn trước trưa",reproduction:"Bằng hạt",
 desc:"Morning Glory nở lúc bình minh và tàn trước trưa — mỗi bông chỉ sống vài giờ, nhưng cây ra hoa liên tục. Hoa hình phễu xoắn khi còn nụ là đặc trưng họ Convolvulaceae. Chi Ipomoea bao gồm cả khoai lang.",
 care:"Dây leo mọc nhanh, cần giàn. Gieo hạt trực tiếp sau sương giá. Chú ý kiểm soát vì lan mạnh.",
 fact:"Ở Nhật Bản, 'asagao' (morning glory) là nghệ thuật — hội chợ Iriya Asagao-ichi ở Tokyo từ thời Edo (1800s) nơi nghệ nhân trưng bày giống lạ.",
@@ -774,6 +840,7 @@ tags:["Nở bình minh","Asagao","Họ hàng khoai lang"]},
 grad:"linear-gradient(135deg,#FCE4EC,#EC407A)",colors:["Hồng","Đỏ","Tím","Cam","Trắng"],
 season:"Quanh năm (nhiệt đới)",origin:"Nam Mỹ",height:"1–12 m",life:"Hàng chục năm",sun:"Đầy đủ",water:"Ít",soil:"Thoát nước",
 meaning:"Đam mê, nhiệt huyết, chào đón",
+order:"Caryophyllales",plantType:"Cây bụi leo",stem:"Thân gỗ, leo bám bằng gai cong, phân nhánh mạnh, dài 1–12 m",rootType:"Rễ cọc",flower:"Hoa thật nhỏ trắng hình ống, bao bọc bởi 3 lá bắc (bract) lớn sặc sỡ giống cánh hoa",reproduction:"Bằng giâm cành, chiết cành",
 desc:"Bí mật: phần sặc sỡ nhất KHÔNG phải cánh hoa — mà là lá bắc (bract). Hoa thật là bông trắng bé xíu ở giữa. Paradox thú vị: càng 'ngược đãi' (ít nước, ít phân) cây càng ra nhiều 'hoa'.",
 care:"Nắng nhiều, tưới ÍT — stress nước kích thích ra lá bắc. Cắt tỉa tạo dáng. Giàn leo hoặc bonsai.",
 fact:"Tên Bougainvillea từ nhà thám hiểm Pháp Louis Antoine de Bougainville — nhưng người thực sự phát hiện cây là nhà thực vật học nữ Jeanne Baret, người phụ nữ đầu tiên đi vòng quanh thế giới (1766–1769).",
@@ -784,6 +851,7 @@ tags:["Lá bắc ≠ cánh hoa","Jeanne Baret","Càng khô càng đẹp"]},
 grad:"linear-gradient(135deg,#FFEBEE,#FF5722)",colors:["Đỏ","Cam","Trắng","Vàng"],
 season:"Xuân – Hè",origin:"Âu – Á",height:"30–70 cm",life:"Một năm",sun:"Đầy đủ",water:"Ít",soil:"Nhiều loại",
 meaning:"Tưởng nhớ, giấc ngủ, lãng quên",
+order:"Ranunculales",plantType:"Cây thân thảo",stem:"Thân thảo mảnh, phân nhánh, có lông cứng, có nhựa trắng, cao 30–70 cm",rootType:"Rễ cọc",flower:"Hoa đơn lớn, 4 cánh mỏng như giấy lụa, nhị đen nhiều, đài rụng khi hoa nở",reproduction:"Bằng hạt (tự gieo rất mạnh)",
 desc:"Poppy đỏ (corn poppy) là biểu tượng tưởng niệm chiến tranh ở Anh, Úc, Canada — đeo hoa poppy đỏ vào Remembrance Day. Papaver somniferum (anh túc thuốc phiện) cho nhựa chứa morphine và codeine — thuốc giảm đau quan trọng nhất y học.",
 care:"Gieo hạt trực tiếp, không ưa cấy. Đất nghèo, thoát nước. Hoa cánh mỏng tàn nhanh.",
 fact:"Poppy đỏ nở rộ trên cánh đồng Flanders (Bỉ) sau Thế chiến I — đạn pháo xới đất đưa hạt ngủ nghỉ hàng chục năm lên mặt, nở thành biển hoa đỏ trên mộ lính.",
@@ -794,6 +862,7 @@ tags:["Remembrance","Morphine","Flanders"]},
 grad:"linear-gradient(135deg,#FFFDE7,#FFE082)",colors:["Vàng nhạt"],
 season:"Hè",origin:"Bắc Mỹ",height:"50–150 cm",life:"Lâu năm",sun:"Đầy đủ",water:"Ngập nước",soil:"Bùn đầm lầy",
 meaning:"Mặt trời, sự ấm áp, hoà bình",
+order:"Proteales",plantType:"Cây thân thảo thuỷ sinh",stem:"Thân rễ ngầm trong bùn, cuống lá và cuống hoa dài vươn khỏi mặt nước, cao 50–150 cm",rootType:"Rễ thân rễ (rhizome) mọc trong bùn",flower:"Hoa đơn lớn trên cuống dài, nhiều cánh xếp xoắn ốc, vàng nhạt, đế hoa hình nón",reproduction:"Bằng hạt, tách thân rễ",
 desc:"Sen Mỹ (Nelumbo lutea) là 1 trong chỉ 2 loài duy nhất của họ Nelumbonaceae. Hoa vàng nhạt thay vì hồng như sen Á. Thổ dân Mỹ sử dụng toàn bộ cây — củ ăn, hạt rang, lá gói thức ăn — suốt hàng nghìn năm.",
 care:"Ao/đầm tự nhiên. Giống sen Á nhưng chịu lạnh hơn. Mùa đông ngủ nghỉ dưới bùn.",
 fact:"Họ Nelumbonaceae chỉ có 2 loài sống (N. nucifera và N. lutea) tách biệt địa lý — Á và Mỹ — bằng chứng cho sự liên kết lục địa cổ đại.",
@@ -1030,13 +1099,15 @@ function doSearch(){S.q=document.getElementById('sinp').value;if(S.page!=='home'
 function setV(v){S.view=v;document.getElementById('vg').classList.toggle('on',v==='g');document.getElementById('vl').classList.toggle('on',v==='l');if(S.page==='home')renderHome();else if(S.page==='bk')goBk();}
 
 // DETAIL
+function openLB(src){document.getElementById('lbImg').src=src;document.getElementById('lightbox').classList.add('open');}
 function openD(id){
   const p=spMap[id];if(!p)return;const f=famMap[p.f];
   const img=getFlowerImg(p.id);
   const hasImg=!!img;
+  const gal=(img&&img.gallery)||[];
   document.getElementById('dcon').innerHTML=`
     <div class="det-hero ${hasImg?'has-img':''}" style="${hasImg?'':'background:'+p.grad}">
-      ${hasImg?`<img class="det-hero-img" src="${img.data}" alt="${p.name}">`:`<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity=".3"><path d="M12 3c-1.5 3-5 5-5 9a5 5 0 0010 0c0-4-3.5-6-5-9z"/><path d="M12 12v7"/><path d="M9 16c1.5-1 4.5-1 6 0"/></svg>`}
+      ${hasImg?`<img class="det-hero-img" src="${img.data}" alt="${p.name}" onclick="openLB('${img.data.replace(/'/g,"\\'")}');event.stopPropagation()" style="cursor:pointer">`:`<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity=".3"><path d="M12 3c-1.5 3-5 5-5 9a5 5 0 0010 0c0-4-3.5-6-5-9z"/><path d="M12 12v7"/><path d="M9 16c1.5-1 4.5-1 6 0"/></svg>`}
       ${hasImg&&img.source?`<div class="img-credit">${img.source}</div>`:''}
       <button class="det-x" onclick="clD()">✕</button>
     </div>
@@ -1044,27 +1115,42 @@ function openD(id){
       <div class="det-t">${p.name}${p.userAdded?'<span class="user-badge">Tự thêm</span>':''}</div>
       <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:16px">
         <div class="det-sub" style="margin-bottom:0">${p.en} · ${p.latin}</div>
-        <button class="det-edit" onclick="clD();openForm(${p.id})">✏ Sửa</button>
+        <button class="det-edit" onclick="clD();openForm(${p.id})">Sửa</button>
       </div>
-      <div class="taxo">
-        <span><b>Giới:</b> Plantae</span><span><b>Bộ:</b> Angiosperms</span>
-        <span style="background:${f?.color}22;border-color:${f?.color}44;color:${f?.color}"><b>Họ:</b> ${f?.latin}</span>
-        <span><b>Chi:</b> ${p.genus}</span>
+      <div class="det-section">
+        <div class="det-section-title">Phân loại khoa học</div>
+        <div class="det-field"><div class="det-field-label">Bộ (Order)</div><div class="det-field-value">${p.order||f?.order||'—'}</div></div>
+        <div class="det-field"><div class="det-field-label">Họ (Family)</div><div class="det-field-value">${f?.name||''} — <i>${f?.latin||''}</i></div></div>
+        <div class="det-field"><div class="det-field-label">Chi (Genus)</div><div class="det-field-value"><i>${p.genus}</i></div></div>
+        <div class="det-field"><div class="det-field-label">Loài (Species)</div><div class="det-field-value"><i>${p.latin}</i></div></div>
       </div>
-      <div class="ig">
-        <div class="ic"><div class="ic-l">Mùa hoa</div><div class="ic-v">${p.season}</div></div>
-        <div class="ic"><div class="ic-l">Nguồn gốc</div><div class="ic-v">${p.origin}</div></div>
-        <div class="ic"><div class="ic-l">Chiều cao</div><div class="ic-v">${p.height}</div></div>
-        <div class="ic"><div class="ic-l">Vòng đời</div><div class="ic-v">${p.life}</div></div>
-        <div class="ic"><div class="ic-l">Ánh sáng</div><div class="ic-v">${p.sun}</div></div>
-        <div class="ic"><div class="ic-l">Nước</div><div class="ic-v">${p.water}</div></div>
-        <div class="ic"><div class="ic-l">Đất</div><div class="ic-v">${p.soil}</div></div>
-        <div class="ic"><div class="ic-l">Màu sắc</div><div class="ic-v">${p.colors.join(', ')}</div></div>
+      <div class="det-section">
+        <div class="det-section-title">Đặc điểm hình thái</div>
+        ${p.plantType?`<div class="det-field"><div class="det-field-label">Dạng cây</div><div class="det-field-value">${p.plantType}</div></div>`:''}
+        ${p.stem?`<div class="det-field"><div class="det-field-label">Thân và chiều cao</div><div class="det-field-value">${p.stem}</div></div>`:''}
+        ${p.rootType?`<div class="det-field"><div class="det-field-label">Dạng rễ</div><div class="det-field-value">${p.rootType}</div></div>`:''}
+        ${p.flower?`<div class="det-field"><div class="det-field-label">Hoa</div><div class="det-field-value">${p.flower}</div></div>`:''}
+        ${p.reproduction?`<div class="det-field"><div class="det-field-label">Sinh sản</div><div class="det-field-value">${p.reproduction}</div></div>`:''}
       </div>
-      <div class="sec">Ý nghĩa</div><p class="pr">${p.meaning}</p>
+      <div class="det-section">
+        <div class="det-section-title">Thông tin sinh học</div>
+        <div class="det-field"><div class="det-field-label">Mùa hoa</div><div class="det-field-value">${p.season}</div></div>
+        <div class="det-field"><div class="det-field-label">Nguồn gốc</div><div class="det-field-value">${p.origin}</div></div>
+        <div class="det-field"><div class="det-field-label">Chiều cao</div><div class="det-field-value">${p.height}</div></div>
+        <div class="det-field"><div class="det-field-label">Vòng đời</div><div class="det-field-value">${p.life}</div></div>
+        <div class="det-field"><div class="det-field-label">Ánh sáng</div><div class="det-field-value">${p.sun}</div></div>
+        <div class="det-field"><div class="det-field-label">Nước</div><div class="det-field-value">${p.water}</div></div>
+        <div class="det-field"><div class="det-field-label">Đất</div><div class="det-field-value">${p.soil}</div></div>
+        <div class="det-field"><div class="det-field-label">Màu sắc</div><div class="det-field-value">${p.colors.join(', ')}</div></div>
+      </div>
+      ${gal.length?`<div class="det-section">
+        <div class="det-section-title">Hình ảnh khác</div>
+        <div class="det-gallery">${gal.map(g=>`<div class="det-gallery-item" onclick="openLB('${g.data.replace(/'/g,"\\'")}')"><img src="${g.data}" alt=""></div>`).join('')}${Array(3-gal.length).fill('<div class="det-gallery-item"><div class="gallery-empty">Chưa có ảnh</div></div>').join('')}</div>
+      </div>`:''}
+      <div class="sec">Ý nghĩa</div><p class="pr">${p.meaning||'—'}</p>
       <div class="sec">Mô tả khoa học</div><p class="pr">${p.desc}</p>
       <div class="sec">Chăm sóc</div><p class="pr">${p.care}</p>
-      <div class="sec">Bạn có biết?</div><p class="pr">💡 ${p.fact}</p>
+      <div class="sec">Bạn có biết?</div><p class="pr">${p.fact}</p>
       <div class="det-tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
     </div>`;
   document.getElementById('dmo').classList.add('open');document.body.style.overflow='hidden';
@@ -1090,7 +1176,7 @@ function clrCmp(){S.cmp=[];uCmp();if(S.page==='home')renderHome();}
 function openCmp(){
   if(S.cmp.length<2)return alert('Chọn ít nhất 2 loài.');
   const ps=S.cmp.map(id=>spMap[id]);
-  const flds=[['Họ','f',p=>famMap[p.f]?.name+' ('+famMap[p.f]?.latin+')'],['Chi','genus'],['Mùa','season'],['Nguồn gốc','origin'],['Chiều cao','height'],['Vòng đời','life'],['Ánh sáng','sun'],['Nước','water'],['Đất','soil'],['Màu sắc','colors',p=>p.colors.join(', ')],['Ý nghĩa','meaning']];
+  const flds=[['Bộ','order',p=>p.order||famMap[p.f]?.order||'—'],['Họ','f',p=>famMap[p.f]?.name+' ('+famMap[p.f]?.latin+')'],['Chi','genus'],['Dạng cây','plantType'],['Thân','stem'],['Dạng rễ','rootType'],['Sinh sản','reproduction'],['Mùa','season'],['Nguồn gốc','origin'],['Chiều cao','height'],['Vòng đời','life'],['Màu sắc','colors',p=>p.colors.join(', ')],['Ý nghĩa','meaning']];
   document.getElementById('ccon').innerHTML=`<button class="det-x" onclick="clC()">✕</button>
     <div class="det-c"><div class="stitle">So sánh loài hoa</div>
     <div class="cwrap"><table class="ctbl"><thead><tr><th></th>${ps.map(p=>`<td class="cth"><div class="n">${p.name}</div><div style="font-style:italic;font-size:.7rem;color:var(--tx4)">${p.latin}</div></td>`).join('')}</tr></thead>
@@ -1295,6 +1381,29 @@ function resizeImage(file,maxW,quality){
 }
 
 let pendingImgData=null;
+let pendingGallery=[];
+
+function pickGalImg(idx){document.getElementById('galFile'+idx).click();}
+
+async function handleGalImg(e,idx){
+  const file=e.target.files[0];
+  if(!file)return;
+  try{
+    const data=await resizeImage(file,600,0.75);
+    while(pendingGallery.length<=idx)pendingGallery.push(null);
+    pendingGallery[idx]={data:data,source:''};
+    const slot=document.getElementById('galSlot'+idx);
+    slot.classList.add('has-img');
+    slot.innerHTML=`<img src="${data}" alt=""><button class="frm-gallery-remove" onclick="event.stopPropagation();removeGalImg(${idx})">✕</button><input type="file" id="galFile${idx}" accept="image/*" style="display:none" onchange="handleGalImg(event,${idx})">`;
+  }catch(err){showFrmMsg('Không thể đọc ảnh gallery.',false);}
+}
+
+function removeGalImg(idx){
+  if(pendingGallery[idx])pendingGallery[idx]=null;
+  const slot=document.getElementById('galSlot'+idx);
+  slot.classList.remove('has-img');
+  slot.innerHTML=`<div class="slot-placeholder"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/></svg>Ảnh ${idx+1}</div><input type="file" id="galFile${idx}" accept="image/*" style="display:none" onchange="handleGalImg(event,${idx})">`;
+}
 
 function handleImgSelect(e){
   const file=e.target.files[0];
@@ -1459,7 +1568,41 @@ function openForm(id){
         </div>
       </div>
 
-      <div class="frm-section">Đặc điểm sinh học</div>
+      <div class="frm-section">Đặc điểm hình thái</div>
+      <div class="frm-row">
+        <div class="frm-field">
+          <label class="frm-label">Dạng cây</label>
+          <input class="frm-input" id="f_plantType" placeholder="VD: Cây thân thảo, Cây bụi, Dây leo" value="${p?.plantType||''}">
+        </div>
+        <div class="frm-field">
+          <label class="frm-label">Dạng rễ</label>
+          <input class="frm-input" id="f_rootType" placeholder="VD: Rễ chùm, Rễ cọc, Rễ củ" value="${p?.rootType||''}">
+        </div>
+      </div>
+      <div class="frm-row full">
+        <div class="frm-field">
+          <label class="frm-label">Thân và chiều cao</label>
+          <input class="frm-input" id="f_stem" placeholder="VD: Thân thảo, mọc thẳng đứng, 30–120 cm" value="${p?.stem||''}">
+        </div>
+      </div>
+      <div class="frm-row full">
+        <div class="frm-field">
+          <label class="frm-label">Hoa</label>
+          <textarea class="frm-input" id="f_flower" rows="2" placeholder="Mô tả đặc điểm hoa: hình dáng, màu sắc, cách mọc...">${p?.flower||''}</textarea>
+        </div>
+      </div>
+      <div class="frm-row">
+        <div class="frm-field">
+          <label class="frm-label">Sinh sản</label>
+          <input class="frm-input" id="f_reproduction" placeholder="VD: Bằng hạt, giâm cành, tách bụi" value="${p?.reproduction||''}">
+        </div>
+        <div class="frm-field">
+          <label class="frm-label">Màu sắc (phẩy ngăn cách)</label>
+          <input class="frm-input" id="f_colors" placeholder="VD: Đỏ, Hồng, Trắng" value="${p?.colors?.join(', ')||''}">
+        </div>
+      </div>
+
+      <div class="frm-section">Thông tin sinh học</div>
       <div class="frm-row tri">
         <div class="frm-field">
           <label class="frm-label">Mùa hoa</label>
@@ -1493,9 +1636,23 @@ function openForm(id){
           <label class="frm-label">Đất</label>
           <input class="frm-input" id="f_soil" placeholder="VD: Tơi xốp, thoát nước" value="${p?.soil||''}">
         </div>
+      </div>
+
+      <div class="frm-section">Hình ảnh bổ sung</div>
+      <div class="frm-row full">
         <div class="frm-field">
-          <label class="frm-label">Màu sắc (phẩy ngăn cách)</label>
-          <input class="frm-input" id="f_colors" placeholder="VD: Đỏ, Hồng, Trắng" value="${p?.colors?.join(', ')||''}">
+          <label class="frm-label">Tải thêm ảnh (tối đa 3 ảnh)</label>
+          <div class="frm-gallery" id="galSlots">
+            ${[0,1,2].map(i=>{
+              const g=(getFlowerImg(editingId)?.gallery)||[];
+              const has=g[i];
+              return `<div class="frm-gallery-slot ${has?'has-img':''}" id="galSlot${i}" onclick="pickGalImg(${i})">
+                ${has?`<img src="${g[i].data}" alt=""><button class="frm-gallery-remove" onclick="event.stopPropagation();removeGalImg(${i})">✕</button>`
+                :`<div class="slot-placeholder"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/></svg>Ảnh ${i+1}</div>`}
+                <input type="file" id="galFile${i}" accept="image/*" style="display:none" onchange="handleGalImg(event,${i})">
+              </div>`;
+            }).join('')}
+          </div>
         </div>
       </div>
 
@@ -1543,10 +1700,15 @@ function openForm(id){
   document.body.style.overflow='hidden';
   // Load existing image if editing
   pendingImgData=null;
+  pendingGallery=[];
   const existImg=getFlowerImg(editingId);
   if(existImg&&existImg.data){
     pendingImgData=existImg.data;
     setTimeout(()=>showImgPreview(existImg.data),50);
+  }
+  // Load existing gallery
+  if(existImg&&existImg.gallery){
+    pendingGallery=existImg.gallery.map(g=>g?{data:g.data,source:g.source||''}:null);
   }
 }
 
@@ -1584,6 +1746,7 @@ function saveForm(){
     return;
   }
 
+  const selFam=famMap[fam];
   const flower={
     id: editingId || Date.now(),
     f: fam,
@@ -1599,6 +1762,12 @@ function saveForm(){
     water: document.getElementById('f_water').value.trim()||'—',
     soil: document.getElementById('f_soil').value.trim()||'—',
     meaning: document.getElementById('f_meaning').value.trim()||'—',
+    order: selFam?.order||'—',
+    plantType: document.getElementById('f_plantType').value.trim()||'',
+    stem: document.getElementById('f_stem').value.trim()||'',
+    rootType: document.getElementById('f_rootType').value.trim()||'',
+    flower: document.getElementById('f_flower').value.trim()||'',
+    reproduction: document.getElementById('f_reproduction').value.trim()||'',
     desc,
     care: document.getElementById('f_care').value.trim()||'—',
     fact: document.getElementById('f_fact').value.trim()||'—',
@@ -1622,16 +1791,18 @@ function saveForm(){
   rebuildIndex();
   saveUserFlowers();
 
-  // Save image
+  // Save image + gallery
   const imgSource=document.getElementById('f_imgSrc').value.trim();
-  if(pendingImgData){
-    flowerImages[flower.id]={data:pendingImgData,source:imgSource};
+  const existingImg=flowerImages[flower.id]||{};
+  const cleanGal=pendingGallery.filter(g=>g&&g.data);
+  const finalGal=cleanGal.length?cleanGal:(existingImg.gallery||[]);
+  if(pendingImgData||existingImg.data){
+    flowerImages[flower.id]={data:pendingImgData||existingImg.data,source:imgSource||existingImg.source||'',gallery:finalGal};
     saveFlowerImages();
-  } else if(imgSource&&flowerImages[flower.id]){
-    flowerImages[flower.id].source=imgSource;
+  } else if(finalGal.length){
+    flowerImages[flower.id]={data:null,source:'',gallery:finalGal};
     saveFlowerImages();
-  } else if(!pendingImgData&&flowerImages[flower.id]){
-    // Image was removed
+  } else {
     delete flowerImages[flower.id];
     saveFlowerImages();
   }
