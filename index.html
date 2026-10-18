@@ -1,0 +1,1668 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Encyclopedia of Flowers — Trang Web sưu tầm các loài hoa của Tr Anh</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --dk:#022539;--gr:#184A3A;--grl:#6A9E7B;--grl2:#DAF0D0;
+  --gold:#2B7A4B;--gold-bg:#D6F0D8;
+  --bg:#DDE9D5;--card:#EEF4EA;--side:#2B6B50;
+  --tx:#0A1F18;--tx2:#2E4A3C;--tx3:#5C7D6C;--tx4:#8DAA99;
+  --bd:#C1D8BA;--bd2:#D2E4CC;
+  --sh:0 1px 4px rgba(2,37,57,.07);--sh2:0 4px 20px rgba(2,37,57,.1);
+  --nav-h:54px;--side-w:272px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0);padding-bottom:env(safe-area-inset-bottom,0);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --dk:#8BC9A0;--gr:#6AAE80;--grl:#3A7A55;--grl2:#162E22;
+  --gold:#6AAE80;--gold-bg:#1A2E22;
+  --bg:#0C1610;--card:#142018;--side:#1A3D2E;
+  --tx:#D4E6D9;--tx2:#9AB8A6;--tx3:#5C7D6C;--tx4:#354D42;
+  --bd:#1E3328;--bd2:#172820;--sh:0 1px 4px rgba(0,0,0,.4);--sh2:0 4px 20px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{
+  --dk:#8BC9A0;--gr:#6AAE80;--grl:#3A7A55;--grl2:#162E22;
+  --gold:#6AAE80;--gold-bg:#1A2E22;
+  --bg:#0C1610;--card:#142018;--side:#1A3D2E;
+  --tx:#D4E6D9;--tx2:#9AB8A6;--tx3:#5C7D6C;--tx4:#354D42;
+  --bd:#1E3328;--bd2:#172820;--sh:0 1px 4px rgba(0,0,0,.4);--sh2:0 4px 20px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:inherit;margin:0;padding:0}
+html{scroll-padding-top:calc(var(--nav-h)+12px);scroll-behavior:smooth}
+body{font-family:'Work Sans',system-ui,sans-serif;background:var(--bg);color:var(--tx);line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.dsp{font-family:'Playfair Display',Georgia,serif}
+button,input{font-family:inherit}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);background:var(--side);color:#fff;display:flex;align-items:center;padding:0 16px;gap:12px}
+.nav-brand{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;white-space:nowrap;display:flex;align-items:center;gap:8px;opacity:.95;flex-shrink:0;text-decoration:none;color:#fff}
+.nav-sub{font-family:'Work Sans',sans-serif;font-size:.6rem;font-weight:400;opacity:.5;display:block;font-style:italic;letter-spacing:.01em}
+.ham{display:none;width:34px;height:34px;border:none;background:rgba(255,255,255,.1);color:#fff;font-size:1.1rem;border-radius:6px;flex-shrink:0;cursor:pointer}
+.sbox{flex:1;max-width:400px;position:relative}
+.sbox input{width:100%;padding:8px 12px 8px 34px;border:1px solid rgba(255,255,255,.15);border-radius:6px;background:rgba(255,255,255,.08);color:#fff;font-size:.85rem;outline:none;transition:all .2s}
+.sbox input:focus{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3)}
+.sbox input::placeholder{color:rgba(255,255,255,.45)}
+.sbox svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.4);pointer-events:none}
+.nav-r{display:flex;gap:4px;margin-left:auto;flex-shrink:0}
+.nb{padding:6px 12px;border:1px solid rgba(255,255,255,.15);border-radius:6px;background:transparent;color:rgba(255,255,255,.75);font-size:.78rem;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .15s}
+.nb:hover,.nb.on{background:rgba(255,255,255,.15);color:#fff}
+.vt{display:flex;border:1px solid rgba(255,255,255,.15);border-radius:6px;overflow:hidden}
+.vb{padding:6px 9px;background:transparent;border:none;color:rgba(255,255,255,.45);font-size:.88rem;cursor:pointer}
+.vb.on{background:#184A3A;color:#BAF187}
+
+/* LAYOUT */
+.wrap{display:flex;margin-top:var(--nav-h)}
+.side-l{width:var(--side-w);position:fixed;top:var(--nav-h);bottom:0;left:0;background:var(--side);overflow-y:auto;padding:12px 0;z-index:50;transition:transform .3s}
+.side-l::-webkit-scrollbar{width:4px}.side-l::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
+.side-r{width:var(--side-w);position:fixed;top:var(--nav-h);bottom:0;right:0;background:var(--card);border-left:1px solid var(--bd);overflow-y:auto;padding:0;z-index:50;transition:transform .3s}
+.side-r::-webkit-scrollbar{width:4px}.side-r::-webkit-scrollbar-thumb{background:var(--bd);border-radius:4px}
+.mn{margin-left:var(--side-w);margin-right:var(--side-w);flex:1;padding:20px 24px;min-height:calc(100vh - var(--nav-h))}
+@media(max-width:1100px){
+  .side-r{transform:translateX(100%)}
+  .side-r.open{transform:translateX(0);box-shadow:var(--sh2)}
+  .mn{margin-right:0}
+}
+@media(max-width:900px){
+  .ham{display:flex;align-items:center;justify-content:center}
+  .side-l{transform:translateX(-100%)}
+  .side-l.open{transform:translateX(0);box-shadow:var(--sh2)}
+  .side-r{transform:translateX(100%)}
+  .side-r.open{transform:translateX(0);box-shadow:var(--sh2)}
+  .mn{margin-left:0;margin-right:0}
+  .nb .lbl{display:none}
+}
+@media(max-width:480px){.mn{padding:14px 12px}.nav{padding:0 10px;gap:8px}.nav-brand span{display:none}}
+
+/* RIGHT SIDEBAR (Chi) */
+.sr-header{padding:14px 16px 10px;border-bottom:1px solid var(--bd);position:sticky;top:0;background:var(--card);z-index:2}
+.sr-title{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:var(--dk);margin-bottom:2px}
+.sr-sub{font-size:.7rem;color:var(--tx4);font-style:italic}
+.sr-empty{padding:32px 16px;text-align:center;color:var(--tx4);font-size:.82rem;line-height:1.5}
+.sr-empty .big{font-size:2rem;margin-bottom:8px;opacity:.5}
+.sr-fam-tag{display:inline-flex;align-items:center;gap:5px;font-size:.68rem;font-weight:600;padding:3px 9px;border-radius:100px;margin-bottom:8px}
+/* Genus item in right sidebar */
+.gi{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--bd2);cursor:pointer;transition:all .12s}
+.gi:hover{background:var(--bg)}
+.gi.on{background:var(--grl2);border-left:3px solid var(--gr)}
+.gi-info{flex:1;min-width:0}
+.gi-name{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:600;font-style:italic;color:var(--dk)}
+.gi-detail{font-size:.7rem;color:var(--tx4);margin-top:1px}
+.gi-count{font-size:.68rem;font-weight:600;background:var(--bd2);color:var(--tx3);padding:2px 8px;border-radius:100px;flex-shrink:0}
+.gi.on .gi-count{background:var(--gr);color:#fff}
+.gi-species{padding:0 16px 6px 38px}
+.gi-sp{font-size:.72rem;color:var(--tx3);padding:3px 0;display:flex;align-items:center;gap:6px;cursor:pointer;transition:color .12s}
+.gi-sp:hover{color:var(--gr)}
+.gi-sp .sp-e{font-size:.85rem}
+.sr-toggle{display:none;position:fixed;bottom:72px;right:16px;width:44px;height:44px;border-radius:50%;background:var(--dk);color:#BAF187;border:none;font-size:1.1rem;box-shadow:var(--sh2);z-index:55;cursor:pointer}
+@media(max-width:1100px){.sr-toggle{display:flex;align-items:center;justify-content:center}}
+
+/* SIDEBAR ITEMS */
+.sh{font-size:.65rem;font-weight:600;color:rgba(255,255,255,.35);padding:14px 16px 4px;letter-spacing:.04em}
+.si{display:flex;align-items:center;gap:8px;padding:7px 16px;font-size:.82rem;color:rgba(255,255,255,.6);border:none;background:none;width:100%;text-align:left;cursor:pointer;transition:all .12s}
+.si:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85)}
+.si.on{background:rgba(255,255,255,.08);color:#fff}
+.si .c{margin-left:auto;font-size:.68rem;background:rgba(255,255,255,.1);padding:1px 7px;border-radius:100px;color:rgba(255,255,255,.4)}
+.si.on .c{background:rgba(255,255,255,.2);color:rgba(255,255,255,.8)}
+.sdiv{height:1px;background:rgba(255,255,255,.08);margin:8px 16px}
+/* Family item (two-line) */
+.fi{display:flex;align-items:center;gap:10px;padding:10px 16px;border:none;background:none;width:100%;text-align:left;cursor:pointer;transition:all .12s;border-left:3px solid transparent}
+.fi:hover{background:rgba(255,255,255,.06)}
+.fi.on{background:rgba(255,255,255,.08);border-left-color:#BAF187}
+.fi-info{flex:1;min-width:0}
+.fi-latin{font-family:'Playfair Display',serif;font-size:.82rem;font-weight:600;font-style:italic;color:rgba(255,255,255,.85);line-height:1.2}
+.fi.on .fi-latin{color:#BAF187}
+.fi-vn{font-size:.72rem;color:rgba(255,255,255,.4);margin-top:1px}
+.fi.on .fi-vn{color:rgba(255,255,255,.65)}
+.fi-cnt{font-size:.62rem;font-weight:600;background:rgba(255,255,255,.08);color:rgba(255,255,255,.3);padding:2px 7px;border-radius:100px;flex-shrink:0}
+.fi.on .fi-cnt{background:rgba(186,241,135,.15);color:rgba(186,241,135,.7)}
+
+/* FAMILY HEADER */
+.fam-hdr{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:24px 28px;margin-bottom:20px;position:relative;overflow:hidden}
+.fam-hdr::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:10px 0 0 10px}
+.fam-badge{display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-weight:600;color:#184A3A;background:#BAF187;padding:3px 10px;border-radius:100px;margin-bottom:10px}
+.fam-name{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--dk);margin-bottom:2px}
+.fam-latin{font-style:italic;font-size:.9rem;color:var(--tx3);margin-bottom:10px}
+.fam-desc{font-size:.88rem;color:var(--tx2);line-height:1.7;max-width:680px}
+.fam-stats{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap}
+.fam-stat{font-size:.78rem;color:var(--tx3)}
+.fam-stat b{color:var(--tx2);font-weight:600}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:32px}
+.cd{background:var(--card);border:1px solid var(--bd);border-radius:8px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative}
+.cd:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.cd-v{height:150px;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden}
+.cd-v::before{content:'';position:absolute;inset:0;opacity:.08;background:radial-gradient(circle at 30% 60%,currentColor,transparent 70%)}
+.cd-v.has-img{height:170px}
+.cd-v.has-img::before{display:none}
+.cd-img{width:100%;height:100%;object-fit:cover}
+.cd-b{padding:14px}
+.cd-fam{font-size:.65rem;font-weight:600;color:var(--gr);margin-bottom:3px}
+.cd-n{font-family:'Playfair Display',serif;font-size:1.02rem;font-weight:700;line-height:1.25;margin-bottom:1px}
+.cd-l{font-style:italic;font-size:.73rem;color:var(--tx4);margin-bottom:6px}
+.cd-d{font-size:.78rem;color:var(--tx3);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cd-f{padding:0 14px 12px;display:flex;gap:4px;flex-wrap:wrap}
+.tag{font-size:.64rem;padding:2px 7px;border-radius:100px;background:#C1D8BA;color:#184A3A;font-weight:500}
+.cd-acts{position:absolute;top:8px;right:8px;display:flex;gap:3px;z-index:2}
+.ca{width:28px;height:28px;border-radius:50%;background:var(--card);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:.78rem;cursor:pointer;transition:all .12s;opacity:.7}
+.ca:hover,.ca.bk{opacity:1;background:#184A3A;color:#BAF187;border-color:#184A3A}
+.ca.cp{opacity:1;background:var(--gr);color:#fff;border-color:var(--gr)}
+
+/* LIST */
+.lst{display:flex;flex-direction:column;gap:6px;margin-bottom:32px}
+.li{display:flex;align-items:center;gap:14px;padding:10px 14px;background:var(--card);border:1px solid var(--bd);border-radius:6px;cursor:pointer;transition:box-shadow .12s}
+.li:hover{box-shadow:var(--sh)}
+.li-e{font-size:1.6rem;width:40px;text-align:center;flex-shrink:0}
+.li-i{flex:1;min-width:0}
+.li-n{font-weight:600;font-size:.88rem}
+.li-l{font-style:italic;font-size:.73rem;color:var(--tx4)}
+.li-m{display:flex;gap:10px;font-size:.73rem;color:var(--tx3);margin-top:1px}
+
+/* MODAL */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;overflow-y:auto;padding:20px}
+.mo.open{display:flex;align-items:flex-start;justify-content:center;padding-top:32px}
+.det{background:var(--card);border-radius:10px;max-width:700px;width:100%;box-shadow:var(--sh2);position:relative;margin-bottom:32px}
+.det-hero{height:170px;display:flex;align-items:center;justify-content:center;font-size:5rem;border-radius:10px 10px 0 0;position:relative;overflow:hidden}
+.det-hero::before{content:'';position:absolute;inset:0;opacity:.1;background:radial-gradient(circle at 40% 50%,currentColor,transparent 70%)}
+.det-hero.has-img{background:#000!important}
+.det-hero.has-img::before{display:none}
+.det-hero-img{width:100%;height:100%;object-fit:cover;opacity:.9}
+.img-credit{position:absolute;bottom:0;left:0;right:0;padding:6px 14px;background:linear-gradient(transparent,rgba(0,0,0,.6));color:rgba(255,255,255,.7);font-size:.65rem;text-align:right}
+.img-credit a{color:rgba(255,255,255,.85);text-decoration:underline}
+/* Form image upload */
+.frm-upload-area{border:2px dashed var(--bd);border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
+.frm-upload-area:hover{border-color:var(--gr);background:var(--grl2)}
+.frm-upload-area.has-preview{padding:0;border-style:solid}
+.frm-upload-icon{font-size:1.8rem;margin-bottom:6px;opacity:.5}
+.frm-upload-text{font-size:.78rem;color:var(--tx3)}
+.frm-upload-hint{font-size:.68rem;color:var(--tx4);margin-top:4px}
+.frm-preview{width:100%;height:180px;object-fit:cover;display:block;border-radius:6px}
+.frm-preview-remove{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;border:none;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.det-x{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;background:var(--card);border:none;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--tx);z-index:3;box-shadow:var(--sh)}
+.det-c{padding:28px}
+.det-t{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--dk)}
+.det-sub{font-style:italic;color:var(--tx3);font-size:.88rem;margin-bottom:16px}
+.taxo{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:18px}
+.taxo span{font-size:.7rem;padding:3px 9px;border-radius:4px;background:var(--bg);color:var(--tx3);border:1px solid var(--bd2)}
+.taxo span b{color:var(--tx2);font-weight:600}
+.ig{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:20px}
+.ic{padding:12px;background:var(--bg);border-radius:6px}
+.ic-l{font-size:.68rem;color:var(--tx4);margin-bottom:2px}
+.ic-v{font-weight:600;font-size:.84rem}
+.sec{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:var(--dk);margin:20px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--bd2)}
+.pr{font-size:.88rem;color:var(--tx2);line-height:1.75}
+.det-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:16px}
+
+/* COMPARE */
+.cmpf{position:fixed;bottom:16px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dk);color:#fff;padding:10px 20px;border-radius:100px;box-shadow:var(--sh2);z-index:90;display:flex;align-items:center;gap:10px;transition:transform .3s;white-space:nowrap;font-size:.85rem}
+.cmpf.vis{transform:translateX(-50%) translateY(0)}
+.cmpf button{padding:6px 14px;border-radius:100px;font-size:.78rem;font-weight:600;border:none;cursor:pointer}
+.cg{background:#BAF187;color:#022539;font-weight:700}.cc{background:rgba(255,255,255,.15);color:rgba(255,255,255,.75)}
+.ctbl{width:100%;border-collapse:collapse;font-size:.82rem}
+.ctbl th,.ctbl td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--bd);vertical-align:top}
+.ctbl th{color:var(--tx4);font-weight:500;font-size:.73rem;width:100px}
+.cth{text-align:center;padding:16px 8px}
+.cth .e{font-size:2rem}.cth .n{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;margin-top:4px}
+.cwrap{overflow-x:auto}
+
+/* QUIZ */
+.qp{max-width:540px;margin:0 auto}
+.qprog{display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:.78rem;color:var(--tx3)}
+.qbar{flex:1;height:3px;background:var(--bd);border-radius:3px;overflow:hidden}.qfill{height:100%;background:var(--gr);transition:width .3s}
+.qc{background:var(--card);border:1px solid var(--bd);border-radius:8px;overflow:hidden}
+.qv{height:150px;display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative}
+.qv::before{content:'';position:absolute;inset:0;opacity:.08;background:radial-gradient(circle at 40% 50%,currentColor,transparent 70%)}
+.qbod{padding:20px}
+.qq{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;text-align:center;margin-bottom:4px}
+.qh{text-align:center;font-size:.78rem;color:var(--tx4);font-style:italic;margin-bottom:14px}
+.qos{display:flex;flex-direction:column;gap:7px}
+.qo{padding:10px 16px;border:2px solid var(--bd);border-radius:6px;background:var(--bg);font-size:.86rem;font-weight:500;color:var(--tx);text-align:left;cursor:pointer;transition:all .12s}
+.qo:hover:not(.d){border-color:var(--grl);background:var(--grl2)}
+.qo.ok{border-color:#184A3A;background:#BAF187;color:#022539}.qo.no{border-color:#c0392b;background:#fce8e6;color:#922b21}
+.qft{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-top:1px solid var(--bd)}
+.qsc{font-weight:600;color:var(--dk);font-size:.82rem}
+.qnx{padding:7px 18px;background:var(--dk);color:#fff;border:none;border-radius:6px;font-weight:600;font-size:.82rem;cursor:pointer}
+.qnx:disabled{opacity:.3;cursor:default}
+.qres{text-align:center;padding:36px 20px}.qres .big{font-size:3.5rem;margin-bottom:10px}
+.nores{text-align:center;padding:50px 20px;color:var(--tx3)}.nores .big{font-size:2.5rem;margin-bottom:8px}
+.back{padding:5px 12px;border:1px solid var(--bd);border-radius:6px;background:var(--card);font-size:.78rem;color:var(--tx3);cursor:pointer;margin-bottom:14px;display:inline-flex;align-items:center;gap:4px}
+.back:hover{border-color:var(--gr);color:var(--gr)}
+.stitle{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--dk);margin-bottom:16px}
+
+/* ADD/EDIT FORM */
+.add-btn{background:rgba(186,241,135,.15)!important;color:#BAF187!important;border-color:rgba(186,241,135,.3)!important}
+.frm-head{padding:24px 28px 16px;border-bottom:1px solid var(--bd)}
+.frm-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--dk)}
+.frm-sub{font-size:.78rem;color:var(--tx4);margin-top:2px}
+.frm-body{padding:20px 28px 28px;max-height:65vh;overflow-y:auto}
+.frm-section{font-size:.72rem;font-weight:600;color:var(--gr);margin:18px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--bd2)}
+.frm-section:first-child{margin-top:0}
+.frm-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.frm-row.full{grid-template-columns:1fr}
+.frm-row.tri{grid-template-columns:1fr 1fr 1fr}
+.frm-field{display:flex;flex-direction:column;gap:3px}
+.frm-label{font-size:.7rem;font-weight:600;color:var(--tx3)}
+.frm-label .req{color:#c0392b}
+.frm-input{padding:8px 12px;border:1px solid var(--bd);border-radius:6px;font-size:.85rem;font-family:inherit;background:var(--bg);color:var(--tx);outline:none;transition:border-color .15s}
+.frm-input:focus{border-color:var(--gr)}
+.frm-input::placeholder{color:var(--tx4)}
+textarea.frm-input{resize:vertical;min-height:60px;line-height:1.5}
+select.frm-input{cursor:pointer}
+.frm-foot{padding:16px 28px;border-top:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.frm-save{padding:9px 24px;background:var(--gr);color:#fff;border:none;border-radius:6px;font-weight:600;font-size:.85rem;cursor:pointer;transition:opacity .15s}
+.frm-save:hover{opacity:.85}
+.frm-cancel{padding:9px 18px;background:none;border:1px solid var(--bd);border-radius:6px;color:var(--tx3);font-size:.85rem;cursor:pointer}
+.frm-cancel:hover{border-color:var(--gr);color:var(--gr)}
+.frm-del{padding:9px 16px;background:none;border:1px solid #e74c3c44;border-radius:6px;color:#c0392b;font-size:.82rem;cursor:pointer;margin-right:auto}
+.frm-del:hover{background:#fdecea;border-color:#c0392b}
+/* ADMIN */
+.admin-btn{position:relative}
+.admin-btn.unlocked{background:rgba(186,241,135,.15)!important;color:#BAF187!important;border-color:rgba(186,241,135,.3)!important}
+.admin-pop{position:absolute;top:calc(100% + 8px);right:0;background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:18px;width:260px;box-shadow:var(--sh2);z-index:120;display:none}
+.admin-pop.show{display:block}
+.admin-pop-title{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:var(--dk);margin-bottom:4px}
+.admin-pop-sub{font-size:.72rem;color:var(--tx4);margin-bottom:12px}
+.admin-pop input{width:100%;padding:8px 12px;border:1px solid var(--bd);border-radius:6px;font-size:.85rem;font-family:inherit;background:var(--bg);color:var(--tx);outline:none;margin-bottom:8px}
+.admin-pop input:focus{border-color:var(--gr)}
+.admin-pop-btns{display:flex;gap:6px}
+.admin-pop-ok{flex:1;padding:7px;background:var(--gr);color:#fff;border:none;border-radius:6px;font-weight:600;font-size:.82rem;cursor:pointer}
+.admin-pop-cancel{padding:7px 12px;background:none;border:1px solid var(--bd);border-radius:6px;color:var(--tx3);font-size:.82rem;cursor:pointer}
+.admin-pop-err{font-size:.72rem;color:#c0392b;margin-bottom:6px;display:none}
+.admin-pop-err.show{display:block}
+body:not(.is-admin) .add-btn{display:none}
+body:not(.is-admin) .det-edit{display:none}
+.frm-msg{font-size:.78rem;padding:8px 12px;border-radius:6px;margin-bottom:12px}
+.frm-msg.ok{background:#d5f5e3;color:#1e8449}
+.frm-msg.err{background:#fdecea;color:#c0392b}
+.det-edit{padding:7px 14px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);font-size:.82rem;font-weight:500;color:var(--tx2);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s}
+.det-edit:hover{border-color:var(--gr);color:var(--gr)}
+.user-badge{display:inline-block;font-size:.6rem;font-weight:600;padding:2px 6px;border-radius:4px;background:rgba(186,241,135,.2);color:var(--gr);margin-left:6px;vertical-align:middle}
+@media(max-width:480px){.frm-row{grid-template-columns:1fr}.frm-row.tri{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav class="nav">
+<button class="ham" onclick="document.getElementById('sideL').classList.toggle('open')">☰</button>
+<div class="nav-brand"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3c-1.5 3-5 5-5 9a5 5 0 0010 0c0-4-3.5-6-5-9z"/><path d="M12 12v7"/><path d="M9 16c1.5-1 4.5-1 6 0"/></svg><span>Encyclopedia of Flowers<span class="nav-sub">Trang Web sưu tầm các loài hoa của Tr Anh</span></span></div>
+<div class="sbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="sinp" placeholder="Tìm tên hoa, họ, đặc điểm..." oninput="doSearch()"></div>
+<div class="nav-r">
+<button class="nb admin-btn" id="adminBtn" onclick="toggleAdminPop()">🔒 <span class="lbl" id="adminLbl">Admin</span>
+<div class="admin-pop" id="adminPop" onclick="event.stopPropagation()">
+  <div id="adminPopInner"></div>
+</div>
+</button>
+<button class="nb add-btn" onclick="openForm()">＋ <span class="lbl">Thêm hoa</span></button>
+<button class="nb" onclick="goQuiz()">🧠 <span class="lbl">Quiz</span></button>
+<button class="nb" onclick="goBk()">★ <span class="lbl" id="bkLbl">Lưu</span></button>
+<div class="vt"><button class="vb on" id="vg" onclick="setV('g')">▦</button><button class="vb" id="vl" onclick="setV('l')">☰</button></div>
+</div>
+</nav>
+<div class="wrap">
+<aside class="side-l" id="sideL"></aside>
+<main class="mn" id="mn"></main>
+<aside class="side-r" id="sideR"></aside>
+</div>
+<!-- ADD/EDIT FORM MODAL -->
+<div class="mo" id="formMo" onclick="if(event.target===this)closeForm()">
+<div class="det" style="max-width:640px" id="formCon"></div>
+</div>
+<button class="sr-toggle" id="srToggle" onclick="document.getElementById('sideR').classList.toggle('open')" title="Chi hoa">🌱</button>
+<div class="cmpf" id="cmpf"><span id="cmpn">0</span> <button class="cg" onclick="openCmp()">So sánh</button><button class="cc" onclick="clrCmp()">Xoá</button></div>
+<div class="mo" id="dmo" onclick="if(event.target===this)clD()"><div class="det" id="dcon"></div></div>
+<div class="mo" id="cmo" onclick="if(event.target===this)clC()"><div class="det" style="max-width:880px" id="ccon"></div></div>
+<script>
+// ============ FAMILIES ============
+const FAM=[
+{id:"asteraceae",name:"Họ Cúc",latin:"Asteraceae",aka:"Compositae",emoji:"🌼",color:"#E6A817",
+genera:"~1.900 chi",species:"~32.000 loài",
+desc:"Họ Cúc là họ thực vật có hoa lớn nhất hành tinh. Đặc trưng bởi cụm hoa hình đầu (capitulum) — mỗi 'bông hoa' thực ra là tập hợp hàng trăm hoa nhỏ. Phân bố toàn cầu, từ đồng cỏ đến sa mạc."},
+{id:"rosaceae",name:"Họ Hồng",latin:"Rosaceae",emoji:"🌹",color:"#D64B6A",
+genera:"~90 chi",species:"~3.000 loài",
+desc:"Họ Hồng gồm nhiều loài hoa đẹp nhất và cây ăn quả quan trọng nhất (táo, đào, mận, lê, dâu tây). Hoa thường có 5 cánh, nhiều nhị, đối xứng toả tròn."},
+{id:"orchidaceae",name:"Họ Lan",latin:"Orchidaceae",emoji:"🌺",color:"#9C27B0",
+genera:"~880 chi",species:"~28.000 loài",
+desc:"Họ Lan là một trong hai họ thực vật có hoa lớn nhất (cùng Asteraceae). Nổi tiếng với hình dạng hoa kỳ lạ, cơ chế thụ phấn phức tạp và quan hệ cộng sinh với nấm. Phần lớn là phong lan (epiphyte)."},
+{id:"solanaceae",name:"Họ Cà",latin:"Solanaceae",emoji:"🌙",color:"#5C6BC0",
+genera:"~100 chi",species:"~2.700 loài",
+desc:"Họ Cà chứa nhiều loài kinh tế quan trọng (cà chua, khoai tây, ớt) lẫn loài cực độc (cà độc dược, belladonna). Hoa thường hình phễu hoặc hình sao, 5 cánh dính nhau."},
+{id:"fabaceae",name:"Họ Đậu",latin:"Fabaceae",aka:"Leguminosae",emoji:"🦋",color:"#FF7043",
+genera:"~750 chi",species:"~20.000 loài",
+desc:"Họ Đậu là họ lớn thứ 3 trong thực vật có hoa. Đặc trưng bởi quả dạng đậu (legume) và khả năng cố định đạm nhờ vi khuẩn cộng sinh Rhizobium ở rễ. Hoa dạng bướm đặc trưng."},
+{id:"liliaceae",name:"Họ Huệ",latin:"Liliaceae",emoji:"🌷",color:"#E91E63",
+genera:"~16 chi",species:"~600 loài",
+desc:"Họ Huệ (nghĩa hẹp hiện đại) gồm các loài hoa từ củ với hoa 6 cánh xếp thành 2 vòng, 6 nhị. Tulip, lily, và nhiều loài hoa cắt cành quan trọng thuộc họ này."},
+{id:"lamiaceae",name:"Họ Hoa Môi",latin:"Lamiaceae",aka:"Labiatae",emoji:"💜",color:"#7B1FA2",
+genera:"~236 chi",species:"~7.200 loài",
+desc:"Họ Hoa Môi đặc trưng bởi thân vuông, lá mọc đối, hoa dạng môi (2 môi trên-dưới) và chứa nhiều tinh dầu thơm. Gồm hầu hết các loài thảo mộc gia vị và hương liệu nổi tiếng."},
+{id:"malvaceae",name:"Họ Cẩm Quỳ",latin:"Malvaceae",emoji:"🌺",color:"#E53935",
+genera:"~244 chi",species:"~4.300 loài",
+desc:"Họ Cẩm Quỳ gồm nhiều loài hoa nhiệt đới rực rỡ. Đặc trưng: hoa lớn, 5 cánh, cột nhị hợp (staminal column) — nhị dính thành ống bao quanh nhuỵ. Bao gồm cả cây bông vải."},
+{id:"apocynaceae",name:"Họ Trúc Đào",latin:"Apocynaceae",emoji:"🤍",color:"#78909C",
+genera:"~400 chi",species:"~5.000 loài",
+desc:"Họ Trúc Đào nổi tiếng với hoa thơm đẹp nhưng nhiều loài cực độc. Đặc trưng bởi nhựa trắng (latex) và hoa 5 cánh xoắn. Bao gồm cả nhóm cây mọng nước cũ (Asclepiadaceae)."},
+{id:"amaryllidaceae",name:"Họ Thuỷ Tiên",latin:"Amaryllidaceae",emoji:"💛",color:"#FDD835",
+genera:"~73 chi",species:"~1.600 loài",
+desc:"Họ Thuỷ Tiên gồm các loài hoa từ củ (bulb) với hoa xếp thành tán (umbel) trên cuống không lá. Bao gồm thuỷ tiên, trinh nữ hoàng cung và cả hành tỏi (Allium)."},
+{id:"hydrangeaceae",name:"Họ Cẩm Tú Cầu",latin:"Hydrangeaceae",emoji:"💠",color:"#42A5F5",
+genera:"~17 chi",species:"~260 loài",
+desc:"Họ nhỏ nhưng nổi bật với Hydrangea — loài hoa đổi màu theo pH đất. Đặc trưng: cụm hoa lớn, hoa ở rìa thường bất thụ với đài lớn tạo hiệu ứng thị giác."},
+{id:"magnoliaceae",name:"Họ Ngọc Lan",latin:"Magnoliaceae",emoji:"🤍",color:"#A1887F",
+genera:"~18 chi",species:"~300 loài",
+desc:"Họ Ngọc Lan là một trong những họ thực vật có hoa cổ xưa nhất — hoá thạch 95 triệu năm. Hoa lớn, nhiều cánh xếp xoắn ốc, thơm. Được coi là 'sống hoá thạch' của thế giới thực vật."},
+{id:"ranunculaceae",name:"Họ Mao Lương",latin:"Ranunculaceae",emoji:"✨",color:"#66BB6A",
+genera:"~43 chi",species:"~2.300 loài",
+desc:"Họ Mao Lương gồm nhiều loài hoa cắt cành cao cấp. Đặc trưng: lá xẻ thuỳ, hoa đa dạng hình dạng, nhiều nhị và nhuỵ rời. Phần lớn loài có độc tính."},
+{id:"oleaceae",name:"Họ Nhài",latin:"Oleaceae",emoji:"⚪",color:"#4DB6AC",
+genera:"~25 chi",species:"~600 loài",
+desc:"Họ Nhài gồm các loài nổi tiếng về hương thơm (nhài, tử đinh hương) và kinh tế (ô-liu). Hoa thường 4 cánh dính, 2 nhị. Nhiều loài là cây cảnh quan trọng."},
+{id:"caryophyllaceae",name:"Họ Cẩm Chướng",latin:"Caryophyllaceae",emoji:"💮",color:"#EC407A",
+genera:"~86 chi",species:"~2.200 loài",
+desc:"Họ Cẩm Chướng đặc trưng bởi thân phình ở đốt, lá mọc đối, hoa 5 cánh thường xẻ. Gồm cẩm chướng, baby's breath và nhiều loài hoa cắt cành phổ biến."},
+{id:"iridaceae",name:"Họ Diên Vĩ",latin:"Iridaceae",emoji:"⚜️",color:"#5E35B1",
+genera:"~65 chi",species:"~2.200 loài",
+desc:"Họ Diên Vĩ gồm các loài hoa từ củ/thân rễ với hoa 3 cánh đài + 3 cánh tràng thường rất sặc sỡ. Iris, gladiolus, crocus và nghệ tây (saffron) đều thuộc họ này."},
+{id:"nelumbonaceae",name:"Họ Sen",latin:"Nelumbonaceae",emoji:"🪷",color:"#F48FB1",
+genera:"1 chi",species:"2 loài",
+desc:"Họ Sen chỉ có 1 chi (Nelumbo) với 2 loài — sen Á (N. nucifera) và sen Mỹ (N. lutea). Dù nhỏ, họ này có ý nghĩa văn hoá khổng lồ trong Phật giáo và Hindu giáo. Lá sen có hiệu ứng siêu kỵ nước (lotus effect)."},
+{id:"convolvulaceae",name:"Họ Bìm Bìm",latin:"Convolvulaceae",emoji:"🌀",color:"#26A69A",
+genera:"~60 chi",species:"~1.900 loài",
+desc:"Họ Bìm Bìm gồm các loài dây leo với hoa hình phễu đặc trưng. Morning Glory nở rạng sáng và tàn trước trưa. Họ này cũng bao gồm khoai lang — cây lương thực quan trọng toàn cầu."},
+{id:"nyctaginaceae",name:"Họ Hoa Giấy",latin:"Nyctaginaceae",emoji:"🌸",color:"#D81B60",
+genera:"~33 chi",species:"~400 loài",
+desc:"Họ Hoa Giấy nổi bật nhất với Bougainvillea — nhưng phần sặc sỡ không phải cánh hoa mà là lá bắc (bract). Tên họ từ 'nyctis' (đêm) vì nhiều loài nở hoa ban đêm."},
+{id:"papaveraceae",name:"Họ Anh Túc",latin:"Papaveraceae",emoji:"🔴",color:"#FF5722",
+genera:"~42 chi",species:"~800 loài",
+desc:"Họ Anh Túc gồm các loài hoa cánh mỏng như giấy lụa, thường 4 cánh, nhiều nhị. Papaver somniferum là nguồn thuốc phiện và morphine. Poppy đỏ là biểu tượng tưởng niệm chiến tranh ở nhiều nước."}
+];
+
+// ============ SPECIES ============
+const SP=[
+// ASTERACEAE
+{id:1,f:"asteraceae",name:"Hoa Cúc",en:"Chrysanthemum",latin:"Chrysanthemum morifolium",genus:"Chrysanthemum",emoji:"🏵️",
+grad:"linear-gradient(135deg,#FFF8E1,#FFCC80)",colors:["Vàng","Trắng","Tím","Hồng","Đỏ"],
+season:"Mùa thu",origin:"Đông Á",height:"30–120 cm",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Màu mỡ, thoát nước",
+meaning:"Trường thọ, cao quý, lòng trung thành",
+desc:"Cúc là một trong tứ quý (mai, lan, cúc, trúc) — biểu tượng mùa thu Á Đông. Hoàng gia Nhật dùng cúc 16 cánh làm quốc huy. Trà cúc đã được dùng trong y học Trung Hoa hơn 2.500 năm.",
+care:"Bấm ngọn khi cây cao 15 cm. Ưa nắng, tưới đều, không úng. Bón phân kali để hoa to và bền.",
+fact:"Lễ hội cúc Nhật Bản có truyền thống mặc kimono cho búp bê bằng hoa cúc — mỗi búp bê dùng hàng nghìn bông.",
+tags:["Tứ quý","Trà thảo mộc","Quốc huy Nhật"]},
+
+{id:2,f:"asteraceae",name:"Hoa Hướng Dương",en:"Sunflower",latin:"Helianthus annuus",genus:"Helianthus",emoji:"🌻",
+grad:"linear-gradient(135deg,#FFF9C4,#FFD54F)",colors:["Vàng","Cam"],
+season:"Mùa hè",origin:"Bắc Mỹ",height:"1–3 m",life:"Một năm",sun:"Đầy đủ",water:"Trung bình",soil:"Nhiều loại",
+meaning:"Trung thành, ngưỡng mộ, hạnh phúc",
+desc:"Mỗi bông hướng dương là tập hợp 1.000–2.000 hoa nhỏ xếp theo dãy Fibonacci. Cây non có tính hướng nhật (quay theo mặt trời), cây trưởng thành cố định hướng đông để ấm sớm hơn, thu hút ong thụ phấn.",
+care:"Gieo hạt trực tiếp ngoài trời sau sương giá cuối. Cần 6–8 giờ nắng. Tưới sâu mỗi tuần.",
+fact:"Ukraine trồng hướng dương nhiều nhất thế giới. Hạt hướng dương từng được gửi lên trạm vũ trụ ISS để nghiên cứu tăng trưởng trong vũ trụ.",
+tags:["Fibonacci","Dầu ăn","Hướng nhật"]},
+
+{id:3,f:"asteraceae",name:"Hoa Đồng Tiền",en:"Gerbera Daisy",latin:"Gerbera jamesonii",genus:"Gerbera",emoji:"🌼",
+grad:"linear-gradient(135deg,#FFF3E0,#FF8A65)",colors:["Đỏ","Vàng","Cam","Hồng","Trắng"],
+season:"Quanh năm",origin:"Nam Phi",height:"20–40 cm",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp, thoát nước",
+meaning:"Niềm vui, hồn nhiên, vẻ đẹp trong sáng",
+desc:"Gerbera nằm top 5 hoa cắt cành bán chạy nhất thế giới. Nằm trong nhóm cây lọc không khí tốt nhất theo NASA — hấp thụ benzene và trichloroethylene hiệu quả.",
+care:"Ưa nắng, đất thoát nước. Tránh tưới lên lá (dễ nấm). Cắt hoa tàn để kích thích ra hoa liên tục.",
+fact:"Gerbera được đặt theo tên nhà tự nhiên học người Đức Traugott Gerber — người chưa bao giờ thấy loài hoa này.",
+tags:["Hoa cắt cành","NASA","Rực rỡ"]},
+
+{id:4,f:"asteraceae",name:"Cúc Vạn Thọ",en:"Marigold",latin:"Tagetes erecta",genus:"Tagetes",emoji:"🟠",
+grad:"linear-gradient(135deg,#FFF8E1,#FF8F00)",colors:["Vàng","Cam","Đỏ cam"],
+season:"Quanh năm",origin:"Mexico",height:"20–90 cm",life:"Một năm",sun:"Đầy đủ",water:"Ít–TB",soil:"Nhiều loại",
+meaning:"Sự nhiệt thành, lòng tưởng nhớ",
+desc:"Vạn thọ là hoa truyền thống trong Lễ hội Người Chết (Día de los Muertos) của Mexico — hương thơm dẫn lối linh hồn. Ở Việt Nam, vạn thọ là hoa Tết phổ biến mang ý nghĩa trường thọ.",
+care:"Cực dễ trồng. Chịu nắng nóng, ít sâu bệnh. Mùi hoa đuổi côn trùng — trồng xen bảo vệ rau.",
+fact:"Lutein trong cánh vạn thọ được chiết xuất cho thực phẩm bổ sung mắt. Ngành công nghiệp lutein toàn cầu phụ thuộc chủ yếu vào Tagetes.",
+tags:["Tết","Día de los Muertos","Đuổi sâu"]},
+
+{id:5,f:"asteraceae",name:"Hoa Thược Dược",en:"Dahlia",latin:"Dahlia pinnata",genus:"Dahlia",emoji:"🌸",
+grad:"linear-gradient(135deg,#FCE4EC,#E91E63)",colors:["Đỏ","Hồng","Trắng","Vàng","Tím","Cam"],
+season:"Hè – Thu",origin:"Mexico",height:"30–150 cm",life:"Lâu năm (củ)",sun:"Đầy đủ",water:"Trung bình",soil:"Giàu mùn, thoát nước",
+meaning:"Vẻ đẹp đa dạng, sự cao quý, lòng biết ơn",
+desc:"Dahlia là quốc hoa Mexico với hơn 42 loài hoang dại và hàng nghìn giống lai tạo. Hoa có đường kính từ 5 cm đến hơn 30 cm (dahlia 'dinner plate'). Người Aztec dùng thân rỗng làm ống dẫn nước.",
+care:"Trồng củ sau sương giá cuối. Cắm cọc cho giống cao. Ngắt nụ phụ để hoa chính to hơn.",
+fact:"Dahlia đầu tiên đến châu Âu năm 1789 như cây lương thực (củ ăn được) — nhưng thất bại vì vị dở; may thay, hoa quá đẹp nên được giữ lại làm cảnh.",
+tags:["Quốc hoa Mexico","42 loài","Dinner plate"]},
+
+// ROSACEAE
+{id:6,f:"rosaceae",name:"Hoa Hồng",en:"Rose",latin:"Rosa spp.",genus:"Rosa",emoji:"🌹",
+grad:"linear-gradient(135deg,#FFE4E9,#FBB1BD)",colors:["Đỏ","Hồng","Trắng","Vàng","Cam"],
+season:"Quanh năm",origin:"Châu Á",height:"30–180 cm",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp, thoát nước",
+meaning:"Tình yêu, lãng mạn, vẻ đẹp vĩnh cửu",
+desc:"Nữ hoàng các loài hoa với hơn 30.000 giống. Tinh dầu hoa hồng là nguyên liệu đắt giá nhất ngành nước hoa — cần 10.000 bông để chưng cất 5ml. Thung lũng Hoa Hồng ở Bulgaria sản xuất 85% tinh dầu hồng thế giới.",
+care:"Đất thoát nước, pH 6–6.5. Tưới sáng sớm, tránh ướt lá. Cắt tỉa cuối đông, bón phân hàng tháng.",
+fact:"Hoa hồng đỏ 1.000 tuổi ở nhà thờ Hildesheim, Đức, sống sót cả trận bom Thế chiến II — mọc lại từ rễ trong đống đổ nát.",
+tags:["30.000 giống","Tinh dầu","Bulgaria"]},
+
+{id:7,f:"rosaceae",name:"Hoa Anh Đào",en:"Cherry Blossom",latin:"Prunus serrulata",genus:"Prunus",emoji:"🌸",
+grad:"linear-gradient(135deg,#FFF0F5,#FFB6D3)",colors:["Hồng nhạt","Trắng"],
+season:"Đầu xuân",origin:"Nhật Bản",height:"4–12 m",life:"30–50 năm",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp",
+meaning:"Vẻ đẹp phù du, sự vô thường",
+desc:"Sakura là quốc hoa Nhật Bản — mùa hoa chỉ 2 tuần, thể hiện triết lý 'mono no aware'. Mỗi năm, cơ quan khí tượng Nhật công bố bản đồ 'sakura zensen' (mặt trận hoa anh đào) di chuyển từ nam ra bắc.",
+care:"Cần mùa đông lạnh (vernalization). Đất thoáng, tránh cắt tỉa mạnh. Phòng bệnh nấm lá.",
+fact:"Năm 2008, hạt anh đào được gửi lên ISS 8 tháng. Khi trồng lại, cây nở hoa sớm hơn 6 năm so với bình thường — vẫn chưa có lời giải thích.",
+tags:["Nhật Bản","Hanami","2 tuần"]},
+
+{id:8,f:"rosaceae",name:"Hoa Đào",en:"Peach Blossom",latin:"Prunus persica",genus:"Prunus",emoji:"🌺",
+grad:"linear-gradient(135deg,#FFEEF2,#FFBCC9)",colors:["Hồng","Đỏ nhạt","Trắng"],
+season:"Cuối đông – đầu xuân",origin:"Trung Quốc",height:"3–8 m",life:"15–25 năm",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp",
+meaning:"May mắn, thịnh vượng, khởi đầu mới",
+desc:"Hoa đào là biểu tượng Tết miền Bắc Việt Nam. Nhật Tân (Hà Nội) là 'thủ phủ' đào Tết nổi tiếng. Trong văn hoá Trung Hoa, đào tượng trưng cho trường thọ — quả đào tiên trong thần thoại ban sự bất tử.",
+care:"Cắt tỉa tạo dáng sau mùa hoa. Lặt lá trước Tết 20–25 ngày. Bón phân hữu cơ sau thu hoạch.",
+fact:"'Đào Nguyên' (vườn đào thiên đàng) là biểu tượng utopia trong văn học Trung Hoa — bài thơ của Đào Tiềm ảnh hưởng văn hoá Á Đông suốt 1.600 năm.",
+tags:["Tết miền Bắc","Nhật Tân","Đào Nguyên"]},
+
+{id:9,f:"rosaceae",name:"Hoa Mận",en:"Plum Blossom",latin:"Prunus mume",genus:"Prunus",emoji:"⚪",
+grad:"linear-gradient(135deg,#FFF,#E8D5E0)",colors:["Trắng","Hồng nhạt"],
+season:"Cuối đông",origin:"Trung Quốc",height:"4–10 m",life:"30+ năm",sun:"Đầy đủ",water:"Trung bình",soil:"Nhiều loại đất",
+meaning:"Kiên cường, thanh cao, tiết tháo",
+desc:"Mai (mận) nở sớm nhất trong tứ quý — giữa mùa đông lạnh giá, khi mọi cây khác trụi lá. Chính vì vậy, mai tượng trưng cho khí tiết quân tử không khuất phục trước nghịch cảnh. Mai là quốc hoa Trung Hoa (Đài Loan).",
+care:"Chịu lạnh tốt, đất nhiều loại. Cắt tỉa sau mùa hoa. Quả mận xanh dùng ngâm rượu (umeshu Nhật).",
+fact:"Ô mai Việt Nam chính là quả Prunus mume ngâm muối — 'ô' nghĩa là đen, 'mai' là mận. Món ăn vặt quốc dân gắn liền với loài hoa quý tộc.",
+tags:["Tứ quý","Quốc hoa TW","Ô mai"]},
+
+// ORCHIDACEAE
+{id:10,f:"orchidaceae",name:"Lan Hồ Điệp",en:"Moth Orchid",latin:"Phalaenopsis spp.",genus:"Phalaenopsis",emoji:"🦋",
+grad:"linear-gradient(135deg,#F3E5F5,#E1BEE7)",colors:["Trắng","Hồng","Tím","Vàng"],
+season:"Quanh năm",origin:"ĐNA & Đông Á",height:"20–60 cm",life:"Lâu năm",sun:"Gián tiếp",water:"Ít",soil:"Vỏ thông, than",
+meaning:"Thanh lịch, tinh tế, tình yêu thuần khiết",
+desc:"Phalaenopsis là lan phổ biến nhất thế giới — chiếm 75% thị trường lan toàn cầu. Tên gọi từ tiếng Hy Lạp 'phalaina' (bướm đêm) vì hoa giống cánh bướm. Có thể nở liên tục 2–3 tháng.",
+care:"Ánh sáng gián tiếp, tưới khi giá thể khô (7–10 ngày). Bón phân loãng 2 tuần/lần. Nhiệt 18–28°C.",
+fact:"Phalaenopsis không mọc trong đất mà bám trên thân cây (epiphyte). Rễ có lớp velamen hấp thụ ẩm từ không khí.",
+tags:["75% thị trường","Epiphyte","Dễ trồng"]},
+
+{id:11,f:"orchidaceae",name:"Lan Vanda",en:"Vanda Orchid",latin:"Vanda spp.",genus:"Vanda",emoji:"💎",
+grad:"linear-gradient(135deg,#E8EAF6,#7C4DFF)",colors:["Xanh","Tím","Hồng","Vàng"],
+season:"Quanh năm",origin:"ĐNA & Nam Á",height:"30–100 cm",life:"Lâu năm",sun:"Sáng nhiều",water:"Hàng ngày",soil:"Rễ trần hoặc giá thể thô",
+meaning:"Sự quý phái, vẻ đẹp hiếm có",
+desc:"Vanda nổi tiếng với màu xanh tím hiếm có trong thế giới lan. Rễ Vanda to, trần, treo lơ lửng trong không khí — cấu trúc hoàn toàn thích nghi với đời sống phong lan nhiệt đới.",
+care:"Cần nắng sáng (nhưng tránh nắng giữa trưa). Tưới phun mỗi ngày. Rễ trần không cần giá thể.",
+fact:"Vanda Miss Joaquim là quốc hoa Singapore — giống lan lai đầu tiên được tạo ra ở Đông Nam Á (1893) bởi Agnes Joaquim.",
+tags:["Xanh tím","Quốc hoa SG","Rễ trần"]},
+
+{id:12,f:"orchidaceae",name:"Lan Dendrobium",en:"Dendrobium Orchid",latin:"Dendrobium spp.",genus:"Dendrobium",emoji:"🌿",
+grad:"linear-gradient(135deg,#F3E5F5,#CE93D8)",colors:["Trắng","Tím","Hồng","Vàng"],
+season:"Xuân – Hè",origin:"Châu Á – Thái Bình Dương",height:"15–120 cm",life:"Lâu năm",sun:"Sáng",water:"TB",soil:"Vỏ thông, than, xơ dừa",
+meaning:"Sức mạnh, vẻ đẹp tinh thần",
+desc:"Dendrobium là chi lan lớn nhất với hơn 1.800 loài — từ Himalaya đến Australia. Tên từ tiếng Hy Lạp 'dendron' (cây) + 'bios' (sống), mô tả lối sống phong lan bám cây. Nhiều loài dùng trong dược liệu.",
+care:"Tuỳ nhóm — nobile cần mùa khô lạnh, phalaenopsis thích ấm quanh năm. Tránh úng rễ.",
+fact:"Dendrobium nobile (thạch hộc) là một trong 50 dược liệu quý nhất Trung Hoa — được mệnh danh 'tiên thảo' (cỏ tiên).",
+tags:["1.800 loài","Tiên thảo","Đa dạng"]},
+
+{id:13,f:"orchidaceae",name:"Lan Vanilla",en:"Vanilla Orchid",latin:"Vanilla planifolia",genus:"Vanilla",emoji:"🍦",
+grad:"linear-gradient(135deg,#FFF8E1,#FFE082)",colors:["Xanh nhạt","Vàng nhạt"],
+season:"Mùa khô",origin:"Mexico",height:"Dây leo >30 m",life:"Lâu năm",sun:"Bán bóng",water:"Nhiều",soil:"Mùn, thoát nước",
+meaning:"Sự tinh tế, hương vị cuộc sống",
+desc:"Vanilla là loài lan kinh tế nhất — quả (trái) cho ra hương liệu vanilla phổ biến nhất thế giới. Đây là gia vị đắt thứ 2 sau saffron vì quy trình thụ phấn tay và chế biến phức tạp kéo dài nhiều tháng.",
+care:"Dây leo cần giàn. Thích ẩm nóng. Tự thụ phấn bằng tay vì ong Melipona (thụ phấn tự nhiên) chỉ có ở Mexico.",
+fact:"Trước năm 1841, vanilla chỉ có ở Mexico vì thiếu ong thụ phấn. Edmond Albius, một cậu bé nô lệ 12 tuổi ở Réunion, phát minh kỹ thuật thụ phấn tay mà toàn thế giới dùng đến ngày nay.",
+tags:["Gia vị đắt","Thụ phấn tay","Mexico"]},
+
+// SOLANACEAE
+{id:14,f:"solanaceae",name:"Hoa Dạ Yến Thảo",en:"Petunia",latin:"Petunia × hybrida",genus:"Petunia",emoji:"💜",
+grad:"linear-gradient(135deg,#F3E5F5,#AB47BC)",colors:["Tím","Hồng","Đỏ","Trắng","Xanh"],
+season:"Xuân – Thu",origin:"Nam Mỹ",height:"15–45 cm",life:"Một năm",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp",
+meaning:"Niềm an ủi, sự hiện diện nhẹ nhàng",
+desc:"Petunia là hoa trồng ban công phổ biến nhất thế giới nhờ dễ trồng, nhiều màu và nở rất bền. Tên gọi từ 'petun' — tiếng Tupi (thổ dân Brazil) chỉ thuốc lá, vì Petunia là họ hàng gần của cây thuốc lá.",
+care:"Nắng ít nhất 6 giờ. Tưới khi đất khô. Bón phân hàng tuần. Ngắt hoa tàn để nở liên tục.",
+fact:"Petunia là mô hình nghiên cứu di truyền quan trọng. Gen tạo màu tím của Petunia giúp các nhà khoa học hiểu cơ chế tắt gen (gene silencing) — phát hiện đoạt Nobel 2006.",
+tags:["Ban công","Nobel 2006","Họ hàng thuốc lá"]},
+
+{id:15,f:"solanaceae",name:"Cà Độc Dược",en:"Thorn Apple",latin:"Datura stramonium",genus:"Datura",emoji:"🌙",
+grad:"linear-gradient(135deg,#E8EAF6,#5C6BC0)",colors:["Trắng","Tím nhạt"],
+season:"Hè – Thu",origin:"Trung Mỹ",height:"50–150 cm",life:"Một năm",sun:"Đầy đủ",water:"Ít",soil:"Nhiều loại",
+meaning:"Bí ẩn, nguy hiểm, ảo giác",
+desc:"Cà độc dược mang vẻ đẹp quyến rũ nhưng cực kỳ nguy hiểm — mọi bộ phận đều chứa alkaloid gây ảo giác, mê sảng và tử vong. Được gọi là 'Devil's Trumpet' (kèn quỷ), loài này gắn liền với phù thuỷ và y học cổ xưa.",
+care:"Mọc hoang, không khuyến khích trồng. Cảnh báo trẻ em không tiếp xúc.",
+fact:"Tên 'Jimson weed' (một tên gọi khác) bắt nguồn từ sự kiện 1676 ở Jamestown, Virginia — lính Anh ăn nhầm lá Datura trong salad và mê sảng tập thể 11 ngày.",
+tags:["Cực độc","Kèn quỷ","Alkaloid"]},
+
+{id:16,f:"solanaceae",name:"Hoa Lồng Đèn",en:"Chinese Lantern",latin:"Physalis alkekengi",genus:"Physalis",emoji:"🏮",
+grad:"linear-gradient(135deg,#FFF3E0,#FF7043)",colors:["Cam đỏ (đài quả)"],
+season:"Thu",origin:"Á – Âu",height:"40–80 cm",life:"Lâu năm",sun:"Bán bóng–đầy đủ",water:"Trung bình",soil:"Tơi xốp",
+meaning:"Sự bảo vệ, bí ẩn được hé lộ",
+desc:"Đặc trưng nhất của Physalis alkekengi không phải hoa mà là đài quả — phình thành 'lồng đèn' giấy cam đỏ bao quanh quả mọng. Khi khô, đài trở nên trong suốt như ren, để lộ quả đỏ bên trong.",
+care:"Mọc mạnh, lan bằng thân ngầm. Cần kiểm soát. Thích bán bóng, đất ẩm.",
+fact:"Ở Nhật, lễ hội Hōzuki-ichi (chợ hoa lồng đèn) tại chùa Senso-ji, Tokyo, tổ chức hàng năm từ thế kỷ 16. Người Nhật tin quả Physalis xua đuổi tà ma.",
+tags:["Lồng đèn","Senso-ji","Đài phồng"]},
+
+// FABACEAE
+{id:17,f:"fabaceae",name:"Phượng Vĩ",en:"Flame Tree",latin:"Delonix regia",genus:"Delonix",emoji:"🔥",
+grad:"linear-gradient(135deg,#FFAB91,#FF5722)",colors:["Đỏ cam"],
+season:"Mùa hè",origin:"Madagascar",height:"8–15 m",life:"50+ năm",sun:"Đầy đủ",water:"Trung bình",soil:"Nhiều loại",
+meaning:"Tuổi trẻ, chia ly, kỷ niệm học trò",
+desc:"Phượng vĩ gắn liền với tuổi học trò Việt Nam — 'Flame of the Forest' nở đỏ rực sân trường khi mùa hè đến. Có nguồn gốc Madagascar nhưng hầu như tuyệt chủng ngoài tự nhiên ở đó.",
+care:"Cây lớn, cần không gian rộng. Chịu nắng nóng, ít sâu bệnh. Rễ mạnh — tránh trồng gần công trình.",
+fact:"Quả phượng vĩ dài đến 60 cm — trẻ con Việt Nam hay gọi là 'cá mè' và dùng làm kiếm đánh nhau.",
+tags:["Tuổi thơ","Madagascar","Sân trường"]},
+
+{id:18,f:"fabaceae",name:"Muồng Hoàng Yến",en:"Golden Shower",latin:"Cassia fistula",genus:"Cassia",emoji:"💛",
+grad:"linear-gradient(135deg,#FFFDE7,#FFD600)",colors:["Vàng"],
+season:"Hè",origin:"Nam Á",height:"10–20 m",life:"50+ năm",sun:"Đầy đủ",water:"Trung bình",soil:"Nhiều loại",
+meaning:"Hạnh phúc, sự rạng rỡ",
+desc:"Muồng hoàng yến (cây Golden Shower) là quốc hoa Thái Lan (ราชพฤกษ์). Khi nở, cây trút xuống thác hoa vàng dài 30–60 cm trông tuyệt đẹp. Quả dài hình trụ chứa cơm quả đen dùng làm thuốc nhuận tràng.",
+care:"Cây lớn, dễ trồng. Chịu nắng hạn. Lá rụng trước khi hoa nở, tạo hiệu ứng vàng rực.",
+fact:"Trong y học Ayurveda, vỏ và quả Cassia fistula được dùng 3.000 năm để chữa bệnh tiêu hoá.",
+tags:["Quốc hoa Thái","Golden Shower","Ayurveda"]},
+
+{id:19,f:"fabaceae",name:"Đậu Biếc",en:"Butterfly Pea",latin:"Clitoria ternatea",genus:"Clitoria",emoji:"🔵",
+grad:"linear-gradient(135deg,#E3F2FD,#1565C0)",colors:["Xanh biếc","Tím"],
+season:"Quanh năm (nhiệt đới)",origin:"ĐNA",height:"Dây leo 3–5 m",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Nhiều loại",
+meaning:"Trí tuệ, sự thanh tao",
+desc:"Hoa đậu biếc có màu xanh biếc tự nhiên ấn tượng nhất thế giới thực vật. Anthocyanin trong hoa thay đổi màu theo pH — xanh trong nước, tím khi thêm chanh. Đặc tính này tạo nên trào lưu đồ uống 'đổi màu' toàn cầu.",
+care:"Dây leo, cần giàn. Cực dễ trồng ở vùng nhiệt đới. Cố định đạm cho đất (họ Đậu).",
+fact:"Ở Malaysia, hoa đậu biếc nhuộm màu cho cơm nếp 'nasi kerabu' — món ăn truyền thống với cơm màu xanh biếc tuyệt đẹp.",
+tags:["Đổi màu pH","Anthocyanin","Nasi kerabu"]},
+
+// LILIACEAE
+{id:20,f:"liliaceae",name:"Hoa Ly",en:"Lily",latin:"Lilium spp.",genus:"Lilium",emoji:"🪻",
+grad:"linear-gradient(135deg,#FFF3E0,#FFAB91)",colors:["Trắng","Hồng","Vàng","Cam","Đỏ"],
+season:"Hè",origin:"Bắc bán cầu",height:"60–180 cm",life:"Lâu năm (củ)",sun:"Đầy đủ",water:"Trung bình",soil:"Giàu mùn, thoát nước",
+meaning:"Sự thuần khiết, trang trọng, lòng kính trọng",
+desc:"Hoa ly nổi bật với dáng thanh lịch và hương thơm nồng nàn — loài hoa không thể thiếu trong dịp Tết Việt Nam. Trắng lily tượng trưng cho trinh trắng trong Công giáo — gắn với Đức Mẹ Maria.",
+care:"Trồng củ sâu 15 cm, đất giàu mùn. Giữ ẩm nhưng tránh úng. Cắt hoa tàn, giữ lá để nuôi củ.",
+fact:"Hoa ly RẤT ĐỘC với mèo — chỉ cần liếm phấn hoa, uống nước cắm hoa, thậm chí hít phấn cũng có thể gây suy thận cấp tử vong.",
+tags:["Lễ Tết","Độc với mèo","Hương nồng"]},
+
+{id:21,f:"liliaceae",name:"Hoa Tulip",en:"Tulip",latin:"Tulipa spp.",genus:"Tulipa",emoji:"🌷",
+grad:"linear-gradient(135deg,#FFEBEE,#EF5350)",colors:["Đỏ","Vàng","Tím","Trắng","Cam","Hồng"],
+season:"Mùa xuân",origin:"Trung Á",height:"15–60 cm",life:"Lâu năm (củ)",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp, thoát nước",
+meaning:"Tình yêu hoàn hảo, sự duyên dáng",
+desc:"Tulip gây ra cơn sốt kinh tế đầu tiên trong lịch sử — 'Tulip Mania' (Hà Lan, 1637). Một củ tulip 'Semper Augustus' bán bằng giá 10 ngôi nhà ven kênh Amsterdam. Ngày nay, Hà Lan xuất khẩu hàng tỷ bông tulip mỗi năm.",
+care:"Trồng củ mùa thu, sâu 15 cm. Cần rét để kích mầm (vernalization). Sau tàn, để lá tự héo.",
+fact:"Sọc lửa trên tulip 'Semper Augustus' huyền thoại thực ra do virus Tulip Breaking Virus tạo ra — bệnh lý thành nghệ thuật.",
+tags:["Tulip Mania","Hà Lan","Virus đẹp"]},
+
+// LAMIACEAE
+{id:22,f:"lamiaceae",name:"Hoa Lavender",en:"Lavender",latin:"Lavandula angustifolia",genus:"Lavandula",emoji:"💜",
+grad:"linear-gradient(135deg,#F3E5F5,#B39DDB)",colors:["Tím","Xanh tím"],
+season:"Hè",origin:"Địa Trung Hải",height:"30–90 cm",life:"Lâu năm",sun:"Đầy đủ",water:"Ít",soil:"Kiềm, thoát nước",
+meaning:"Tĩnh lặng, thuần khiết, sùng kính",
+desc:"Lavender chứa linalool và linalyl acetate — hợp chất đã được chứng minh khoa học có tác dụng giảm cortisol (hormone stress) và cải thiện chất lượng giấc ngủ. Provence, Pháp trồng lavender trên 20.000 hecta.",
+care:"Đất kiềm thoát nước là bắt buộc. Rất chịu hạn. Cắt tỉa 1/3 sau mùa hoa. Ghét ẩm ướt.",
+fact:"Tinh dầu lavender cứu sống nhà hoá học René-Maurice Gattefossé (1910) khi ông bị bỏng nặng — từ đó ông sáng lập ngành aromatherapy (liệu pháp hương thơm).",
+tags:["Aromatherapy","Provence","Giảm stress"]},
+
+{id:23,f:"lamiaceae",name:"Hoa Xô Thơm",en:"Scarlet Sage",latin:"Salvia splendens",genus:"Salvia",emoji:"🔴",
+grad:"linear-gradient(135deg,#FFEBEE,#E53935)",colors:["Đỏ tươi","Tím","Trắng","Hồng"],
+season:"Quanh năm",origin:"Brazil",height:"25–60 cm",life:"Lâu năm (thường trồng 1 năm)",sun:"Đầy đủ–bán bóng",water:"Trung bình",soil:"Tơi xốp",
+meaning:"Sự nhiệt huyết, trí tuệ",
+desc:"Salvia splendens với chùm hoa đỏ rực là cây trang trí công viên phổ biến nhất thế giới. Chi Salvia (sage) là chi lớn nhất họ Lamiaceae với hơn 1.000 loài — bao gồm cả sage gia vị và sage thảo dược.",
+care:"Dễ trồng, ưa ẩm nhẹ. Ngắt hoa tàn để kích thích đợt hoa mới. Tránh nắng trưa quá gắt.",
+fact:"Tên Salvia từ Latin 'salvare' — cứu chữa. Người La Mã coi sage là 'thảo dược của sự bất tử'.",
+tags:["1.000 loài Salvia","Công viên","Salvare"]},
+
+// MALVACEAE
+{id:24,f:"malvaceae",name:"Hoa Dâm Bụt",en:"Hibiscus",latin:"Hibiscus rosa-sinensis",genus:"Hibiscus",emoji:"🌺",
+grad:"linear-gradient(135deg,#FFEBEE,#F44336)",colors:["Đỏ","Hồng","Vàng","Cam","Trắng"],
+season:"Quanh năm (nhiệt đới)",origin:"Đông Á",height:"1–4 m",life:"Lâu năm",sun:"Đầy đủ",water:"Nhiều",soil:"Giàu mùn",
+meaning:"Vẻ đẹp thoáng qua, sự duyên dáng",
+desc:"Hibiscus là quốc hoa Malaysia (Bunga Raya). Mỗi bông chỉ nở 1 ngày rồi tàn, nhưng cây ra hoa liên tục. Đặc trưng với cột nhị hợp (staminal column) — tất cả nhị dính thành ống, đây là dấu hiệu nhận biết họ Malvaceae.",
+care:"Ưa nắng ấm, tưới nhiều. Bón phân giàu kali. Cắt tỉa mạnh đầu xuân để tạo dáng và kích hoa.",
+fact:"Trà hibiscus (trà atiso đỏ) chứa anthocyanin giúp hạ huyết áp — nhiều nghiên cứu cho thấy hiệu quả tương đương thuốc tây.",
+tags:["Quốc hoa Malaysia","Nở 1 ngày","Trà hibiscus"]},
+
+{id:25,f:"malvaceae",name:"Hoa Phù Dung",en:"Cotton Rose",latin:"Hibiscus mutabilis",genus:"Hibiscus",emoji:"🩷",
+grad:"linear-gradient(135deg,#FFF,#F8BBD0)",colors:["Trắng → Hồng → Đỏ"],
+season:"Thu",origin:"Trung Quốc",height:"2–5 m",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Nhiều loại",
+meaning:"Vẻ đẹp thay đổi, sự khiêm nhường",
+desc:"Phù dung là loài hoa 'biến sắc' kỳ diệu — sáng nở trắng, trưa chuyển hồng, chiều ngả đỏ. Hiện tượng do thay đổi pH trong tế bào cánh hoa theo nhiệt độ trong ngày. Tên 'mutabilis' nghĩa là 'hay thay đổi'.",
+care:"Dễ trồng, chịu bóng nhẹ. Lá rụng mùa đông. Cắt tỉa mạnh cuối đông để tạo dáng.",
+fact:"Thành Đô (Trung Quốc) có biệt danh 'Thành phố Phù Dung' (Rong Cheng) vì vua Mạnh Sưởng thời Hậu Thục ra lệnh trồng phù dung khắp thành.",
+tags:["Biến sắc","Thành Đô","Mutabilis"]},
+
+// APOCYNACEAE
+{id:26,f:"apocynaceae",name:"Hoa Sứ",en:"Frangipani",latin:"Plumeria rubra",genus:"Plumeria",emoji:"🤍",
+grad:"linear-gradient(135deg,#FFFEF5,#FFECB3)",colors:["Trắng–Vàng","Hồng","Đỏ"],
+season:"Hè – Thu",origin:"Trung Mỹ",height:"2–8 m",life:"Hàng chục năm",sun:"Đầy đủ",water:"Ít",soil:"Thoát nước tốt",
+meaning:"Chân thành, vĩnh cửu, tâm linh",
+desc:"Frangipani mang hương thơm ngọt ngào nhất trong các loài hoa nhiệt đới. Ở ĐNA, hoa sứ trồng khắp chùa chiền, gắn liền với tâm linh. Đặc trưng nhựa trắng của họ Apocynaceae rỉ ra khi bẻ cành.",
+care:"Chịu nắng nóng tốt, thoát nước tuyệt đối. Giảm tưới mùa đông. Nhân giống bằng cành giâm rất dễ.",
+fact:"Hoa sứ là quốc hoa Lào (ດອກຈຳປາ — Dok Champa) và Nicaragua. Tinh dầu frangipani thuộc hàng đắt nhất thế giới nước hoa.",
+tags:["Chùa chiền","Quốc hoa Lào","Frangipani"]},
+
+{id:27,f:"apocynaceae",name:"Hoa Trúc Đào",en:"Oleander",latin:"Nerium oleander",genus:"Nerium",emoji:"🩷",
+grad:"linear-gradient(135deg,#FCE4EC,#F06292)",colors:["Hồng","Trắng","Đỏ","Vàng"],
+season:"Hè",origin:"Địa Trung Hải",height:"2–6 m",life:"Lâu năm",sun:"Đầy đủ",water:"Ít",soil:"Nhiều loại",
+meaning:"Cảnh báo, vẻ đẹp nguy hiểm",
+desc:"Trúc đào đẹp nhưng là một trong những cây độc nhất — mọi bộ phận chứa glycoside tim (oleandrin) gây rối loạn nhịp tim và tử vong. Paradox: cây cực kỳ bền bỉ, chịu ô nhiễm, nên được trồng khắp đại lộ và xa lộ.",
+care:"Cực dễ trồng, chịu hạn–mặn–ô nhiễm. Đeo găng khi cắt tỉa. KHÔNG đốt cành (khói độc).",
+fact:"Truyền thuyết kể Alexander Đại Đế mất nhiều lính vì họ nướng thịt bằng cành trúc đào trong chiến dịch Ấn Độ.",
+tags:["Cực độc","Chịu ô nhiễm","Oleandrin"]},
+
+// AMARYLLIDACEAE
+{id:28,f:"amaryllidaceae",name:"Hoa Thuỷ Tiên",en:"Narcissus",latin:"Narcissus tazetta",genus:"Narcissus",emoji:"💛",
+grad:"linear-gradient(135deg,#FFFDE7,#FFE082)",colors:["Trắng–Vàng"],
+season:"Cuối đông – đầu xuân",origin:"Châu Âu",height:"15–50 cm",life:"Lâu năm (củ)",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp",
+meaning:"Tái sinh, khởi đầu mới, tự tin",
+desc:"Narcissus gắn liền với thần thoại Hy Lạp — chàng Narcissus đắm đuối ngắm bóng mình dưới nước và hoá thành hoa. Ở Việt Nam, thuỷ tiên là hoa Tết trồng thuỷ canh phổ biến, nở đúng giao thừa là điềm lành.",
+care:"Ngâm củ trong nước sạch, nơi sáng mát. Thay nước 2–3 ngày, thêm than hoạt tính.",
+fact:"Toàn bộ cây thuỷ tiên có độc — galantamine trong Narcissus được dùng làm thuốc trị Alzheimer (FDA approved).",
+tags:["Tết","Thuỷ canh","Narcissus"]},
+
+{id:29,f:"amaryllidaceae",name:"Trinh Nữ Hoàng Cung",en:"Crinum Lily",latin:"Crinum amabile",genus:"Crinum",emoji:"👑",
+grad:"linear-gradient(135deg,#FCE4EC,#F48FB1)",colors:["Trắng–Hồng"],
+season:"Hè",origin:"Sumatra",height:"60–120 cm",life:"Lâu năm (củ)",sun:"Bán bóng",water:"Nhiều",soil:"Giàu mùn, ẩm",
+meaning:"Sự thanh cao, quyền quý",
+desc:"Trinh nữ hoàng cung nổi tiếng Việt Nam với hoa trắng hồng lớn, hương thơm vào đêm, và niềm tin dân gian rằng lá cây có thể chữa ung thư — chưa được khoa học chứng minh đầy đủ.",
+care:"Thích bán bóng, đất ẩm giàu mùn. Trồng củ lớn nửa nổi nửa chìm. Ít sâu bệnh.",
+fact:"Alkaloid trong Crinum đang được nghiên cứu hoạt tính chống ung thư, nhưng tự dùng lá cây rất nguy hiểm do liều lượng không kiểm soát.",
+tags:["Hương đêm","Nghiên cứu","Củ lớn"]},
+
+// HYDRANGEACEAE
+{id:30,f:"hydrangeaceae",name:"Cẩm Tú Cầu",en:"Hydrangea",latin:"Hydrangea macrophylla",genus:"Hydrangea",emoji:"💠",
+grad:"linear-gradient(135deg,#E3F2FD,#42A5F5)",colors:["Xanh","Tím","Hồng","Trắng"],
+season:"Hè",origin:"Nhật Bản",height:"1–3 m",life:"Lâu năm",sun:"Bán bóng",water:"Nhiều",soil:"Giàu mùn, ẩm",
+meaning:"Lòng biết ơn, vẻ đẹp thanh nhã",
+desc:"Cẩm tú cầu là loài hoa 'nhà hoá học' — đổi màu theo pH đất: pH < 5.5 → hoa xanh (ion nhôm hoà tan), pH > 6.5 → hoa hồng. Ở Đà Lạt, cẩm tú cầu nở rực rỡ khắp phố tạo nên cảnh sắc đặc trưng.",
+care:"Bán bóng, đất ẩm giàu mùn. Tưới nhiều. Thêm phèn nhôm (aluminium sulfate) để hoa xanh, vôi để hoa hồng.",
+fact:"Tên 'Hydrangea' từ Hy Lạp 'hydor' (nước) + 'angeion' (bình chứa) — mô tả quả hình cốc nước. Cây rất 'khát nước'.",
+tags:["Đổi màu pH","Đà Lạt","Nhà hoá học"]},
+
+// MAGNOLIACEAE
+{id:31,f:"magnoliaceae",name:"Hoa Ngọc Lan",en:"White Champaca",latin:"Michelia alba",genus:"Magnolia",emoji:"🤍",
+grad:"linear-gradient(135deg,#FFF,#E0E0E0)",colors:["Trắng"],
+season:"Hè",origin:"ĐNA",height:"10–30 m",life:"Hàng chục năm",sun:"Đầy đủ",water:"Trung bình",soil:"Giàu mùn",
+meaning:"Sự thuần khiết, tao nhã",
+desc:"Ngọc lan trắng có hương thơm ngọt ngào nhẹ nhàng nhất — hương 'sang trọng tự nhiên'. Ở Việt Nam, ngọc lan thường trồng trong sân chùa, vườn nhà truyền thống. Hoa dùng ướp trà, cài tóc, đặt trên bàn thờ.",
+care:"Cây lớn, cần không gian. Đất giàu mùn, thoát nước. Chịu nắng tốt.",
+fact:"Magnolia là chi hoá thạch sống — xuất hiện trước cả ong. Hoa Magnolia được thụ phấn bởi bọ cánh cứng (beetle), loài côn trùng cổ xưa hơn ong 100 triệu năm.",
+tags:["Chùa chiền","Ướp trà","95 triệu năm"]},
+
+{id:32,f:"magnoliaceae",name:"Hoa Mộc Lan",en:"Magnolia",latin:"Magnolia × soulangeana",genus:"Magnolia",emoji:"🩷",
+grad:"linear-gradient(135deg,#FFF,#F8BBD0)",colors:["Hồng","Trắng","Tím nhạt"],
+season:"Đầu xuân",origin:"Lai tạo (Pháp, 1820)",height:"3–8 m",life:"50+ năm",sun:"Đầy đủ",water:"Trung bình",soil:"Hơi chua, giàu mùn",
+meaning:"Sự cao quý, tình yêu với thiên nhiên",
+desc:"Magnolia soulangeana (saucer magnolia) là giống lai phổ biến nhất thế giới — hoa lớn nở trên cành trụi lá vào đầu xuân, tạo cảnh tượng ngoạn mục. Étienne Soulange-Bodin tạo ra giống này năm 1820 tại Pháp.",
+care:"Đất hơi chua (pH 5.5–6.5), giàu mùn. Tránh cắt tỉa mạnh — vết cắt lâu lành. Che gốc giữ ẩm.",
+fact:"Họ Magnoliaceae xuất hiện từ 95 triệu năm trước — trước khi khủng long tuyệt chủng. Cấu trúc hoa Magnolia còn nguyên thuỷ: cánh hoa, nhị, nhuỵ xếp xoắn ốc trên đế hoa kéo dài.",
+tags:["Hoá thạch sống","Soulange-Bodin","Nở trên cành trụi"]},
+
+// RANUNCULACEAE
+{id:33,f:"ranunculaceae",name:"Hoa Mao Lương",en:"Ranunculus",latin:"Ranunculus asiaticus",genus:"Ranunculus",emoji:"🌹",
+grad:"linear-gradient(135deg,#FFF9C4,#FFE082)",colors:["Đỏ","Hồng","Vàng","Trắng","Cam"],
+season:"Xuân",origin:"Đông Địa Trung Hải",height:"20–45 cm",life:"Lâu năm (củ)",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp, thoát nước",
+meaning:"Sự quyến rũ, vẻ đẹp rạng rỡ",
+desc:"Mao lương châu Á với nhiều lớp cánh mỏng như giấy lụa xếp chồng, là hoa cắt cành cao cấp được ưa chuộng trong hoa cưới. Dù tên 'buttercup' nghe dễ thương, toàn bộ cây có độc tính.",
+care:"Ngâm củ trước khi trồng. Thích mát, nắng nhẹ. Đất thoát nước tuyệt đối. Thu củ sau mùa hoa.",
+fact:"Tên Ranunculus từ Latin 'rana' (ếch) — vì nhiều loài mọc ven bờ nước, nơi ếch sinh sống.",
+tags:["Hoa cưới","Giấy lụa","'Ếch'"]},
+
+{id:34,f:"ranunculaceae",name:"Hoa Phi Yến",en:"Delphinium",latin:"Delphinium elatum",genus:"Delphinium",emoji:"💙",
+grad:"linear-gradient(135deg,#E3F2FD,#1976D2)",colors:["Xanh","Tím","Trắng","Hồng"],
+season:"Hè",origin:"Bắc bán cầu",height:"60–200 cm",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Giàu mùn, thoát nước",
+meaning:"Sự vui vẻ, lòng rộng lượng",
+desc:"Phi yến (Delphinium) nổi bật với chùm hoa thẳng đứng dài đến 60 cm, màu xanh dương thuần khiết hiếm có trong thế giới hoa. Tên từ Hy Lạp 'delphis' (cá heo) vì nụ hoa hình cá heo.",
+care:"Cần khí hậu mát. Đất giàu mùn, thoát nước. Cắm cọc vì thân cao. Cắt sau đợt hoa 1 để có đợt 2.",
+fact:"Delphinium cực độc — alkaloid delphinine gây hạ huyết áp, suy hô hấp. Ở Mỹ, đây là nguyên nhân hàng đầu gây ngộ độc gia súc trên đồng cỏ.",
+tags:["Xanh dương","Hình cá heo","Cực độc"]},
+
+// OLEACEAE
+{id:35,f:"oleaceae",name:"Hoa Nhài",en:"Jasmine",latin:"Jasminum sambac",genus:"Jasminum",emoji:"⚪",
+grad:"linear-gradient(135deg,#F1F8E9,#C5E1A5)",colors:["Trắng"],
+season:"Hè",origin:"ĐNA",height:"Dây leo 1–3 m",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp",
+meaning:"Thuần khiết, duyên dáng, tình yêu ngọt ngào",
+desc:"Nhài (Jasminum sambac) là quốc hoa Philippines (Sampaguita) và Indonesia (Melati). Hương nhài ngọt ngào quyến rũ — nền tảng của nhiều nước hoa huyền thoại. Trà nhài (jasmine tea) là loại trà hương phổ biến nhất Trung Quốc.",
+care:"Leo giàn hoặc chậu. Bón phân giàu phốt pho. Cắt tỉa đều để ra hoa nhiều.",
+fact:"Cần ~7.000 bông nhài để chiết 1 ml tinh dầu tuyệt đối (absolute) — đắt hơn vàng tính theo trọng lượng. Hoa chỉ hái được lúc rạng sáng.",
+tags:["7.000 bông/ml","Trà nhài","Quốc hoa PH+ID"]},
+
+{id:36,f:"oleaceae",name:"Tử Đinh Hương",en:"Lilac",latin:"Syringa vulgaris",genus:"Syringa",emoji:"💜",
+grad:"linear-gradient(135deg,#F3E5F5,#9575CD)",colors:["Tím","Trắng","Hồng"],
+season:"Xuân",origin:"Đông Nam Âu",height:"2–7 m",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Kiềm, tơi xốp",
+meaning:"Tình yêu đầu đời, kỷ niệm xuân",
+desc:"Tử đinh hương nở vào giữa xuân với chùm hoa thơm ngào ngạt — mùi hương 'mùa xuân' đặc trưng nhất trong vườn ôn đới. Ở Nga và Đông Âu, lilac là biểu tượng mùa xuân và tình yêu đầu đời.",
+care:"Đất kiềm (thêm vôi nếu cần). Nắng ít nhất 6 giờ. Cắt hoa tàn ngay để năm sau nở nhiều.",
+fact:"Tên Syringa từ Hy Lạp 'syrinx' (ống sáo) — thân cây rỗng giống ống sáo. Trong thần thoại, tiên nữ Syrinx hoá thành cây sậy để trốn thần Pan.",
+tags:["Mùa xuân","Ống sáo","Tình đầu"]},
+
+// CARYOPHYLLACEAE
+{id:37,f:"caryophyllaceae",name:"Hoa Cẩm Chướng",en:"Carnation",latin:"Dianthus caryophyllus",genus:"Dianthus",emoji:"💮",
+grad:"linear-gradient(135deg,#FCE4EC,#EC407A)",colors:["Đỏ","Hồng","Trắng","Vàng","Tím"],
+season:"Quanh năm",origin:"Địa Trung Hải",height:"30–80 cm",life:"Lâu năm",sun:"Đầy đủ",water:"Trung bình",soil:"Kiềm, thoát nước",
+meaning:"Tình yêu, sự ngưỡng mộ, lòng biết ơn mẹ",
+desc:"Cẩm chướng là hoa Ngày của Mẹ — Anna Jarvis (người sáng lập Ngày Mẹ ở Mỹ, 1908) chọn cẩm chướng trắng vì mẹ bà yêu thích. Tên 'Dianthus' nghĩa là 'hoa của thần' (Hy Lạp: dios + anthos). Nằm top 3 hoa cắt cành bán chạy nhất.",
+care:"Đất kiềm, thoát nước. Ngắt nụ phụ để hoa chính to. Cắm hoa bền 2–3 tuần nếu thêm đường+giấm vào nước.",
+fact:"Cẩm chướng xanh (Moonseries) là hoa biến đổi gen đầu tiên được thương mại hoá (Suntory, Nhật) — gen tạo màu xanh lấy từ hoa pansy.",
+tags:["Ngày Mẹ","Dianthus","Biến đổi gen"]},
+
+// IRIDACEAE
+{id:38,f:"iridaceae",name:"Hoa Diên Vĩ",en:"Iris",latin:"Iris germanica",genus:"Iris",emoji:"⚜️",
+grad:"linear-gradient(135deg,#EDE7F6,#5E35B1)",colors:["Tím","Xanh","Vàng","Trắng"],
+season:"Xuân – Hè",origin:"Địa Trung Hải",height:"30–90 cm",life:"Lâu năm (thân rễ)",sun:"Đầy đủ",water:"Ít–TB",soil:"Thoát nước tốt",
+meaning:"Trí tuệ, hy vọng, hoàng gia",
+desc:"Iris là biểu tượng hoàng gia Pháp — Fleur-de-lis trên quốc huy thực ra là hoa iris, không phải lily. Nữ thần Iris trong thần thoại Hy Lạp là sứ giả cầu vồng. Thân rễ iris (orris root) dùng trong nước hoa cao cấp.",
+care:"Trồng thân rễ nông (nửa lộ trên mặt đất). Thoát nước tốt. Chia tách mỗi 3–4 năm.",
+fact:"Orris root (rễ iris) cần phơi sấy 5 năm mới dùng được trong nước hoa — đắt hơn vàng. Chanel No. 5 và Guerlain L'Heure Bleue đều dùng orris.",
+tags:["Fleur-de-lis","Orris root","Nữ thần cầu vồng"]},
+
+{id:39,f:"iridaceae",name:"Hoa Lay Ơn",en:"Gladiolus",latin:"Gladiolus spp.",genus:"Gladiolus",emoji:"🗡️",
+grad:"linear-gradient(135deg,#FFEBEE,#FF5252)",colors:["Đỏ","Hồng","Vàng","Trắng","Tím","Cam"],
+season:"Hè",origin:"Nam Phi & Địa Trung Hải",height:"60–150 cm",life:"Lâu năm (củ)",sun:"Đầy đủ",water:"Trung bình",soil:"Tơi xốp",
+meaning:"Sức mạnh, danh dự, chiến thắng",
+desc:"Gladiolus từ Latin 'gladius' (kiếm) — lá hình kiếm đặc trưng. Đấu sĩ La Mã (gladiator) và hoa lay ơn chia sẻ từ gốc. Ở Việt Nam, lay ơn là hoa Tết truyền thống, nở từ dưới lên trên dọc thân hoa.",
+care:"Trồng củ mùa xuân, sâu 10 cm. Nắng đầy đủ. Cắm cọc vì thân cao. Thu củ trước đông.",
+fact:"Trong arena La Mã, khi đấu sĩ thắng, khán giả tung hoa lay ơn xuống — truyền thống 'tặng hoa chiến thắng' từ đây.",
+tags:["Gladiator","Kiếm","Hoa Tết"]},
+
+// NELUMBONACEAE
+{id:40,f:"nelumbonaceae",name:"Hoa Sen",en:"Sacred Lotus",latin:"Nelumbo nucifera",genus:"Nelumbo",emoji:"🪷",
+grad:"linear-gradient(135deg,#FDE8EF,#F0B8CC)",colors:["Hồng","Trắng"],
+season:"Hè",origin:"Châu Á",height:"60–150 cm",life:"Lâu năm",sun:"Đầy đủ",water:"Ngập nước",soil:"Bùn đầm lầy",
+meaning:"Thuần khiết, giác ngộ, tái sinh",
+desc:"Sen là quốc hoa Việt Nam và Ấn Độ. Mọc từ bùn mà không vấy bẩn — biểu tượng Phật giáo hoàn hảo. 'Lotus effect': bề mặt lá sen siêu kỵ nước (superhydrophobic) nhờ cấu trúc nano, nước lăn tròn cuốn sạch bụi bẩn.",
+care:"Ao/chậu ngập nước, nắng ≥6 giờ. Bón phân thuỷ sinh. Mùa đông ngủ nghỉ.",
+fact:"Hạt sen có thể nảy mầm sau 1.300 năm (kỷ lục thực vật). 'Lotus effect' trên lá sen truyền cảm hứng cho công nghệ sơn tự làm sạch và vải chống thấm.",
+tags:["Quốc hoa VN+IN","Lotus effect","1.300 năm"]},
+
+// CONVOLVULACEAE
+{id:41,f:"convolvulaceae",name:"Hoa Bìm Bìm",en:"Morning Glory",latin:"Ipomoea purpurea",genus:"Ipomoea",emoji:"🌀",
+grad:"linear-gradient(135deg,#E0F7FA,#00897B)",colors:["Tím","Xanh","Hồng","Trắng"],
+season:"Hè – Thu",origin:"Trung & Nam Mỹ",height:"Dây leo 2–5 m",life:"Một năm",sun:"Đầy đủ",water:"Trung bình",soil:"Nhiều loại",
+meaning:"Tình yêu ngắn ngủi, sự khởi đầu mỗi ngày",
+desc:"Morning Glory nở lúc bình minh và tàn trước trưa — mỗi bông chỉ sống vài giờ, nhưng cây ra hoa liên tục. Hoa hình phễu xoắn khi còn nụ là đặc trưng họ Convolvulaceae. Chi Ipomoea bao gồm cả khoai lang.",
+care:"Dây leo mọc nhanh, cần giàn. Gieo hạt trực tiếp sau sương giá. Chú ý kiểm soát vì lan mạnh.",
+fact:"Ở Nhật Bản, 'asagao' (morning glory) là nghệ thuật — hội chợ Iriya Asagao-ichi ở Tokyo từ thời Edo (1800s) nơi nghệ nhân trưng bày giống lạ.",
+tags:["Nở bình minh","Asagao","Họ hàng khoai lang"]},
+
+// NYCTAGINACEAE
+{id:42,f:"nyctaginaceae",name:"Hoa Giấy",en:"Bougainvillea",latin:"Bougainvillea spectabilis",genus:"Bougainvillea",emoji:"🌺",
+grad:"linear-gradient(135deg,#FCE4EC,#EC407A)",colors:["Hồng","Đỏ","Tím","Cam","Trắng"],
+season:"Quanh năm (nhiệt đới)",origin:"Nam Mỹ",height:"1–12 m",life:"Hàng chục năm",sun:"Đầy đủ",water:"Ít",soil:"Thoát nước",
+meaning:"Đam mê, nhiệt huyết, chào đón",
+desc:"Bí mật: phần sặc sỡ nhất KHÔNG phải cánh hoa — mà là lá bắc (bract). Hoa thật là bông trắng bé xíu ở giữa. Paradox thú vị: càng 'ngược đãi' (ít nước, ít phân) cây càng ra nhiều 'hoa'.",
+care:"Nắng nhiều, tưới ÍT — stress nước kích thích ra lá bắc. Cắt tỉa tạo dáng. Giàn leo hoặc bonsai.",
+fact:"Tên Bougainvillea từ nhà thám hiểm Pháp Louis Antoine de Bougainville — nhưng người thực sự phát hiện cây là nhà thực vật học nữ Jeanne Baret, người phụ nữ đầu tiên đi vòng quanh thế giới (1766–1769).",
+tags:["Lá bắc ≠ cánh hoa","Jeanne Baret","Càng khô càng đẹp"]},
+
+// PAPAVERACEAE
+{id:43,f:"papaveraceae",name:"Hoa Anh Túc",en:"Poppy",latin:"Papaver rhoeas",genus:"Papaver",emoji:"🔴",
+grad:"linear-gradient(135deg,#FFEBEE,#FF5722)",colors:["Đỏ","Cam","Trắng","Vàng"],
+season:"Xuân – Hè",origin:"Âu – Á",height:"30–70 cm",life:"Một năm",sun:"Đầy đủ",water:"Ít",soil:"Nhiều loại",
+meaning:"Tưởng nhớ, giấc ngủ, lãng quên",
+desc:"Poppy đỏ (corn poppy) là biểu tượng tưởng niệm chiến tranh ở Anh, Úc, Canada — đeo hoa poppy đỏ vào Remembrance Day. Papaver somniferum (anh túc thuốc phiện) cho nhựa chứa morphine và codeine — thuốc giảm đau quan trọng nhất y học.",
+care:"Gieo hạt trực tiếp, không ưa cấy. Đất nghèo, thoát nước. Hoa cánh mỏng tàn nhanh.",
+fact:"Poppy đỏ nở rộ trên cánh đồng Flanders (Bỉ) sau Thế chiến I — đạn pháo xới đất đưa hạt ngủ nghỉ hàng chục năm lên mặt, nở thành biển hoa đỏ trên mộ lính.",
+tags:["Remembrance","Morphine","Flanders"]},
+
+// NELUMBONACEAE — add a second entry for American lotus
+{id:44,f:"nelumbonaceae",name:"Sen Mỹ",en:"American Lotus",latin:"Nelumbo lutea",genus:"Nelumbo",emoji:"💛",
+grad:"linear-gradient(135deg,#FFFDE7,#FFE082)",colors:["Vàng nhạt"],
+season:"Hè",origin:"Bắc Mỹ",height:"50–150 cm",life:"Lâu năm",sun:"Đầy đủ",water:"Ngập nước",soil:"Bùn đầm lầy",
+meaning:"Mặt trời, sự ấm áp, hoà bình",
+desc:"Sen Mỹ (Nelumbo lutea) là 1 trong chỉ 2 loài duy nhất của họ Nelumbonaceae. Hoa vàng nhạt thay vì hồng như sen Á. Thổ dân Mỹ sử dụng toàn bộ cây — củ ăn, hạt rang, lá gói thức ăn — suốt hàng nghìn năm.",
+care:"Ao/đầm tự nhiên. Giống sen Á nhưng chịu lạnh hơn. Mùa đông ngủ nghỉ dưới bùn.",
+fact:"Họ Nelumbonaceae chỉ có 2 loài sống (N. nucifera và N. lutea) tách biệt địa lý — Á và Mỹ — bằng chứng cho sự liên kết lục địa cổ đại.",
+tags:["2 loài duy nhất","Thổ dân Mỹ","Hoa vàng"]}
+];
+
+// ============ STATE ============
+let S={cat:'all',genus:null,view:'g',q:'',bk:new Set(),cmp:[],page:'home',qi:0,qs:0,qd:false,qq:[],expanded:new Set()};
+const famMap=Object.fromEntries(FAM.map(f=>[f.id,f]));
+const spMap=Object.fromEntries(SP.map(s=>[s.id,s]));
+
+// Build genus index: { familyId: [ {genus, latin, count, species[]} ] }
+const genusIndex={};
+FAM.forEach(f=>{
+  const sps=SP.filter(s=>s.f===f.id);
+  const gmap={};
+  sps.forEach(s=>{
+    if(!gmap[s.genus])gmap[s.genus]={genus:s.genus,count:0,species:[]};
+    gmap[s.genus].count++;
+    gmap[s.genus].species.push(s);
+  });
+  genusIndex[f.id]=Object.values(gmap).sort((a,b)=>a.genus.localeCompare(b.genus));
+});
+
+// ============ RENDER ============
+function init(){renderSideL();renderSideR();renderHome();}
+
+function renderSideL(){
+  const s=document.getElementById('sideL');
+  let h=`<div class="sh">Họ thực vật · Family</div>
+  <button class="si ${S.cat==='all'&&!S.genus?'on':''}" onclick="setCat('all')">Tất cả các họ<span class="c">${SP.length}</span></button>`;
+  FAM.forEach(f=>{
+    const cnt=SP.filter(sp=>sp.f===f.id).length;
+    const isActive=S.cat===f.id;
+    h+=`<button class="fi ${isActive?'on':''}" onclick="setCat('${f.id}')">
+      <div class="fi-info">
+        <div class="fi-latin">${f.latin}</div>
+        <div class="fi-vn">${f.name}</div>
+      </div>
+      <span class="fi-cnt">${cnt}</span>
+    </button>`;
+  });
+  h+=`<div class="sdiv"></div><div class="sh">Tính năng</div>
+  <button class="si" onclick="goQuiz()">Quiz kiến thức</button>
+  <button class="si" onclick="goBk()">Đã lưu (${S.bk.size})</button>`;
+  s.innerHTML=h;
+}
+
+function renderSideR(){
+  const sr=document.getElementById('sideR');
+  if(S.cat==='all'){
+    // Show all families summary
+    let h=`<div class="sr-header"><div class="sr-title">Tất cả các Chi</div><div class="sr-sub">${new Set(SP.map(s=>s.genus)).size} chi trong ${FAM.length} họ</div></div>`;
+    FAM.forEach(f=>{
+      const genera=genusIndex[f.id]||[];
+      if(!genera.length)return;
+      h+=`<div style="padding:8px 16px 4px;font-size:.68rem;font-weight:600;color:var(--tx4);background:var(--bg);border-bottom:1px solid var(--bd2)">${f.name}</div>`;
+      genera.forEach(g=>{
+        h+=`<div class="gi" onclick="setGenus('${f.id}','${g.genus}')">
+          <div class="gi-info"><div class="gi-name">${g.genus}</div>
+          <div class="gi-detail">${g.species.map(s=>s.name).join(', ')}</div></div>
+          <span class="gi-count">${g.count}</span>
+        </div>`;
+      });
+    });
+    sr.innerHTML=h;
+  } else {
+    const f=famMap[S.cat];
+    const genera=genusIndex[S.cat]||[];
+    let h=`<div class="sr-header">
+      <div class="sr-fam-tag" style="background:${f.color}18;color:${f.color};border:1px solid ${f.color}33">${f.name}</div>
+      <div class="sr-title">Chi thuộc ${f.latin}</div>
+      <div class="sr-sub">${genera.length} chi · ${SP.filter(s=>s.f===f.id).length} loài</div>
+    </div>`;
+    if(!genera.length){
+      h+=`<div class="sr-empty"><div class="big">—</div>Không có dữ liệu chi.</div>`;
+    } else {
+      genera.forEach(g=>{
+        const isActive=S.genus===g.genus;
+        h+=`<div class="gi ${isActive?'on':''}" onclick="setGenus('${f.id}','${g.genus}')">
+          <div class="gi-info"><div class="gi-name">${g.genus}</div>
+          <div class="gi-detail">${g.count} loài trong từ điển</div></div>
+          <span class="gi-count">${g.count}</span>
+        </div>`;
+        // Show species under genus
+        h+=`<div class="gi-species">`;
+        g.species.forEach(sp=>{
+          h+=`<div class="gi-sp" onclick="event.stopPropagation();openD(${sp.id})">${sp.name} <span style="font-style:italic;opacity:.6">— ${sp.latin}</span></div>`;
+        });
+        h+=`</div>`;
+      });
+    }
+    sr.innerHTML=h;
+  }
+}
+
+function renderHome(){
+  S.page='home';
+  const m=document.getElementById('mn');
+  const filtered=getF();
+  let h='';
+
+  if(S.cat==='all'&&!S.q&&!S.genus){
+    // Show stats
+    h+=`<div style="display:flex;gap:10px;margin-bottom:20px;overflow-x:auto;scrollbar-width:none">
+    <div style="flex-shrink:0;padding:12px 16px;background:var(--card);border:1px solid var(--bd);border-radius:8px;display:flex;align-items:center;gap:8px">
+      <span class="dsp" style="font-size:1.3rem;font-weight:700;color:var(--dk)">${SP.length}</span><span style="font-size:.75rem;color:var(--tx3)">Loài hoa</span>
+    </div>
+    <div style="flex-shrink:0;padding:12px 16px;background:var(--card);border:1px solid var(--bd);border-radius:8px;display:flex;align-items:center;gap:8px">
+      <span class="dsp" style="font-size:1.3rem;font-weight:700;color:var(--dk)">${FAM.length}</span><span style="font-size:.75rem;color:var(--tx3)">Họ thực vật</span>
+    </div>
+    <div style="flex-shrink:0;padding:12px 16px;background:var(--card);border:1px solid var(--bd);border-radius:8px;display:flex;align-items:center;gap:8px">
+      <span class="dsp" style="font-size:1.3rem;font-weight:700;color:var(--dk)">${new Set(SP.map(s=>s.genus)).size}</span><span style="font-size:.75rem;color:var(--tx3)">Chi</span>
+    </div></div>`;
+
+    // Group by family
+    FAM.forEach(f=>{
+      const sps=SP.filter(sp=>sp.f===f.id);
+      h+=famHeader(f);
+      h+=S.view==='g'?`<div class="grid">${sps.map(gridCard).join('')}</div>`
+        :`<div class="lst">${sps.map(listItem).join('')}</div>`;
+    });
+  } else if(S.genus){
+    // Genus view
+    const f=famMap[S.cat];
+    const genSps=filtered;
+    if(f){
+      h+=`<div class="fam-hdr" style="border-left:4px solid ${f.color}">
+        <div class="fam-badge">⬡ ${f.latin}</div>
+        <div class="fam-name">Chi <em style="font-style:italic">${S.genus}</em></div>
+        <div class="fam-latin">Thuộc ${f.name} (${f.latin}) — ${genSps.length} loài trong từ điển</div>
+      </div>`;
+    }
+    if(!genSps.length){
+      h+=`<div class="nores"><div class="big">—</div>Không tìm thấy kết quả.</div>`;
+    } else {
+      h+=S.view==='g'?`<div class="grid">${genSps.map(gridCard).join('')}</div>`
+        :`<div class="lst">${genSps.map(listItem).join('')}</div>`;
+    }
+  } else {
+    // Filtered by family or search
+    if(!filtered.length){
+      h+=`<div class="nores"><div class="big">—</div>Không tìm thấy kết quả.</div>`;
+    } else if(S.cat!=='all'){
+      const f=famMap[S.cat];
+      if(f)h+=famHeader(f);
+      // Group by genus within family
+      const genera=genusIndex[S.cat]||[];
+      genera.forEach(g=>{
+        const gSps=filtered.filter(p=>p.genus===g.genus);
+        if(gSps.length){
+          h+=`<div style="margin-bottom:6px;display:flex;align-items:center;gap:8px">
+            <span style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:600;font-style:italic;color:var(--gr)">${g.genus}</span>
+            <span style="font-size:.7rem;color:var(--tx4)">${gSps.length} loài</span>
+            <span style="flex:1;height:1px;background:var(--bd2)"></span>
+          </div>`;
+          h+=S.view==='g'?`<div class="grid">${gSps.map(gridCard).join('')}</div>`
+            :`<div class="lst">${gSps.map(listItem).join('')}</div>`;
+        }
+      });
+    } else {
+      h+=`<div class="stitle">Kết quả tìm kiếm (${filtered.length})</div>`;
+      h+=S.view==='g'?`<div class="grid">${filtered.map(gridCard).join('')}</div>`
+        :`<div class="lst">${filtered.map(listItem).join('')}</div>`;
+    }
+  }
+  m.innerHTML=h;
+}
+
+function famHeader(f){
+  return `<div class="fam-hdr" style="border-left:4px solid ${f.color}">
+    <div class="fam-badge">⬡ ${f.latin}${f.aka?' ('+f.aka+')':''}</div>
+    <div class="fam-name">${f.name}</div>
+    <div class="fam-latin">${f.latin} — ${f.genera}, ${f.species}</div>
+    <div class="fam-desc">${f.desc}</div>
+  </div>`;
+}
+
+function gridCard(p){
+  const img=getFlowerImg(p.id);
+  const hasImg=!!img;
+  return `<div class="cd" onclick="openD(${p.id})">
+    <div class="cd-acts">
+      <button class="ca ${S.bk.has(p.id)?'bk':''}" onclick="event.stopPropagation();tBk(${p.id})">★</button>
+      <button class="ca ${S.cmp.includes(p.id)?'cp':''}" onclick="event.stopPropagation();tCmp(${p.id})">⚖</button>
+    </div>
+    <div class="cd-v ${hasImg?'has-img':''}" style="${hasImg?'':'background:'+p.grad}">
+      ${hasImg?`<img class="cd-img" src="${img.data}" alt="${p.name}">`:`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".35"><path d="M12 3c-1.5 3-5 5-5 9a5 5 0 0010 0c0-4-3.5-6-5-9z"/><path d="M12 12v7"/><path d="M9 16c1.5-1 4.5-1 6 0"/></svg>`}
+    </div>
+    <div class="cd-b">
+      <div class="cd-fam">${famMap[p.f]?.name} · <i>${p.genus}</i></div>
+      <div class="cd-n">${p.name}</div>
+      <div class="cd-l">${p.latin}</div>
+      <div class="cd-d">${p.desc.substring(0,90)}...</div>
+    </div>
+    <div class="cd-f">${p.tags.slice(0,3).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+  </div>`;
+}
+
+function listItem(p){
+  return `<div class="li" onclick="openD(${p.id})">
+    <div class="li-e" style="font-size:1.1rem;opacity:.45"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3c-1.5 3-5 5-5 9a5 5 0 0010 0c0-4-3.5-6-5-9z"/><path d="M12 12v7"/></svg></div>
+    <div class="li-i">
+      <div class="li-n">${p.name} <span style="font-weight:400;color:var(--tx4);font-size:.78rem">— ${p.en}</span></div>
+      <div class="li-l">${p.latin} · ${famMap[p.f]?.latin}</div>
+      <div class="li-m"><span>${p.origin}</span><span>${p.season}</span></div>
+    </div>
+    <div style="display:flex;gap:3px">
+      <button class="ca ${S.bk.has(p.id)?'bk':''}" onclick="event.stopPropagation();tBk(${p.id})">★</button>
+      <button class="ca ${S.cmp.includes(p.id)?'cp':''}" onclick="event.stopPropagation();tCmp(${p.id})">⚖</button>
+    </div>
+  </div>`;
+}
+
+// FILTER
+function getF(){
+  let a=S.cat==='all'?[...SP]:SP.filter(p=>p.f===S.cat);
+  if(S.genus) a=a.filter(p=>p.genus===S.genus);
+  if(S.q){
+    const q=S.q.toLowerCase();
+    a=a.filter(p=>p.name.toLowerCase().includes(q)||p.en.toLowerCase().includes(q)||
+      p.latin.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q)||
+      p.meaning.toLowerCase().includes(q)||p.tags.some(t=>t.toLowerCase().includes(q))||
+      (famMap[p.f]?.name||'').toLowerCase().includes(q)||(famMap[p.f]?.latin||'').toLowerCase().includes(q)||
+      p.genus.toLowerCase().includes(q)||
+      p.colors.some(c=>c.toLowerCase().includes(q)));
+  }
+  return a;
+}
+
+function setCat(c){S.cat=c;S.genus=null;S.page='home';renderSideL();renderSideR();renderHome();document.getElementById('sideL').classList.remove('open');}
+function setGenus(fid,g){S.cat=fid;S.genus=g;S.page='home';renderSideL();renderSideR();renderHome();document.getElementById('sideL').classList.remove('open');document.getElementById('sideR').classList.remove('open');}
+function doSearch(){S.q=document.getElementById('sinp').value;if(S.page!=='home'){S.page='home';S.cat='all';S.genus=null;renderSideL();renderSideR();}renderHome();}
+function setV(v){S.view=v;document.getElementById('vg').classList.toggle('on',v==='g');document.getElementById('vl').classList.toggle('on',v==='l');if(S.page==='home')renderHome();else if(S.page==='bk')goBk();}
+
+// DETAIL
+function openD(id){
+  const p=spMap[id];if(!p)return;const f=famMap[p.f];
+  const img=getFlowerImg(p.id);
+  const hasImg=!!img;
+  document.getElementById('dcon').innerHTML=`
+    <div class="det-hero ${hasImg?'has-img':''}" style="${hasImg?'':'background:'+p.grad}">
+      ${hasImg?`<img class="det-hero-img" src="${img.data}" alt="${p.name}">`:`<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity=".3"><path d="M12 3c-1.5 3-5 5-5 9a5 5 0 0010 0c0-4-3.5-6-5-9z"/><path d="M12 12v7"/><path d="M9 16c1.5-1 4.5-1 6 0"/></svg>`}
+      ${hasImg&&img.source?`<div class="img-credit">${img.source}</div>`:''}
+      <button class="det-x" onclick="clD()">✕</button>
+    </div>
+    <div class="det-c">
+      <div class="det-t">${p.name}${p.userAdded?'<span class="user-badge">Tự thêm</span>':''}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:16px">
+        <div class="det-sub" style="margin-bottom:0">${p.en} · ${p.latin}</div>
+        <button class="det-edit" onclick="clD();openForm(${p.id})">✏ Sửa</button>
+      </div>
+      <div class="taxo">
+        <span><b>Giới:</b> Plantae</span><span><b>Bộ:</b> Angiosperms</span>
+        <span style="background:${f?.color}22;border-color:${f?.color}44;color:${f?.color}"><b>Họ:</b> ${f?.latin}</span>
+        <span><b>Chi:</b> ${p.genus}</span>
+      </div>
+      <div class="ig">
+        <div class="ic"><div class="ic-l">Mùa hoa</div><div class="ic-v">${p.season}</div></div>
+        <div class="ic"><div class="ic-l">Nguồn gốc</div><div class="ic-v">${p.origin}</div></div>
+        <div class="ic"><div class="ic-l">Chiều cao</div><div class="ic-v">${p.height}</div></div>
+        <div class="ic"><div class="ic-l">Vòng đời</div><div class="ic-v">${p.life}</div></div>
+        <div class="ic"><div class="ic-l">Ánh sáng</div><div class="ic-v">${p.sun}</div></div>
+        <div class="ic"><div class="ic-l">Nước</div><div class="ic-v">${p.water}</div></div>
+        <div class="ic"><div class="ic-l">Đất</div><div class="ic-v">${p.soil}</div></div>
+        <div class="ic"><div class="ic-l">Màu sắc</div><div class="ic-v">${p.colors.join(', ')}</div></div>
+      </div>
+      <div class="sec">Ý nghĩa</div><p class="pr">${p.meaning}</p>
+      <div class="sec">Mô tả khoa học</div><p class="pr">${p.desc}</p>
+      <div class="sec">Chăm sóc</div><p class="pr">${p.care}</p>
+      <div class="sec">Bạn có biết?</div><p class="pr">💡 ${p.fact}</p>
+      <div class="det-tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    </div>`;
+  document.getElementById('dmo').classList.add('open');document.body.style.overflow='hidden';
+}
+function clD(){document.getElementById('dmo').classList.remove('open');document.body.style.overflow='';}
+
+// BOOKMARKS
+function tBk(id){if(S.bk.has(id))S.bk.delete(id);else S.bk.add(id);renderSideL();if(S.page==='home')renderHome();else if(S.page==='bk')goBk();document.getElementById('bkLbl').textContent=`Lưu (${S.bk.size})`;}
+function goBk(){
+  S.page='bk';document.getElementById('sideL').classList.remove('open');
+  const m=document.getElementById('mn');
+  const items=SP.filter(p=>S.bk.has(p.id));
+  let h=`<button class="back" onclick="goH()">← Quay lại</button><div class="stitle">★ Đã lưu (${items.length})</div>`;
+  if(!items.length)h+=`<div class="nores"><div class="big">—</div>Chưa lưu loài nào.</div>`;
+  else h+=S.view==='g'?`<div class="grid">${items.map(gridCard).join('')}</div>`:`<div class="lst">${items.map(listItem).join('')}</div>`;
+  m.innerHTML=h;
+}
+
+// COMPARE
+function tCmp(id){const i=S.cmp.indexOf(id);if(i>-1)S.cmp.splice(i,1);else if(S.cmp.length<3)S.cmp.push(id);uCmp();if(S.page==='home')renderHome();else if(S.page==='bk')goBk();}
+function uCmp(){const f=document.getElementById('cmpf');document.getElementById('cmpn').textContent=`${S.cmp.length} đã chọn`;f.classList.toggle('vis',S.cmp.length>0);}
+function clrCmp(){S.cmp=[];uCmp();if(S.page==='home')renderHome();}
+function openCmp(){
+  if(S.cmp.length<2)return alert('Chọn ít nhất 2 loài.');
+  const ps=S.cmp.map(id=>spMap[id]);
+  const flds=[['Họ','f',p=>famMap[p.f]?.name+' ('+famMap[p.f]?.latin+')'],['Chi','genus'],['Mùa','season'],['Nguồn gốc','origin'],['Chiều cao','height'],['Vòng đời','life'],['Ánh sáng','sun'],['Nước','water'],['Đất','soil'],['Màu sắc','colors',p=>p.colors.join(', ')],['Ý nghĩa','meaning']];
+  document.getElementById('ccon').innerHTML=`<button class="det-x" onclick="clC()">✕</button>
+    <div class="det-c"><div class="stitle">So sánh loài hoa</div>
+    <div class="cwrap"><table class="ctbl"><thead><tr><th></th>${ps.map(p=>`<td class="cth"><div class="n">${p.name}</div><div style="font-style:italic;font-size:.7rem;color:var(--tx4)">${p.latin}</div></td>`).join('')}</tr></thead>
+    <tbody>${flds.map(([l,k,fn])=>`<tr><th>${l}</th>${ps.map(p=>`<td>${fn?fn(p):p[k]}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>`;
+  document.getElementById('cmo').classList.add('open');document.body.style.overflow='hidden';
+}
+function clC(){document.getElementById('cmo').classList.remove('open');document.body.style.overflow='';}
+
+// QUIZ
+function goQuiz(){
+  S.page='quiz';document.getElementById('sideL').classList.remove('open');
+  genQ();rQ();
+}
+function genQ(){
+  const sh=[...SP].sort(()=>Math.random()-.5);
+  S.qq=[];S.qi=0;S.qs=0;S.qd=false;
+  for(let i=0;i<Math.min(12,sh.length);i++){
+    const c=sh[i];const ot=SP.filter(p=>p.id!==c.id).sort(()=>Math.random()-.5).slice(0,3);
+    const opts=[c,...ot].sort(()=>Math.random()-.5);
+    const types=[
+      {q:`Loài hoa nào thuộc họ ${famMap[c.f]?.name} (${famMap[c.f]?.latin})?`,hint:c.en,show:'text'},
+      {q:`Đây là loài hoa gì?`,hint:`${famMap[c.f]?.name} · ${c.origin}`,show:'emoji'},
+      {q:`"${c.fact.substring(0,65)}..." nói về loài hoa nào?`,hint:famMap[c.f]?.latin,show:'text'}
+    ];
+    S.qq.push({correct:c,opts,...types[Math.floor(Math.random()*types.length)]});
+  }
+}
+function rQ(){
+  const m=document.getElementById('mn');
+  if(S.qi>=S.qq.length){
+    const p=Math.round(S.qs/S.qq.length*100);
+    m.innerHTML=`<button class="back" onclick="goH()">← Quay lại</button><div class="qp"><div class="qc"><div class="qres"><div class="big" style="font-size:1.6rem;font-weight:700;color:var(--gold)">${p>=80?'Xuất sắc!':p>=50?'Tốt!':'Cố gắng!'}</div><div class="qq">Kết quả: ${S.qs}/${S.qq.length}</div><p style="color:var(--tx3);margin:10px 0 18px">${p>=80?'Tuyệt vời! Bạn là chuyên gia thực vật!':p>=50?'Khá tốt! Tiếp tục khám phá.':'Đọc thêm từ điển và thử lại nhé!'}</p><button class="qnx" onclick="goQuiz()">Chơi lại</button></div></div></div>`;
+    return;
+  }
+  const qd=S.qq[S.qi];S.qd=false;
+  m.innerHTML=`<button class="back" onclick="goH()">← Quay lại</button><div class="qp">
+    <div class="qprog"><span>Câu ${S.qi+1}/${S.qq.length}</span><div class="qbar"><div class="qfill" style="width:${S.qi/S.qq.length*100}%"></div></div><span>${S.qs} điểm</span></div>
+    <div class="qc">
+      ${qd.show==='emoji'?`<div class="qv" style="background:${qd.correct.grad}"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"><path d="M12 3c-1.5 3-5 5-5 9a5 5 0 0010 0c0-4-3.5-6-5-9z"/><path d="M12 12v7"/></svg></div>`:''}
+      <div class="qbod"><div class="qq">${qd.q}</div><div class="qh">${qd.hint}</div>
+      <div class="qos">${qd.opts.map(o=>`<button class="qo" onclick="aQ(this,${o.id===qd.correct.id},${qd.correct.id})">${o.name}</button>`).join('')}</div></div>
+      <div class="qft"><span class="qsc">${famMap[qd.correct.f]?.name}</span><button class="qnx" id="qnx" disabled onclick="nQ()">Tiếp theo</button></div>
+    </div></div>`;
+}
+function aQ(el,ok,cid){
+  if(S.qd)return;S.qd=true;
+  if(ok){el.classList.add('ok');S.qs++;}else{el.classList.add('no');document.querySelectorAll('.qo').forEach(b=>{if(b.textContent===spMap[cid]?.name)b.classList.add('ok');});}
+  document.querySelectorAll('.qo').forEach(b=>b.classList.add('d'));
+  document.getElementById('qnx').disabled=false;
+}
+function nQ(){S.qi++;S.qd=false;rQ();}
+function goH(){S.page='home';S.cat='all';S.genus=null;document.getElementById('sinp').value='';S.q='';renderSideL();renderSideR();renderHome();window.scrollTo({top:0,behavior:'smooth'});}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){clD();clC();closeForm();hideAdminPop();}});
+document.addEventListener('click',e=>{if(!e.target.closest('.admin-btn'))hideAdminPop();});
+
+// ============ ADMIN AUTH ============
+let isAdmin=false;
+
+function simpleHash(str){
+  let h=0;for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h|=0;}return 'h'+Math.abs(h).toString(36);
+}
+
+const DEFAULT_PW_HASH=simpleHash('123456');
+
+function getAdminPwHash(){
+  try{return localStorage.getItem('enc_admin_pw')||DEFAULT_PW_HASH;}catch(e){return DEFAULT_PW_HASH;}
+}
+function setAdminPwHash(pw){
+  try{localStorage.setItem('enc_admin_pw',simpleHash(pw));}catch(e){}
+}
+
+function toggleAdminPop(){
+  const pop=document.getElementById('adminPop');
+  if(pop.classList.contains('show')){hideAdminPop();return;}
+  renderAdminPop();
+  pop.classList.add('show');
+}
+function hideAdminPop(){document.getElementById('adminPop').classList.remove('show');}
+
+function renderAdminPop(){
+  const inner=document.getElementById('adminPopInner');
+  if(isAdmin){
+    inner.innerHTML=`
+      <div class="admin-pop-title">Đang là Admin</div>
+      <div class="admin-pop-sub">Bạn có quyền thêm, sửa, xoá loài hoa.</div>
+      <div class="admin-pop-btns">
+        <button class="admin-pop-ok" onclick="logoutAdmin()" style="background:#c0392b">Đăng xuất</button>
+        <button class="admin-pop-cancel" onclick="showChangePw()">Đổi mật khẩu</button>
+      </div>
+      <div id="changePwArea"></div>`;
+  } else {
+    inner.innerHTML=`
+      <div class="admin-pop-title">Đăng nhập Admin</div>
+      <div class="admin-pop-sub">Nhập mật khẩu để thêm/sửa loài hoa.</div>
+      <div class="admin-pop-err" id="adminErr"></div>
+      <input type="password" id="adminPwIn" placeholder="Mật khẩu admin" onkeydown="if(event.key==='Enter')loginAdmin()">
+      <div class="admin-pop-btns">
+        <button class="admin-pop-ok" onclick="loginAdmin()">Đăng nhập</button>
+        <button class="admin-pop-cancel" onclick="hideAdminPop()">Huỷ</button>
+      </div>`;
+  }
+}
+
+function loginAdmin(){
+  const pw=document.getElementById('adminPwIn').value;
+  const err=document.getElementById('adminErr');
+  if(simpleHash(pw)===getAdminPwHash()){
+    isAdmin=true;
+    updateAdminUI();
+    hideAdminPop();
+  } else {
+    err.textContent='Sai mật khẩu.';err.classList.add('show');
+    document.getElementById('adminPwIn').value='';
+    document.getElementById('adminPwIn').focus();
+  }
+}
+
+function logoutAdmin(){
+  isAdmin=false;
+  updateAdminUI();
+  hideAdminPop();
+}
+
+function showChangePw(){
+  const area=document.getElementById('changePwArea');
+  area.innerHTML=`
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--bd)">
+      <div style="font-size:.72rem;font-weight:600;color:var(--tx3);margin-bottom:6px">Đổi mật khẩu</div>
+      <input type="password" id="curPw" placeholder="Mật khẩu hiện tại" style="width:100%;padding:7px 10px;border:1px solid var(--bd);border-radius:6px;font-size:.82rem;margin-bottom:6px;background:var(--bg);color:var(--tx);font-family:inherit">
+      <input type="password" id="newPw1" placeholder="Mật khẩu mới" style="width:100%;padding:7px 10px;border:1px solid var(--bd);border-radius:6px;font-size:.82rem;margin-bottom:6px;background:var(--bg);color:var(--tx);font-family:inherit">
+      <input type="password" id="newPw2" placeholder="Nhập lại mật khẩu mới" style="width:100%;padding:7px 10px;border:1px solid var(--bd);border-radius:6px;font-size:.82rem;margin-bottom:6px;background:var(--bg);color:var(--tx);font-family:inherit">
+      <div class="admin-pop-err" id="chPwErr"></div>
+      <button class="admin-pop-ok" style="width:100%;padding:7px" onclick="changePw()">Lưu mật khẩu mới</button>
+    </div>`;
+}
+
+function changePw(){
+  const cur=document.getElementById('curPw').value;
+  const pw1=document.getElementById('newPw1').value;
+  const pw2=document.getElementById('newPw2').value;
+  const err=document.getElementById('chPwErr');
+  if(simpleHash(cur)!==getAdminPwHash()){err.textContent='Sai mật khẩu hiện tại.';err.classList.add('show');return;}
+  if(!pw1||pw1.length<4){err.textContent='Ít nhất 4 ký tự.';err.classList.add('show');return;}
+  if(pw1!==pw2){err.textContent='Không khớp.';err.classList.add('show');return;}
+  setAdminPwHash(pw1);
+  hideAdminPop();
+}
+
+function updateAdminUI(){
+  document.body.classList.toggle('is-admin',isAdmin);
+  const btn=document.getElementById('adminBtn');
+  const lbl=document.getElementById('adminLbl');
+  if(isAdmin){
+    btn.classList.add('unlocked');
+    lbl.textContent='Admin ✓';
+    btn.firstChild.textContent='🔓 ';
+  } else {
+    btn.classList.remove('unlocked');
+    lbl.textContent='Admin';
+    btn.firstChild.textContent='🔒 ';
+  }
+}
+
+// ============ IMAGE STORAGE ============
+let flowerImages={};
+
+function loadFlowerImages(){
+  try{
+    const d=localStorage.getItem('enc_images');
+    if(d)flowerImages=JSON.parse(d);
+  }catch(e){console.log('Image load error',e)}
+}
+
+function saveFlowerImages(){
+  try{localStorage.setItem('enc_images',JSON.stringify(flowerImages));}
+  catch(e){console.log('Image save error',e)}
+}
+
+function getFlowerImg(id){return flowerImages[id]||null;}
+
+function resizeImage(file,maxW,quality){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=function(e){
+      const img=new Image();
+      img.onload=function(){
+        const canvas=document.createElement('canvas');
+        let w=img.width,h=img.height;
+        if(w>maxW){h=Math.round(h*maxW/w);w=maxW;}
+        canvas.width=w;canvas.height=h;
+        const ctx=canvas.getContext('2d');
+        ctx.drawImage(img,0,0,w,h);
+        resolve(canvas.toDataURL('image/jpeg',quality));
+      };
+      img.onerror=reject;
+      img.src=e.target.result;
+    };
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+let pendingImgData=null;
+
+function handleImgSelect(e){
+  const file=e.target.files[0];
+  if(file)processImage(file);
+}
+
+function handleDrop(e){
+  const file=e.dataTransfer.files[0];
+  if(file&&file.type.startsWith('image/'))processImage(file);
+}
+
+async function processImage(file){
+  try{
+    const data=await resizeImage(file,600,0.75);
+    pendingImgData=data;
+    showImgPreview(data);
+  }catch(err){
+    showFrmMsg('Không thể đọc ảnh. Thử file khác.',false);
+  }
+}
+
+function showImgPreview(data){
+  const area=document.getElementById('uploadArea');
+  area.classList.add('has-preview');
+  area.innerHTML=`
+    <img class="frm-preview" src="${data}" alt="Preview">
+    <button class="frm-preview-remove" onclick="event.stopPropagation();removeImgPreview()" title="Xoá ảnh">✕</button>
+    <input type="file" id="f_imgFile" accept="image/*" style="display:none" onchange="handleImgSelect(event)">
+  `;
+}
+
+function removeImgPreview(){
+  pendingImgData=null;
+  const area=document.getElementById('uploadArea');
+  area.classList.remove('has-preview');
+  area.innerHTML=`
+    <div id="uploadPlaceholder">
+      <div class="frm-upload-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M3 15l4-4 3 3 4-4 7 7"/></svg></div>
+      <div class="frm-upload-text">Chọn ảnh hoặc kéo thả vào đây</div>
+      <div class="frm-upload-hint">JPG, PNG, WebP · Tự động resize về 600px</div>
+    </div>
+    <input type="file" id="f_imgFile" accept="image/*" style="display:none" onchange="handleImgSelect(event)">
+  `;
+}
+
+// ============ ADD / EDIT FORM ============
+let editingId=null;
+
+// Load user flowers from localStorage
+function loadUserFlowers(){
+  try{
+    const d=localStorage.getItem('enc_flowers');
+    if(d){
+      const arr=JSON.parse(d);
+      arr.forEach(uf=>{
+        if(!spMap[uf.id]){
+          SP.push(uf);spMap[uf.id]=uf;
+        }
+      });
+      // Rebuild genus index
+      FAM.forEach(f=>{
+        const sps=SP.filter(s=>s.f===f.id);
+        const gmap={};
+        sps.forEach(s=>{
+          if(!gmap[s.genus])gmap[s.genus]={genus:s.genus,count:0,species:[]};
+          gmap[s.genus].count++;gmap[s.genus].species.push(s);
+        });
+        genusIndex[f.id]=Object.values(gmap).sort((a,b)=>a.genus.localeCompare(b.genus));
+      });
+      // Update family counts
+      FAM.forEach(f=>{const c=SP.filter(s=>s.f===f.id).length;});
+    }
+  }catch(e){console.log('Storage read error',e)}
+}
+
+function saveUserFlowers(){
+  try{
+    const userFlowers=SP.filter(s=>s.userAdded);
+    localStorage.setItem('enc_flowers',JSON.stringify(userFlowers));
+  }catch(e){console.log('Storage write error',e)}
+}
+
+function rebuildIndex(){
+  FAM.forEach(f=>{
+    const sps=SP.filter(s=>s.f===f.id);
+    const gmap={};
+    sps.forEach(s=>{
+      if(!gmap[s.genus])gmap[s.genus]={genus:s.genus,count:0,species:[]};
+      gmap[s.genus].count++;gmap[s.genus].species.push(s);
+    });
+    genusIndex[f.id]=Object.values(gmap).sort((a,b)=>a.genus.localeCompare(b.genus));
+  });
+}
+
+function openForm(id){
+  editingId=id||null;
+  const p=id?spMap[id]:null;
+  const isEdit=!!p;
+  const title=isEdit?'Chỉnh sửa loài hoa':'Thêm loài hoa mới';
+  const sub=isEdit?p.name+' — '+p.latin:'Nhập thông tin chi tiết cho loài hoa';
+
+  document.getElementById('formCon').innerHTML=`
+    <div class="frm-head">
+      <div class="frm-title">${title}</div>
+      <div class="frm-sub">${sub}</div>
+      <button class="det-x" onclick="closeForm()">✕</button>
+    </div>
+    <div class="frm-body" id="frmBody">
+      <div id="frmMsg"></div>
+
+      <div class="frm-section">Hình ảnh</div>
+      <div class="frm-row full">
+        <div class="frm-field">
+          <label class="frm-label">Ảnh loài hoa (bấm hoặc kéo thả)</label>
+          <div class="frm-upload-area" id="uploadArea" onclick="document.getElementById('f_imgFile').click()"
+               ondragover="event.preventDefault();this.style.borderColor='var(--gr)'"
+               ondragleave="this.style.borderColor=''"
+               ondrop="event.preventDefault();this.style.borderColor='';handleDrop(event)">
+            <div id="uploadPlaceholder">
+              <div class="frm-upload-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M3 15l4-4 3 3 4-4 7 7"/></svg></div>
+              <div class="frm-upload-text">Chọn ảnh hoặc kéo thả vào đây</div>
+              <div class="frm-upload-hint">JPG, PNG, WebP · Tự động resize về 600px</div>
+            </div>
+            <input type="file" id="f_imgFile" accept="image/*" style="display:none" onchange="handleImgSelect(event)">
+          </div>
+        </div>
+      </div>
+      <div class="frm-row full">
+        <div class="frm-field">
+          <label class="frm-label">Nguồn ảnh / Ghi công</label>
+          <input class="frm-input" id="f_imgSrc" placeholder="VD: Wikimedia Commons, Photo by Nguyễn Văn A, CC BY-SA 4.0" value="${getFlowerImg(editingId)?.source||''}">
+        </div>
+      </div>
+
+      <div class="frm-section">Thông tin cơ bản</div>
+      <div class="frm-row">
+        <div class="frm-field">
+          <label class="frm-label">Tên hoa <span class="req">*</span></label>
+          <input class="frm-input" id="f_name" placeholder="VD: Hoa Hồng" value="${p?.name||''}">
+        </div>
+        <div class="frm-field">
+          <label class="frm-label">Tên tiếng Anh <span class="req">*</span></label>
+          <input class="frm-input" id="f_en" placeholder="VD: Rose" value="${p?.en||''}">
+        </div>
+      </div>
+      <div class="frm-row">
+        <div class="frm-field">
+          <label class="frm-label">Tên khoa học (Latin) <span class="req">*</span></label>
+          <input class="frm-input" id="f_latin" placeholder="VD: Rosa spp." value="${p?.latin||''}" style="font-style:italic">
+        </div>
+        <div class="frm-field">
+          <label class="frm-label">Chi (Genus) <span class="req">*</span></label>
+          <input class="frm-input" id="f_genus" placeholder="VD: Rosa" value="${p?.genus||''}" style="font-style:italic">
+        </div>
+      </div>
+      <div class="frm-row">
+        <div class="frm-field">
+          <label class="frm-label">Họ (Family) <span class="req">*</span></label>
+          <select class="frm-input" id="f_fam">
+            ${FAM.map(f=>`<option value="${f.id}" ${p?.f===f.id?'selected':''}>${f.latin} — ${f.name}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+
+      <div class="frm-section">Đặc điểm sinh học</div>
+      <div class="frm-row tri">
+        <div class="frm-field">
+          <label class="frm-label">Mùa hoa</label>
+          <input class="frm-input" id="f_season" placeholder="VD: Quanh năm" value="${p?.season||''}">
+        </div>
+        <div class="frm-field">
+          <label class="frm-label">Nguồn gốc</label>
+          <input class="frm-input" id="f_origin" placeholder="VD: Châu Á" value="${p?.origin||''}">
+        </div>
+        <div class="frm-field">
+          <label class="frm-label">Chiều cao</label>
+          <input class="frm-input" id="f_height" placeholder="VD: 30–180 cm" value="${p?.height||''}">
+        </div>
+      </div>
+      <div class="frm-row tri">
+        <div class="frm-field">
+          <label class="frm-label">Vòng đời</label>
+          <input class="frm-input" id="f_life" placeholder="VD: Lâu năm" value="${p?.life||''}">
+        </div>
+        <div class="frm-field">
+          <label class="frm-label">Ánh sáng</label>
+          <input class="frm-input" id="f_sun" placeholder="VD: Đầy đủ" value="${p?.sun||''}">
+        </div>
+        <div class="frm-field">
+          <label class="frm-label">Nhu cầu nước</label>
+          <input class="frm-input" id="f_water" placeholder="VD: Trung bình" value="${p?.water||''}">
+        </div>
+      </div>
+      <div class="frm-row">
+        <div class="frm-field">
+          <label class="frm-label">Đất</label>
+          <input class="frm-input" id="f_soil" placeholder="VD: Tơi xốp, thoát nước" value="${p?.soil||''}">
+        </div>
+        <div class="frm-field">
+          <label class="frm-label">Màu sắc (phẩy ngăn cách)</label>
+          <input class="frm-input" id="f_colors" placeholder="VD: Đỏ, Hồng, Trắng" value="${p?.colors?.join(', ')||''}">
+        </div>
+      </div>
+
+      <div class="frm-section">Nội dung mô tả</div>
+      <div class="frm-row full">
+        <div class="frm-field">
+          <label class="frm-label">Ý nghĩa</label>
+          <input class="frm-input" id="f_meaning" placeholder="VD: Tình yêu, lãng mạn, vẻ đẹp" value="${p?.meaning||''}">
+        </div>
+      </div>
+      <div class="frm-row full">
+        <div class="frm-field">
+          <label class="frm-label">Mô tả <span class="req">*</span></label>
+          <textarea class="frm-input" id="f_desc" rows="3" placeholder="Mô tả tổng quan về loài hoa...">${p?.desc||''}</textarea>
+        </div>
+      </div>
+      <div class="frm-row full">
+        <div class="frm-field">
+          <label class="frm-label">Hướng dẫn chăm sóc</label>
+          <textarea class="frm-input" id="f_care" rows="2" placeholder="Cách trồng và chăm sóc...">${p?.care||''}</textarea>
+        </div>
+      </div>
+      <div class="frm-row full">
+        <div class="frm-field">
+          <label class="frm-label">Sự thật thú vị</label>
+          <textarea class="frm-input" id="f_fact" rows="2" placeholder="Một điều thú vị về loài hoa này...">${p?.fact||''}</textarea>
+        </div>
+      </div>
+      <div class="frm-row full">
+        <div class="frm-field">
+          <label class="frm-label">Tags (phẩy ngăn cách)</label>
+          <input class="frm-input" id="f_tags" placeholder="VD: Phổ biến, Hương thơm, Dễ trồng" value="${p?.tags?.join(', ')||''}">
+        </div>
+      </div>
+    </div>
+    <div class="frm-foot">
+      ${isEdit&&p.userAdded?'<button class="frm-del" onclick="delFlower('+id+')">Xoá loài này</button>':'<span></span>'}
+      <div style="display:flex;gap:8px">
+        <button class="frm-cancel" onclick="closeForm()">Huỷ</button>
+        <button class="frm-save" onclick="saveForm()">💾 ${isEdit?'Cập nhật':'Thêm mới'}</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('formMo').classList.add('open');
+  document.body.style.overflow='hidden';
+  // Load existing image if editing
+  pendingImgData=null;
+  const existImg=getFlowerImg(editingId);
+  if(existImg&&existImg.data){
+    pendingImgData=existImg.data;
+    setTimeout(()=>showImgPreview(existImg.data),50);
+  }
+}
+
+function closeForm(){
+  document.getElementById('formMo').classList.remove('open');
+  document.body.style.overflow='';
+  editingId=null;
+}
+
+function showFrmMsg(msg,ok){
+  const el=document.getElementById('frmMsg');
+  el.innerHTML=`<div class="frm-msg ${ok?'ok':'err'}">${msg}</div>`;
+  if(ok)setTimeout(()=>{el.innerHTML='';},3000);
+}
+
+const GRADIENTS=[
+  "linear-gradient(135deg,#FFE4E9,#FBB1BD)","linear-gradient(135deg,#FDE8EF,#F0B8CC)",
+  "linear-gradient(135deg,#F3E5F5,#CE93D8)","linear-gradient(135deg,#E3F2FD,#90CAF9)",
+  "linear-gradient(135deg,#FFF9C4,#FFD54F)","linear-gradient(135deg,#E8F5E9,#81C784)",
+  "linear-gradient(135deg,#FFF3E0,#FFAB91)","linear-gradient(135deg,#FCE4EC,#F48FB1)",
+  "linear-gradient(135deg,#E8EAF6,#7C4DFF)","linear-gradient(135deg,#FFFDE7,#FFE082)",
+  "linear-gradient(135deg,#F1F8E9,#AED581)","linear-gradient(135deg,#E0F7FA,#00897B)"
+];
+
+function saveForm(){
+  const name=document.getElementById('f_name').value.trim();
+  const en=document.getElementById('f_en').value.trim();
+  const latin=document.getElementById('f_latin').value.trim();
+  const genus=document.getElementById('f_genus').value.trim();
+  const fam=document.getElementById('f_fam').value;
+  const desc=document.getElementById('f_desc').value.trim();
+
+  if(!name||!en||!latin||!genus||!desc){
+    showFrmMsg('Vui lòng điền các trường có dấu * (tên, tên Anh, tên khoa học, chi, mô tả).',false);
+    return;
+  }
+
+  const flower={
+    id: editingId || Date.now(),
+    f: fam,
+    name, en, latin, genus,
+    emoji: '🌿',
+    grad: GRADIENTS[Math.floor(Math.random()*GRADIENTS.length)],
+    colors: document.getElementById('f_colors').value.split(',').map(s=>s.trim()).filter(Boolean),
+    season: document.getElementById('f_season').value.trim()||'—',
+    origin: document.getElementById('f_origin').value.trim()||'—',
+    height: document.getElementById('f_height').value.trim()||'—',
+    life: document.getElementById('f_life').value.trim()||'—',
+    sun: document.getElementById('f_sun').value.trim()||'—',
+    water: document.getElementById('f_water').value.trim()||'—',
+    soil: document.getElementById('f_soil').value.trim()||'—',
+    meaning: document.getElementById('f_meaning').value.trim()||'—',
+    desc,
+    care: document.getElementById('f_care').value.trim()||'—',
+    fact: document.getElementById('f_fact').value.trim()||'—',
+    tags: document.getElementById('f_tags').value.split(',').map(s=>s.trim()).filter(Boolean),
+    userAdded: true
+  };
+
+  if(editingId){
+    // Update existing
+    const idx=SP.findIndex(s=>s.id===editingId);
+    if(idx>-1){
+      flower.grad=SP[idx].grad; // keep gradient
+      SP[idx]=flower;
+      spMap[editingId]=flower;
+    }
+  } else {
+    SP.push(flower);
+    spMap[flower.id]=flower;
+  }
+
+  rebuildIndex();
+  saveUserFlowers();
+
+  // Save image
+  const imgSource=document.getElementById('f_imgSrc').value.trim();
+  if(pendingImgData){
+    flowerImages[flower.id]={data:pendingImgData,source:imgSource};
+    saveFlowerImages();
+  } else if(imgSource&&flowerImages[flower.id]){
+    flowerImages[flower.id].source=imgSource;
+    saveFlowerImages();
+  } else if(!pendingImgData&&flowerImages[flower.id]){
+    // Image was removed
+    delete flowerImages[flower.id];
+    saveFlowerImages();
+  }
+
+  renderSideL();renderSideR();renderHome();
+  closeForm();
+  if(editingId){openD(editingId);}
+}
+
+function delFlower(id){
+  if(!confirm('Bạn có chắc muốn xoá loài hoa này?'))return;
+  const idx=SP.findIndex(s=>s.id===id);
+  if(idx>-1)SP.splice(idx,1);
+  delete spMap[id];
+  delete flowerImages[id];
+  S.bk.delete(id);
+  S.cmp=S.cmp.filter(c=>c!==id);
+  rebuildIndex();
+  saveUserFlowers();
+  saveFlowerImages();
+  closeForm();clD();
+  renderSideL();renderSideR();renderHome();
+}
+
+// Load on startup
+loadFlowerImages();
+loadUserFlowers();
+updateAdminUI();
+init();
+</script>
+</body>
+</html>
+
+</body></html>
