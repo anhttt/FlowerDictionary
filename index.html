@@ -2467,29 +2467,39 @@ function removeImgPreview(){
 let editingId=null;
 
 // Load user flowers from localStorage
+let deletedIds=new Set();
+
+function loadDeletedIds(){
+  try{const d=localStorage.getItem('enc_deleted');if(d)deletedIds=new Set(JSON.parse(d));}catch(e){}
+}
+function saveDeletedIds(){
+  try{localStorage.setItem('enc_deleted',JSON.stringify([...deletedIds]));}catch(e){}
+}
+
 function loadUserFlowers(){
   try{
+    // Remove deleted built-in flowers
+    loadDeletedIds();
+    if(deletedIds.size){
+      for(let i=SP.length-1;i>=0;i--){
+        if(deletedIds.has(SP[i].id)){delete spMap[SP[i].id];SP.splice(i,1);}
+      }
+    }
+    // Load user-added/edited flowers
     const d=localStorage.getItem('enc_flowers');
     if(d){
       const arr=JSON.parse(d);
       arr.forEach(uf=>{
-        if(!spMap[uf.id]){
+        if(deletedIds.has(uf.id))return;
+        const existIdx=SP.findIndex(s=>s.id===uf.id);
+        if(existIdx>-1){
+          SP[existIdx]=uf;spMap[uf.id]=uf;
+        } else {
           SP.push(uf);spMap[uf.id]=uf;
         }
       });
-      // Rebuild genus index
-      FAM.forEach(f=>{
-        const sps=SP.filter(s=>s.f===f.id);
-        const gmap={};
-        sps.forEach(s=>{
-          if(!gmap[s.genus])gmap[s.genus]={genus:s.genus,count:0,species:[]};
-          gmap[s.genus].count++;gmap[s.genus].species.push(s);
-        });
-        genusIndex[f.id]=Object.values(gmap).sort((a,b)=>a.genus.localeCompare(b.genus));
-      });
-      // Update family counts
-      FAM.forEach(f=>{const c=SP.filter(s=>s.f===f.id).length;});
     }
+    rebuildIndex();
   }catch(e){console.log('Storage read error',e)}
 }
 
@@ -2720,7 +2730,7 @@ function openForm(id){
       </div>
     </div>
     <div class="frm-foot">
-      ${isEdit&&p.userAdded?'<button class="frm-del" onclick="delFlower('+id+')">Xoá loài này</button>':'<span></span>'}
+      ${isEdit?'<button class="frm-del" onclick="delFlower('+id+')">Xoá loài này</button>':'<span></span>'}
       <div style="display:flex;gap:8px">
         <button class="frm-cancel" onclick="closeForm()">Huỷ</button>
         <button class="frm-save" onclick="saveForm()">💾 ${isEdit?'Cập nhật':'Thêm mới'}</button>
@@ -2908,6 +2918,8 @@ function saveForm(){
 
 function delFlower(id){
   if(!confirm('Bạn có chắc muốn xoá loài hoa này?'))return;
+  deletedIds.add(id);
+  saveDeletedIds();
   const idx=SP.findIndex(s=>s.id===id);
   if(idx>-1)SP.splice(idx,1);
   delete spMap[id];
