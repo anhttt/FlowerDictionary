@@ -1700,6 +1700,21 @@ leaf:"Lá xẻ lông chim kép, dài khoảng 5 cm, xám bạc, phủ lông tơ 
 uses:"Phủ đất, vườn đá, vườn trên mái; trồng viền, trồng chậu; hoa cắt cành; thu hút bướm và ong thụ phấn",
 caution:"Dễ lan rộng nếu không cắt hoa tàn — có thể trở thành cỏ dại. Dễ bị thối thân, phấn trắng và rỉ sắt trong điều kiện ẩm",
 references:"NC State Extension (plants.ces.ncsu.edu)",
+updatedDate:"10/2026"},
+
+{id:82,f:"asteraceae",name:"Cúc Áo",en:"Toothache Plant",latin:"Acmella oleracea",genus:"Acmella",emoji:"🌿",
+grad:"linear-gradient(135deg,#FFF8E1,#FFCA28)",colors:["Vàng","Cam","Đỏ nâu"],
+season:"Hè – thu",origin:"Nam Mỹ (Brazil – Argentina)",height:"30–45 cm",life:"Lâu năm (thường trồng như hàng năm)",sun:"Đầy đủ – bán bóng",water:"Vừa (đất ẩm)",soil:"Sét, thịt, cát — giàu hữu cơ, thoát nước, pH 5.5–7.0",
+meaning:"Chữa lành, sức sống",
+order:"Asterales",plantType:"Cây thân thảo",stem:"Thân xanh đến đỏ nâu, nhẵn, bò hoặc đứng thẳng",rootType:"Rễ chùm nông",flower:"Đầu hoa hình vòm tròn đơn độc, dưới 2,5 cm; chỉ gồm hoa đĩa nhỏ li ti; màu vàng–cam, tâm đỏ nâu; trông giống con mắt (Eyeball Plant)",reproduction:"Gieo hạt, giâm thân",
+desc:"Acmella oleracea nổi tiếng với hiệu ứng tê lưỡi độc đáo — nhai hoa hoặc lá sẽ cảm thấy tê rần, sủi bọt trong miệng như điện giật nhẹ. Tên 'oleracea' nghĩa là 'rau ăn được' trong tiếng Latin — cây được dùng làm rau gia vị ở nhiều nền ẩm thực nhiệt đới.",
+care:"Dễ trồng, nhanh lớn. Thích đất ẩm giàu hữu cơ, chịu được độ ẩm cao. Không chịu lạnh — trồng lại hàng năm ở vùng có sương giá. Phù hợp trồng chậu và giỏ treo.",
+fact:"Hoa Cúc Áo gây cảm giác tê điện trong miệng — nên còn gọi là Electric Daisy và Buzz Buttons. Người dân bản địa Nam Mỹ dùng nhai để giảm đau răng từ hàng trăm năm. Chiết xuất cây (jambu) đang được nghiên cứu thay thế thuốc tê nha khoa",
+tags:["Dược liệu","Ăn được","Thu hút bướm","Nhiệt đới"],
+leaf:"Lá đơn mọc đối, hình trứng rộng, dài 5–10 cm, rộng 5–7 cm; mép răng cưa; xanh đến đồng nâu; ăn được, vị cay tê",
+uses:"Dược liệu giảm đau răng, chống nhiễm trùng nướu; rau gia vị trong ẩm thực nhiệt đới (salad, soup); chiết xuất dùng làm hương liệu thực phẩm; thu hút đom đóm, bướm và ong",
+caution:"Ăn hoa nhiều gây tê mạnh, tăng tiết nước bọt — nên dùng ít. Có thể lan rộng ở vùng ẩm ướt, trở thành cỏ dại ven hồ",
+references:"NC State Extension (plants.ces.ncsu.edu)",
 updatedDate:"10/2026"}
 ];
 
@@ -1974,11 +1989,16 @@ function openD(id){
         ${p.leaf?`<div class="det-field"><div class="det-field-label">Lá</div><div class="det-field-value">${p.leaf}</div></div>`:''}
       </div>
 
-      ${gal.length||hasImg?`<div class="det-section">
-        <div class="det-section-title">Hình ảnh</div>
-        ${gal.length?`<div class="det-gallery">${gal.map(g=>`<div class="det-gallery-item" onclick="openLB('${g.data.replace(/'/g,"\\'")}')"><img src="${g.data}" alt=""></div>`).join('')}${Array(Math.max(0,3-gal.length)).fill('<div class="det-gallery-item"><div class="gallery-empty">Chưa có ảnh</div></div>').join('')}</div>`
-        :`<div style="font-size:.8rem;color:var(--tx4);padding:4px 0">Bấm vào ảnh chính để xem phóng to. Thêm ảnh qua nút Sửa.</div>`}
-      </div>`:''}
+      ${(()=>{
+        const allImgs=[];
+        if(hasImg)allImgs.push({data:img.data,source:img.source||''});
+        gal.forEach(g=>{if(g&&g.data)allImgs.push({data:g.data,source:g.source||''});});
+        if(!allImgs.length)return '';
+        return `<div class="det-section">
+          <div class="det-section-title">Hình ảnh (${allImgs.length})</div>
+          <div class="det-gallery">${allImgs.map(g=>`<div class="det-gallery-item" onclick="openLB('${g.data.replace(/'/g,"\\'")}')"><img src="${g.data}" alt="">${g.source?`<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);color:#fff;font-size:.6rem;padding:2px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${g.source}</div>`:''}</div>`).join('')}</div>
+        </div>`;
+      })()}
 
       <div class="det-section">
         <div class="det-section-title">Nguồn gốc và phân bố</div>
@@ -2339,6 +2359,16 @@ function handleDrop(e){
   if(file&&file.type.startsWith('image/'))processImage(file);
 }
 
+function handleGalDrop(e,idx){
+  e.preventDefault();e.stopPropagation();
+  const slot=document.getElementById('galSlot'+idx);
+  slot.style.borderColor='';
+  const file=e.dataTransfer.files[0];
+  if(file&&file.type.startsWith('image/')){
+    resizeImage(file,600,0.75).then(data=>setGalSlotImg(idx,data)).catch(()=>showFrmMsg('Không thể đọc ảnh.',false));
+  }
+}
+
 async function processImage(file){
   try{
     const data=await resizeImage(file,600,0.75);
@@ -2635,12 +2665,12 @@ function openForm(id){
       <div class="frm-section">Hình ảnh bổ sung</div>
       <div class="frm-row full">
         <div class="frm-field">
-          <label class="frm-label">Tải thêm ảnh (tối đa 3 ảnh · bấm vào ô rồi Ctrl+V để dán)</label>
+          <label class="frm-label">Tải thêm ảnh (tối đa 6 ảnh · kéo thả, bấm chọn hoặc Ctrl+V để dán)</label>
           <div class="frm-gallery" id="galSlots">
-            ${[0,1,2].map(i=>{
+            ${[0,1,2,3,4,5].map(i=>{
               const g=(getFlowerImg(editingId)?.gallery)||[];
               const has=g[i];
-              return `<div class="frm-gallery-slot ${has?'has-img':''}" id="galSlot${i}" onclick="pickGalImg(${i})" tabindex="0" onpaste="handleGalPaste(event,${i})">
+              return `<div class="frm-gallery-slot ${has?'has-img':''}" id="galSlot${i}" onclick="pickGalImg(${i})" tabindex="0" onpaste="handleGalPaste(event,${i})" ondragover="event.preventDefault();this.style.borderColor='var(--gr)'" ondragleave="this.style.borderColor=''" ondrop="handleGalDrop(event,${i})">
                 ${has?`<img src="${g[i].data}" alt=""><button class="frm-gallery-remove" onclick="event.stopPropagation();removeGalImg(${i})">✕</button>`
                 :`<div class="slot-placeholder"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/></svg>Ảnh ${i+1}</div>`}
                 <input type="file" id="galFile${i}" accept="image/*" style="display:none" onchange="handleGalImg(event,${i})">
