@@ -332,7 +332,7 @@ body:not(.is-admin) .det-edit{display:none}
 <aside class="side-r" id="sideR"></aside>
 </div>
 <!-- ADD/EDIT FORM MODAL -->
-<div class="mo" id="formMo" onclick="if(event.target===this)closeForm()">
+<div class="mo" id="formMo">
 <div class="det" style="max-width:640px" id="formCon"></div>
 </div>
 <button class="sr-toggle" id="srToggle" onclick="document.getElementById('sideR').classList.toggle('open')" title="Chi hoa">🌱</button>
@@ -2120,7 +2120,7 @@ function aQ(el,ok,cid){
 function nQ(){S.qi++;S.qd=false;rQ();}
 function goH(){S.page='home';S.cat='all';S.genus=null;document.getElementById('sinp').value='';S.q='';renderSideL();renderSideR();renderHome();window.scrollTo({top:0,behavior:'smooth'});}
 
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){clD();clC();closeForm();hideAdminPop();}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){clD();clC();hideAdminPop();}});
 document.addEventListener('click',e=>{if(!e.target.closest('.admin-btn'))hideAdminPop();});
 
 // ============ ADMIN AUTH ============
@@ -2741,9 +2741,65 @@ function openForm(id){
   if(existImg&&existImg.gallery){
     pendingGallery=existImg.gallery.map(g=>g?{data:g.data,source:g.source||''}:null);
   }
+  // Restore draft if available
+  const draft=loadDraft();
+  if(draft&&draft.editingId===editingId){
+    setTimeout(()=>{
+      restoreDraft(draft);
+      showFrmMsg('Đã khôi phục nội dung nhập dở từ lần trước.',true);
+    },100);
+  }
 }
 
-function closeForm(){
+const DRAFT_FIELDS=['f_name','f_nameAlt','f_latin','f_en','f_genus','f_fam','f_plantType','f_height','f_flower','f_colors','f_leaf','f_origin','f_season','f_sun','f_water','f_soil','f_uses','f_caution','f_meaning','f_desc','f_fact','f_tags','f_references','f_imgSrc'];
+
+function saveDraft(){
+  try{
+    const formOpen=document.getElementById('formMo').classList.contains('open');
+    if(!formOpen)return;
+    const draft={editingId:editingId};
+    let hasData=false;
+    DRAFT_FIELDS.forEach(fid=>{
+      const el=document.getElementById(fid);
+      if(el){draft[fid]=el.value;if(el.value.trim())hasData=true;}
+    });
+    if(pendingImgData){draft._img=pendingImgData;hasData=true;}
+    if(pendingGallery.some(g=>g)){draft._gal=pendingGallery;hasData=true;}
+    if(hasData)localStorage.setItem('enc_draft',JSON.stringify(draft));
+  }catch(e){}
+}
+
+function loadDraft(){
+  try{
+    const raw=localStorage.getItem('enc_draft');
+    if(!raw)return null;
+    return JSON.parse(raw);
+  }catch(e){return null;}
+}
+
+function clearDraft(){
+  try{localStorage.removeItem('enc_draft');}catch(e){}
+}
+
+function restoreDraft(draft){
+  DRAFT_FIELDS.forEach(fid=>{
+    const el=document.getElementById(fid);
+    if(el&&draft[fid]!==undefined)el.value=draft[fid];
+  });
+  if(draft._img){
+    pendingImgData=draft._img;
+    showImgPreview(draft._img);
+  }
+  if(draft._gal){
+    draft._gal.forEach((g,i)=>{if(g)setGalSlotImg(i,g.data);});
+  }
+}
+
+window.addEventListener('beforeunload',()=>saveDraft());
+setInterval(saveDraft,5000);
+
+function closeForm(skipDraft){
+  if(!skipDraft)saveDraft();
   document.getElementById('formMo').classList.remove('open');
   document.body.style.overflow='';
   editingId=null;
@@ -2846,7 +2902,7 @@ function saveForm(){
   }
 
   renderSideL();renderSideR();renderHome();
-  closeForm();
+  clearDraft();closeForm(true);
   if(editingId){openD(editingId);}
 }
 
@@ -2861,7 +2917,7 @@ function delFlower(id){
   rebuildIndex();
   saveUserFlowers();
   saveFlowerImages();
-  closeForm();clD();
+  clearDraft();closeForm(true);clD();
   renderSideL();renderSideR();renderHome();
 }
 
