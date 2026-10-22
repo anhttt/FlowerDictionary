@@ -2231,22 +2231,104 @@ function updateAdminUI(){
   }
 }
 
-// ============ IMAGE STORAGE ============
+// ============ IMAGE STORAGE (IndexedDB) ============
 let flowerImages={};
+const IDB_NAME='enc_flower_db';
+const IDB_VER=1;
+const IDB_STORE='images';
 
-function loadFlowerImages(){
-  try{
-    const d=localStorage.getItem('enc_images');
-    if(d)flowerImages=JSON.parse(d);
-  }catch(e){console.log('Image load error',e)}
+function openIDB(){
+  return new Promise((res,rej)=>{
+    const r=indexedDB.open(IDB_NAME,IDB_VER);
+    r.onerror=()=>rej(r.error);
+    r.onsuccess=()=>res(r.result);
+    r.onupgradeneeded=e=>{
+      const db=e.target.result;
+      if(!db.objectStoreNames.contains(IDB_STORE))db.createObjectStore(IDB_STORE);
+    };
+  });
 }
 
-function saveFlowerImages(){
+async function idbGet(key){
+  const db=await openIDB();
+  const tx=db.transaction(IDB_STORE,'readonly');
+  const req=tx.objectStore(IDB_STORE).get(key);
+  const data=await new Promise((res,rej)=>{req.onsuccess=()=>res(req.result);req.onerror=()=>rej(req.error);});
+  db.close();
+  return data;
+}
+
+async function loadFlowerImages(){
+  // Try IndexedDB with retry (up to 3 attempts with delay)
+  if(typeof indexedDB!=='undefined'){
+    for(let attempt=0;attempt<3;attempt++){
+      try{
+        const data=await idbGet('flowerImages');
+        if(data&&Object.keys(data).length){flowerImages=data;console.log('✓ Loaded '+Object.keys(data).length+' images from IndexedDB');return;}
+        break; // data empty, no need to retry
+      }catch(e){
+        console.log('IDB load attempt '+(attempt+1)+' failed:',e);
+        if(attempt<2)await new Promise(r=>setTimeout(r,300*(attempt+1)));
+      }
+    }
+  }
+  // Fallback: localStorage
+  try{
+    const d=localStorage.getItem('enc_images');
+    if(d){
+      const lsData=JSON.parse(d);
+      const lsCount=Object.keys(lsData).length;
+      // SAFETY: don't overwrite IndexedDB if it has MORE data than localStorage
+      if(typeof indexedDB!=='undefined'){
+        try{
+          const idbData=await idbGet('flowerImages');
+          if(idbData&&Object.keys(idbData).length>lsCount){
+            // IndexedDB has more — use it instead (retry succeeded on direct read)
+            flowerImages=idbData;
+            console.log('✓ Recovered '+Object.keys(idbData).length+' images from IndexedDB (more than localStorage '+lsCount+')');
+            return;
+          }
+        }catch(e){}
+      }
+      flowerImages=lsData;
+      console.log('✓ Loaded '+lsCount+' images from localStorage');
+      // Migrate to IndexedDB only if IDB is empty
+      if(typeof indexedDB!=='undefined'){
+        (async()=>{try{
+          const existing=await idbGet('flowerImages');
+          if(!existing||!Object.keys(existing).length){await saveFlowerImages();}
+        }catch(e){}})();
+      }
+    }
+  }catch(e){console.log('localStorage load error',e);}
+}
+
+async function saveFlowerImages(){
+  // Try IndexedDB first
+  if(typeof indexedDB!=='undefined'){
+    try{
+      const db=await openIDB();
+      const tx=db.transaction(IDB_STORE,'readwrite');
+      tx.objectStore(IDB_STORE).put(flowerImages,'flowerImages');
+      await new Promise((res,rej)=>{tx.oncomplete=res;tx.onerror=()=>rej(tx.error);});
+      db.close();
+      // Also update localStorage backup (ignore quota errors)
+      try{localStorage.setItem('enc_images',JSON.stringify(flowerImages));}catch(e){}
+      return;
+    }catch(e){console.error('IDB save error',e);}
+  }
+  // Fallback: localStorage only
   try{localStorage.setItem('enc_images',JSON.stringify(flowerImages));}
-  catch(e){console.log('Image save error',e)}
+  catch(e){
+    console.error('Storage save failed',e);
+    alert('⚠️ Không thể lưu hình ảnh! Bộ nhớ trình duyệt đầy.\nHãy thử xoá bớt hình ảnh hoặc xoá bớt loài hoa cũ.');
+  }
 }
 
 function getFlowerImg(id){return flowerImages[id]||null;}
+
+const IMG_MAX_W=480;
+const IMG_QUALITY=0.6;
 
 function resizeImage(file,maxW,quality){
   return new Promise((resolve,reject)=>{
@@ -2279,7 +2361,7 @@ async function handleGalImg(e,idx){
   const file=e.target.files[0];
   if(!file)return;
   try{
-    const data=await resizeImage(file,600,0.75);
+    const data=await resizeImage(file,IMG_MAX_W,IMG_QUALITY);
     while(pendingGallery.length<=idx)pendingGallery.push(null);
     pendingGallery[idx]={data:data,source:''};
     const slot=document.getElementById('galSlot'+idx);
@@ -2310,7 +2392,7 @@ async function handleGalPaste(e,idx){
     if(item.type.startsWith('image/')){
       e.preventDefault();e.stopPropagation();
       const file=item.getAsFile();
-      if(file){try{const data=await resizeImage(file,600,0.75);setGalSlotImg(idx,data);}catch(err){showFrmMsg('Không thể dán ảnh.',false);}}
+      if(file){try{const data=await resizeImage(file,IMG_MAX_W,IMG_QUALITY);setGalSlotImg(idx,data);}catch(err){showFrmMsg('Không thể dán ảnh.',false);}}
       return;
     }
   }
@@ -2320,16 +2402,16 @@ async function handleGalPaste(e,idx){
     if(m&&m[1]&&(m[1].startsWith('http')||m[1].startsWith('data:'))){
       e.preventDefault();e.stopPropagation();
       if(m[1].startsWith('data:')){
-        try{const r=await fetch(m[1]);const b=await r.blob();const file=new File([b],'p.jpg',{type:b.type||'image/jpeg'});const data=await resizeImage(file,600,0.75);setGalSlotImg(idx,data);}catch(err){showFrmMsg('Không thể xử lý ảnh dán.',false);}
+        try{const r=await fetch(m[1]);const b=await r.blob();const file=new File([b],'p.jpg',{type:b.type||'image/jpeg'});const data=await resizeImage(file,IMG_MAX_W,IMG_QUALITY);setGalSlotImg(idx,data);}catch(err){showFrmMsg('Không thể xử lý ảnh dán.',false);}
       }else{
         try{
           const img=new Image();img.crossOrigin='anonymous';
           await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=m[1];});
-          const canvas=document.createElement('canvas');let w=img.width,h=img.height;if(w>600){h=Math.round(h*600/w);w=600;}
+          const canvas=document.createElement('canvas');let w=img.width,h=img.height;if(w>IMG_MAX_W){h=Math.round(h*IMG_MAX_W/w);w=IMG_MAX_W;}
           canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(img,0,0,w,h);
-          setGalSlotImg(idx,canvas.toDataURL('image/jpeg',0.75));
+          setGalSlotImg(idx,canvas.toDataURL('image/jpeg',IMG_QUALITY));
         }catch(err){
-          try{const r=await fetch(m[1]);const b=await r.blob();const file=new File([b],'p.jpg',{type:b.type});const data=await resizeImage(file,600,0.75);setGalSlotImg(idx,data);}
+          try{const r=await fetch(m[1]);const b=await r.blob();const file=new File([b],'p.jpg',{type:b.type});const data=await resizeImage(file,IMG_MAX_W,IMG_QUALITY);setGalSlotImg(idx,data);}
           catch(e2){showFrmMsg('Không thể dán ảnh từ nguồn này.',false);}
         }
       }
@@ -2342,9 +2424,9 @@ async function handleGalPaste(e,idx){
     try{
       const img=new Image();img.crossOrigin='anonymous';
       await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=text.trim();});
-      const canvas=document.createElement('canvas');let w=img.width,h=img.height;if(w>600){h=Math.round(h*600/w);w=600;}
+      const canvas=document.createElement('canvas');let w=img.width,h=img.height;if(w>IMG_MAX_W){h=Math.round(h*IMG_MAX_W/w);w=IMG_MAX_W;}
       canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(img,0,0,w,h);
-      setGalSlotImg(idx,canvas.toDataURL('image/jpeg',0.75));
+      setGalSlotImg(idx,canvas.toDataURL('image/jpeg',IMG_QUALITY));
     }catch(err){showFrmMsg('Không thể dán ảnh từ URL.',false);}
   }
 }
@@ -2355,23 +2437,74 @@ function handleImgSelect(e){
 }
 
 function handleDrop(e){
+  e.preventDefault();e.stopPropagation();
+  // 1. File from OS file manager
   const file=e.dataTransfer.files[0];
-  if(file&&file.type.startsWith('image/'))processImage(file);
+  if(file&&file.type.startsWith('image/')){processImage(file);return;}
+  // 2. Image dragged from web page (dataTransfer items)
+  if(e.dataTransfer.items){
+    for(const item of e.dataTransfer.items){
+      if(item.kind==='file'&&item.type.startsWith('image/')){
+        const f=item.getAsFile();if(f){processImage(f);return;}
+      }
+    }
+  }
+  // 3. Image URL dragged from web page
+  const url=e.dataTransfer.getData('text/uri-list')||e.dataTransfer.getData('text/plain')||'';
+  if(url&&/^https?:\/\/.+\.(jpe?g|png|gif|webp|bmp|svg)/i.test(url)){
+    processImageFromUrl(url);return;
+  }
+  // 4. HTML with img tag
+  const html=e.dataTransfer.getData('text/html')||'';
+  const m=html.match(/<img[^>]+src=["']([^"']+)["']/i);
+  if(m&&m[1]&&/^https?:\/\//i.test(m[1])){processImageFromUrl(m[1]);return;}
 }
 
 function handleGalDrop(e,idx){
   e.preventDefault();e.stopPropagation();
   const slot=document.getElementById('galSlot'+idx);
   slot.style.borderColor='';
+  // 1. File from OS
   const file=e.dataTransfer.files[0];
   if(file&&file.type.startsWith('image/')){
-    resizeImage(file,600,0.75).then(data=>setGalSlotImg(idx,data)).catch(()=>showFrmMsg('Không thể đọc ảnh.',false));
+    resizeImage(file,IMG_MAX_W,IMG_QUALITY).then(data=>setGalSlotImg(idx,data)).catch(()=>showFrmMsg('Không thể đọc ảnh.',false));
+    return;
+  }
+  // 2. dataTransfer items
+  if(e.dataTransfer.items){
+    for(const item of e.dataTransfer.items){
+      if(item.kind==='file'&&item.type.startsWith('image/')){
+        const f=item.getAsFile();
+        if(f){resizeImage(f,IMG_MAX_W,IMG_QUALITY).then(data=>setGalSlotImg(idx,data)).catch(()=>showFrmMsg('Không thể đọc ảnh.',false));return;}
+      }
+    }
+  }
+  // 3. URL from web — load as gallery image directly
+  const url=e.dataTransfer.getData('text/uri-list')||e.dataTransfer.getData('text/plain')||'';
+  if(url&&/^https?:\/\/.+/i.test(url)){
+    (async()=>{try{
+      const resp=await fetch(url);const blob=await resp.blob();
+      if(blob.type.startsWith('image/')){
+        const f=new File([blob],'drop.jpg',{type:blob.type});
+        const data=await resizeImage(f,IMG_MAX_W,IMG_QUALITY);
+        setGalSlotImg(idx,data);return;
+      }
+    }catch(e){}
+    try{
+      const img=new Image();img.crossOrigin='anonymous';
+      await new Promise((r,j)=>{img.onload=r;img.onerror=j;img.src=url;});
+      const c=document.createElement('canvas');let w=img.width,h=img.height;
+      if(w>IMG_MAX_W){h=Math.round(h*IMG_MAX_W/w);w=IMG_MAX_W;}
+      c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+      setGalSlotImg(idx,c.toDataURL('image/jpeg',IMG_QUALITY));
+    }catch(e2){showFrmMsg('Không thể tải ảnh từ URL này.',false);}
+    })();
   }
 }
 
 async function processImage(file){
   try{
-    const data=await resizeImage(file,600,0.75);
+    const data=await resizeImage(file,IMG_MAX_W,IMG_QUALITY);
     pendingImgData=data;
     showImgPreview(data);
   }catch(err){
@@ -2392,10 +2525,10 @@ async function processImageFromUrl(url){
       const img=new Image();img.crossOrigin='anonymous';
       await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=reject;img.src=url;});
       const canvas=document.createElement('canvas');
-      let w=img.width,h=img.height;if(w>600){h=Math.round(h*600/w);w=600;}
+      let w=img.width,h=img.height;if(w>IMG_MAX_W){h=Math.round(h*IMG_MAX_W/w);w=IMG_MAX_W;}
       canvas.width=w;canvas.height=h;
       canvas.getContext('2d').drawImage(img,0,0,w,h);
-      const data=canvas.toDataURL('image/jpeg',0.75);
+      const data=canvas.toDataURL('image/jpeg',IMG_QUALITY);
       pendingImgData=data;showImgPreview(data);
     }catch(e2){showFrmMsg('Không thể dán ảnh từ nguồn này. Thử tải file xuống rồi chọn ảnh.',false);}
   }
@@ -2457,7 +2590,7 @@ function removeImgPreview(){
     <div id="uploadPlaceholder">
       <div class="frm-upload-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M3 15l4-4 3 3 4-4 7 7"/></svg></div>
       <div class="frm-upload-text">Chọn ảnh, kéo thả, hoặc Ctrl+V dán từ web</div>
-      <div class="frm-upload-hint">JPG, PNG, WebP · Tự động resize về 600px</div>
+      <div class="frm-upload-hint">JPG, PNG, WebP · Tự động resize về 480px</div>
     </div>
     <input type="file" id="f_imgFile" accept="image/*" style="display:none" onchange="handleImgSelect(event)">
   `;
@@ -2550,7 +2683,7 @@ function openForm(id){
             <div id="uploadPlaceholder">
               <div class="frm-upload-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M3 15l4-4 3 3 4-4 7 7"/></svg></div>
               <div class="frm-upload-text">Chọn ảnh, kéo thả, hoặc Ctrl+V dán từ web</div>
-              <div class="frm-upload-hint">JPG, PNG, WebP · Tự động resize về 600px</div>
+              <div class="frm-upload-hint">JPG, PNG, WebP · Tự động resize về 480px</div>
             </div>
             <input type="file" id="f_imgFile" accept="image/*" style="display:none" onchange="handleImgSelect(event)">
           </div>
@@ -2754,8 +2887,8 @@ function openForm(id){
   // Restore draft if available
   const draft=loadDraft();
   if(draft&&draft.editingId===editingId){
-    setTimeout(()=>{
-      restoreDraft(draft);
+    setTimeout(async()=>{
+      await restoreDraft(draft);
       showFrmMsg('Đã khôi phục nội dung nhập dở từ lần trước.',true);
     },100);
   }
@@ -2773,10 +2906,30 @@ function saveDraft(){
       const el=document.getElementById(fid);
       if(el){draft[fid]=el.value;if(el.value.trim())hasData=true;}
     });
-    if(pendingImgData){draft._img=pendingImgData;hasData=true;}
-    if(pendingGallery.some(g=>g)){draft._gal=pendingGallery;hasData=true;}
-    if(hasData)localStorage.setItem('enc_draft',JSON.stringify(draft));
+    // Mark if images exist (actual image data saved to IndexedDB separately)
+    if(pendingImgData){draft._hasImg=true;hasData=true;}
+    if(pendingGallery.some(g=>g)){draft._hasGal=true;hasData=true;}
+    if(hasData){
+      localStorage.setItem('enc_draft',JSON.stringify(draft));
+      // Save draft images to IndexedDB (async, fire-and-forget)
+      saveDraftImages();
+    }
   }catch(e){}
+}
+
+async function saveDraftImages(){
+  if(typeof indexedDB==='undefined')return;
+  try{
+    const imgDraft={};
+    if(pendingImgData)imgDraft._img=pendingImgData;
+    if(pendingGallery.some(g=>g))imgDraft._gal=pendingGallery.map(g=>g||null);
+    if(!imgDraft._img&&!imgDraft._gal)return;
+    const db=await openIDB();
+    const tx=db.transaction(IDB_STORE,'readwrite');
+    tx.objectStore(IDB_STORE).put(imgDraft,'draftImages');
+    await new Promise((res,rej)=>{tx.oncomplete=res;tx.onerror=()=>rej(tx.error);});
+    db.close();
+  }catch(e){console.log('Draft image save error',e);}
 }
 
 function loadDraft(){
@@ -2789,19 +2942,36 @@ function loadDraft(){
 
 function clearDraft(){
   try{localStorage.removeItem('enc_draft');}catch(e){}
+  // Clear draft images from IndexedDB
+  if(typeof indexedDB!=='undefined'){
+    (async()=>{try{
+      const db=await openIDB();
+      const tx=db.transaction(IDB_STORE,'readwrite');
+      tx.objectStore(IDB_STORE).delete('draftImages');
+      await new Promise((res,rej)=>{tx.oncomplete=res;tx.onerror=()=>rej(tx.error);});
+      db.close();
+    }catch(e){}})();
+  }
 }
 
-function restoreDraft(draft){
+async function restoreDraft(draft){
   DRAFT_FIELDS.forEach(fid=>{
     const el=document.getElementById(fid);
     if(el&&draft[fid]!==undefined)el.value=draft[fid];
   });
-  if(draft._img){
-    pendingImgData=draft._img;
-    showImgPreview(draft._img);
-  }
-  if(draft._gal){
-    draft._gal.forEach((g,i)=>{if(g)setGalSlotImg(i,g.data);});
+  // Restore draft images from IndexedDB
+  if((draft._hasImg||draft._hasGal)&&typeof indexedDB!=='undefined'){
+    try{
+      const db=await openIDB();
+      const tx=db.transaction(IDB_STORE,'readonly');
+      const req=tx.objectStore(IDB_STORE).get('draftImages');
+      const imgDraft=await new Promise((res,rej)=>{req.onsuccess=()=>res(req.result);req.onerror=()=>rej(req.error);});
+      db.close();
+      if(imgDraft){
+        if(imgDraft._img){pendingImgData=imgDraft._img;showImgPreview(imgDraft._img);}
+        if(imgDraft._gal){imgDraft._gal.forEach((g,i)=>{if(g)setGalSlotImg(i,g.data);});}
+      }
+    }catch(e){console.log('Draft image load error',e);}
   }
 }
 
@@ -2830,7 +3000,7 @@ const GRADIENTS=[
   "linear-gradient(135deg,#F1F8E9,#AED581)","linear-gradient(135deg,#E0F7FA,#00897B)"
 ];
 
-function saveForm(){
+async function saveForm(){
   const name=document.getElementById('f_name').value.trim();
   const en=document.getElementById('f_en').value.trim();
   const latin=document.getElementById('f_latin').value.trim();
@@ -2902,13 +3072,13 @@ function saveForm(){
   const finalGal=cleanGal.length?cleanGal:(existingImg.gallery||[]);
   if(pendingImgData||existingImg.data){
     flowerImages[flower.id]={data:pendingImgData||existingImg.data,source:imgSource||existingImg.source||'',gallery:finalGal};
-    saveFlowerImages();
+    await saveFlowerImages();
   } else if(finalGal.length){
     flowerImages[flower.id]={data:null,source:'',gallery:finalGal};
-    saveFlowerImages();
+    await saveFlowerImages();
   } else {
     delete flowerImages[flower.id];
-    saveFlowerImages();
+    await saveFlowerImages();
   }
 
   renderSideL();renderSideR();renderHome();
@@ -2916,7 +3086,7 @@ function saveForm(){
   if(editingId){openD(editingId);}
 }
 
-function delFlower(id){
+async function delFlower(id){
   if(!confirm('Bạn có chắc muốn xoá loài hoa này?'))return;
   deletedIds.add(id);
   saveDeletedIds();
@@ -2928,16 +3098,30 @@ function delFlower(id){
   S.cmp=S.cmp.filter(c=>c!==id);
   rebuildIndex();
   saveUserFlowers();
-  saveFlowerImages();
+  await saveFlowerImages();
   clearDraft();closeForm(true);clD();
   renderSideL();renderSideR();renderHome();
 }
 
 // Load on startup
-loadFlowerImages();
-loadUserFlowers();
-updateAdminUI();
-init();
+// Prevent browser from opening dropped files (navigating away)
+document.addEventListener('dragover',e=>e.preventDefault());
+document.addEventListener('drop',e=>e.preventDefault());
+
+(async()=>{
+  // Request persistent storage so browser won't auto-delete IndexedDB on restart
+  if(navigator.storage&&navigator.storage.persist){
+    const persistent=await navigator.storage.persisted();
+    if(!persistent){
+      const granted=await navigator.storage.persist();
+      console.log('Persistent storage '+(granted?'granted ✓':'denied ✗'));
+    }
+  }
+  await loadFlowerImages();
+  loadUserFlowers();
+  updateAdminUI();
+  init();
+})();
 </script>
 </body>
 </html>
