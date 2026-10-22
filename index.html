@@ -1720,7 +1720,8 @@ updatedDate:"10/2026"}
 
 // ============ STATE ============
 let S={cat:'all',genus:null,view:'g',q:'',bk:new Set(),cmp:[],page:'home',qi:0,qs:0,qd:false,qq:[],expanded:new Set()};
-const famMap=Object.fromEntries(FAM.map(f=>[f.id,f]));
+// famMap & spMap initialized after families loaded (see startup)
+let famMap=Object.fromEntries(FAM.map(f=>[f.id,f]));
 const spMap=Object.fromEntries(SP.map(s=>[s.id,s]));
 
 // Build genus index: { familyId: [ {genus, latin, count, species[]} ] }
@@ -2131,12 +2132,41 @@ function simpleHash(str){
 }
 
 const DEFAULT_PW_HASH=simpleHash('123456');
+let adminPwHash=null;
+
+async function loadAdminPw(){
+  // Try IndexedDB first
+  if(typeof indexedDB!=='undefined'){
+    try{
+      const h=await idbGet('adminPwHash');
+      if(h){adminPwHash=h;return;}
+    }catch(e){console.log('IDB load adminPw error',e);}
+  }
+  // Fallback to localStorage
+  try{
+    const h=localStorage.getItem('enc_admin_pw');
+    if(h){
+      adminPwHash=h;
+      // Migrate to IndexedDB
+      if(typeof indexedDB!=='undefined'){
+        try{await idbPut('adminPwHash',h);}catch(e){}
+      }
+      return;
+    }
+  }catch(e){}
+  adminPwHash=DEFAULT_PW_HASH;
+}
 
 function getAdminPwHash(){
-  try{return localStorage.getItem('enc_admin_pw')||DEFAULT_PW_HASH;}catch(e){return DEFAULT_PW_HASH;}
+  return adminPwHash||DEFAULT_PW_HASH;
 }
-function setAdminPwHash(pw){
-  try{localStorage.setItem('enc_admin_pw',simpleHash(pw));}catch(e){}
+async function setAdminPwHash(pw){
+  const h=simpleHash(pw);
+  adminPwHash=h;
+  if(typeof indexedDB!=='undefined'){
+    try{await idbPut('adminPwHash',h);}catch(e){console.log('IDB save pw error',e);}
+  }
+  try{localStorage.setItem('enc_admin_pw',h);}catch(e){}
 }
 
 function toggleAdminPop(){
@@ -2204,7 +2234,7 @@ function showChangePw(){
     </div>`;
 }
 
-function changePw(){
+async function changePw(){
   const cur=document.getElementById('curPw').value;
   const pw1=document.getElementById('newPw1').value;
   const pw2=document.getElementById('newPw2').value;
@@ -2212,8 +2242,9 @@ function changePw(){
   if(simpleHash(cur)!==getAdminPwHash()){err.textContent='Sai mật khẩu hiện tại.';err.classList.add('show');return;}
   if(!pw1||pw1.length<4){err.textContent='Ít nhất 4 ký tự.';err.classList.add('show');return;}
   if(pw1!==pw2){err.textContent='Không khớp.';err.classList.add('show');return;}
-  setAdminPwHash(pw1);
+  await setAdminPwHash(pw1);
   hideAdminPop();
+  setTimeout(()=>alert('Đã đổi mật khẩu thành công ✓'),100);
 }
 
 function updateAdminUI(){
@@ -2599,29 +2630,78 @@ function removeImgPreview(){
 // ============ ADD / EDIT FORM ============
 let editingId=null;
 
-// Load user flowers from localStorage
+// ============ PERSISTENT DATA (IndexedDB + localStorage backup) ============
 let deletedIds=new Set();
 
-function loadDeletedIds(){
-  try{const d=localStorage.getItem('enc_deleted');if(d)deletedIds=new Set(JSON.parse(d));}catch(e){}
-}
-function saveDeletedIds(){
-  try{localStorage.setItem('enc_deleted',JSON.stringify([...deletedIds]));}catch(e){}
+async function idbPut(key,value){
+  const db=await openIDB();
+  const tx=db.transaction(IDB_STORE,'readwrite');
+  tx.objectStore(IDB_STORE).put(value,key);
+  await new Promise((r,j)=>{tx.oncomplete=r;tx.onerror=()=>j(tx.error);});
+  db.close();
 }
 
-function loadUserFlowers(){
+async function loadFromStorage(idbKey,lsKey){
+  // Try IndexedDB first
+  if(typeof indexedDB!=='undefined'){
+    try{
+      const data=await idbGet(idbKey);
+      if(data!==undefined&&data!==null){return data;}
+    }catch(e){console.log('IDB load '+idbKey+' error',e);}
+  }
+  // Fallback: localStorage
   try{
+    const d=localStorage.getItem(lsKey);
+    if(d){
+      const parsed=JSON.parse(d);
+      // Migrate to IndexedDB in background (don't overwrite if IDB has data)
+      if(typeof indexedDB!=='undefined'){
+        (async()=>{try{const ex=await idbGet(idbKey);if(!ex)await idbPut(idbKey,parsed);}catch(e){}})();
+      }
+      return parsed;
+    }
+  }catch(e){}
+  return null;
+}
+
+async function saveToStorage(idbKey,lsKey,value){
+  // Save to IndexedDB
+  if(typeof indexedDB!=='undefined'){
+    try{await idbPut(idbKey,value);}catch(e){console.log('IDB save '+idbKey+' error',e);}
+  }
+  // Backup to localStorage (ignore quota errors)
+  try{localStorage.setItem(lsKey,JSON.stringify(value));}catch(e){}
+}
+
+async function loadDeletedIds(){
+  const d=await loadFromStorage('deletedIds','enc_deleted');
+  if(d)deletedIds=new Set(d);
+}
+async function saveDeletedIds(){
+  await saveToStorage('deletedIds','enc_deleted',[...deletedIds]);
+}
+
+async function loadUserFamilies(){
+  const d=await loadFromStorage('userFamilies','enc_families');
+  if(d&&Array.isArray(d)){
+    d.forEach(f=>{if(!FAM.find(x=>x.id===f.id)){FAM.push(f);famMap[f.id]=f;}});
+  }
+}
+
+async function loadUserFlowers(){
+  try{
+    // Load deleted IDs and families first
+    await loadDeletedIds();
+    await loadUserFamilies();
     // Remove deleted built-in flowers
-    loadDeletedIds();
     if(deletedIds.size){
       for(let i=SP.length-1;i>=0;i--){
         if(deletedIds.has(SP[i].id)){delete spMap[SP[i].id];SP.splice(i,1);}
       }
     }
     // Load user-added/edited flowers
-    const d=localStorage.getItem('enc_flowers');
-    if(d){
-      const arr=JSON.parse(d);
+    const arr=await loadFromStorage('userFlowers','enc_flowers');
+    if(arr&&Array.isArray(arr)){
       arr.forEach(uf=>{
         if(deletedIds.has(uf.id))return;
         const existIdx=SP.findIndex(s=>s.id===uf.id);
@@ -2636,11 +2716,9 @@ function loadUserFlowers(){
   }catch(e){console.log('Storage read error',e)}
 }
 
-function saveUserFlowers(){
-  try{
-    const userFlowers=SP.filter(s=>s.userAdded);
-    localStorage.setItem('enc_flowers',JSON.stringify(userFlowers));
-  }catch(e){console.log('Storage write error',e)}
+async function saveUserFlowers(){
+  const userFlowers=SP.filter(s=>s.userAdded);
+  await saveToStorage('userFlowers','enc_flowers',userFlowers);
 }
 
 function rebuildIndex(){
@@ -2653,6 +2731,17 @@ function rebuildIndex(){
     });
     genusIndex[f.id]=Object.values(gmap).sort((a,b)=>a.genus.localeCompare(b.genus));
   });
+}
+
+function toggleNewFam(){
+  const isNew=document.getElementById('f_fam').value==='__new__';
+  document.getElementById('newFamRow').style.display=isNew?'':'none';
+  document.getElementById('newFamDescRow').style.display=isNew?'':'none';
+}
+
+async function saveUserFamilies(){
+  const userFams=FAM.filter(f=>f.userAdded);
+  await saveToStorage('userFamilies','enc_families',userFams);
 }
 
 function openForm(id){
@@ -2727,9 +2816,26 @@ function openForm(id){
       <div class="frm-row">
         <div class="frm-field">
           <label class="frm-label">Họ (Family) <span class="req">*</span></label>
-          <select class="frm-input" id="f_fam">
-            ${FAM.map(f=>`<option value="${f.id}" ${p?.f===f.id?'selected':''}>${f.latin} — ${f.name}</option>`).join('')}
+          <select class="frm-input" id="f_fam" onchange="toggleNewFam()">
+            ${FAM.sort((a,b)=>a.latin.localeCompare(b.latin)).map(f=>`<option value="${f.id}" ${p?.f===f.id?'selected':''}>${f.latin} — ${f.name}</option>`).join('')}
+            <option value="__new__" style="font-weight:bold;color:var(--gr)">＋ Thêm họ mới...</option>
           </select>
+        </div>
+      </div>
+      <div class="frm-row" id="newFamRow" style="display:none">
+        <div class="frm-field">
+          <label class="frm-label">Tên Latin họ mới <span class="req">*</span></label>
+          <input class="frm-input" id="f_newFamLatin" placeholder="VD: Bignoniaceae">
+        </div>
+        <div class="frm-field">
+          <label class="frm-label">Tên Việt họ mới <span class="req">*</span></label>
+          <input class="frm-input" id="f_newFamName" placeholder="VD: Họ Đinh">
+        </div>
+      </div>
+      <div class="frm-row full" id="newFamDescRow" style="display:none">
+        <div class="frm-field">
+          <label class="frm-label">Mô tả họ mới</label>
+          <textarea class="frm-input" id="f_newFamDesc" rows="2" placeholder="Mô tả ngắn về đặc điểm họ thực vật này..."></textarea>
         </div>
       </div>
 
@@ -2894,7 +3000,7 @@ function openForm(id){
   }
 }
 
-const DRAFT_FIELDS=['f_name','f_nameAlt','f_latin','f_en','f_genus','f_fam','f_plantType','f_height','f_flower','f_colors','f_leaf','f_origin','f_season','f_sun','f_water','f_soil','f_uses','f_caution','f_meaning','f_desc','f_fact','f_tags','f_references','f_imgSrc'];
+const DRAFT_FIELDS=['f_name','f_nameAlt','f_latin','f_en','f_genus','f_fam','f_newFamLatin','f_newFamName','f_newFamDesc','f_plantType','f_height','f_flower','f_colors','f_leaf','f_origin','f_season','f_sun','f_water','f_soil','f_uses','f_caution','f_meaning','f_desc','f_fact','f_tags','f_references','f_imgSrc'];
 
 function saveDraft(){
   try{
@@ -3005,11 +3111,36 @@ async function saveForm(){
   const en=document.getElementById('f_en').value.trim();
   const latin=document.getElementById('f_latin').value.trim();
   const genus=document.getElementById('f_genus').value.trim();
-  const fam=document.getElementById('f_fam').value;
+  let fam=document.getElementById('f_fam').value;
 
   if(!name||!en||!latin||!genus){
     showFrmMsg('Vui lòng điền các trường có dấu * (tên, tên Anh, tên khoa học, chi).',false);
     return;
+  }
+
+  // Handle new family creation
+  if(fam==='__new__'){
+    const newLatin=document.getElementById('f_newFamLatin').value.trim();
+    const newName=document.getElementById('f_newFamName').value.trim();
+    const newDesc=document.getElementById('f_newFamDesc').value.trim();
+    if(!newLatin||!newName){
+      showFrmMsg('Vui lòng điền tên Latin và tên Việt cho họ mới.',false);
+      return;
+    }
+    const newId=newLatin.toLowerCase().replace(/[^a-z]/g,'');
+    if(famMap[newId]){
+      showFrmMsg('Họ '+newLatin+' đã tồn tại trong danh sách.',false);
+      document.getElementById('f_fam').value=newId;toggleNewFam();
+      return;
+    }
+    const newFam={id:newId,name:newName,latin:newLatin,emoji:'🌿',order:'—',color:'#6A9E7B',
+      genera:'—',species:'—',desc:newDesc||newName,userAdded:true};
+    FAM.push(newFam);
+    famMap[newId]=newFam;
+    genusIndex[newId]=[];
+    saveUserFamilies();
+    fam=newId;
+    showFrmMsg('✓ Đã thêm họ mới: '+newLatin+' — '+newName,true);
   }
 
   const selFam=famMap[fam];
@@ -3063,7 +3194,7 @@ async function saveForm(){
   }
 
   rebuildIndex();
-  saveUserFlowers();
+  await saveUserFlowers();
 
   // Save image + gallery
   const imgSource=document.getElementById('f_imgSrc').value.trim();
@@ -3089,7 +3220,7 @@ async function saveForm(){
 async function delFlower(id){
   if(!confirm('Bạn có chắc muốn xoá loài hoa này?'))return;
   deletedIds.add(id);
-  saveDeletedIds();
+  await saveDeletedIds();
   const idx=SP.findIndex(s=>s.id===id);
   if(idx>-1)SP.splice(idx,1);
   delete spMap[id];
@@ -3097,7 +3228,7 @@ async function delFlower(id){
   S.bk.delete(id);
   S.cmp=S.cmp.filter(c=>c!==id);
   rebuildIndex();
-  saveUserFlowers();
+  await saveUserFlowers();
   await saveFlowerImages();
   clearDraft();closeForm(true);clD();
   renderSideL();renderSideR();renderHome();
@@ -3117,6 +3248,7 @@ document.addEventListener('drop',e=>e.preventDefault());
       console.log('Persistent storage '+(granted?'granted ✓':'denied ✗'));
     }
   }
+  await loadAdminPw();
   await loadFlowerImages();
   loadUserFlowers();
   updateAdminUI();
