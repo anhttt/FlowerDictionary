@@ -3250,34 +3250,90 @@ async function delFlower(id){
 }
 
 // ============ EXPORT HTML ============
+const EXPORT_MAX_W=280;
+const EXPORT_QUALITY=0.45;
+
+function recompressImage(dataUrl,maxW,quality){
+  return new Promise((resolve)=>{
+    if(!dataUrl||!dataUrl.startsWith('data:image')){resolve(dataUrl);return;}
+    const img=new Image();
+    img.onload=()=>{
+      let w=img.width,h=img.height;
+      if(w>maxW){h=Math.round(h*maxW/w);w=maxW;}
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      resolve(c.toDataURL('image/jpeg',quality));
+    };
+    img.onerror=()=>resolve(dataUrl);
+    img.src=dataUrl;
+  });
+}
+
+async function compressImagesForExport(images){
+  const result={};
+  const ids=Object.keys(images);
+  let done=0;
+  for(const id of ids){
+    const entry=images[id];
+    const compressed={};
+    // Compress main image
+    if(entry.data){compressed.data=await recompressImage(entry.data,EXPORT_MAX_W,EXPORT_QUALITY);}
+    else{compressed.data=null;}
+    compressed.source=entry.source||'';
+    // Compress gallery images
+    if(entry.gallery&&entry.gallery.length){
+      compressed.gallery=[];
+      for(const g of entry.gallery){
+        if(g&&g.data){
+          compressed.gallery.push({data:await recompressImage(g.data,EXPORT_MAX_W,EXPORT_QUALITY),caption:g.caption||''});
+        }
+      }
+    } else {compressed.gallery=[];}
+    result[id]=compressed;
+    done++;
+    const btn=document.getElementById('exportBtn');
+    if(btn)btn.textContent='⏳ Nén hình '+done+'/'+ids.length;
+  }
+  return result;
+}
+
 async function exportHTML(){
   if(!isAdmin){alert('Chỉ Admin mới xuất được.');return;}
   const btn=document.getElementById('exportBtn');
-  if(btn){btn.disabled=true;btn.textContent='⏳ Đang xuất...';}
+  if(btn){btn.disabled=true;btn.textContent='⏳ Đang nén hình...';}
   try{
-    // 1. Get current HTML source
+    // 1. Compress all images for export (smaller than stored)
+    const compressedImages=await compressImagesForExport(flowerImages);
+
+    // 2. Get current HTML source
+    if(btn)btn.textContent='⏳ Đang tạo file...';
     let html=document.documentElement.outerHTML;
 
-    // 2. Replace FAM array with current data (including user-added families)
+    // 3. Replace FAM array with current data (including user-added families)
     const famStr='const FAM='+JSON.stringify(FAM,null,0)+';';
     html=html.replace(/const FAM=\[[\s\S]*?\n\];/,famStr);
 
-    // 3. Replace SP array with current data (including user-added, excluding deleted)
+    // 4. Replace SP array with current data (including user-added, excluding deleted)
     const spStr='const SP='+JSON.stringify(SP,null,0)+';';
     html=html.replace(/const SP=\[[\s\S]*?\n\];/,spStr);
 
-    // 4. Embed all images
-    const imgStr='const EMBEDDED_IMAGES='+JSON.stringify(flowerImages)+';';
+    // 5. Embed compressed images
+    const imgStr='const EMBEDDED_IMAGES='+JSON.stringify(compressedImages)+';';
     html=html.replace(/const EMBEDDED_IMAGES=\{[^}]*\};/,imgStr);
 
-    // 5. Wrap as full HTML document
+    // 6. Wrap as full HTML document
     html='<!DOCTYPE html>\n<html lang="vi">\n'+html+'\n</html>';
 
-    // 6. Calculate size
+    // 7. Calculate size
     const blob=new Blob([html],{type:'text/html;charset=utf-8'});
     const sizeMB=(blob.size/1024/1024).toFixed(1);
 
-    // 7. Trigger download
+    // 8. Check size warning
+    if(blob.size>25*1024*1024){
+      if(!confirm('⚠️ File '+sizeMB+' MB, vượt 25 MB (GitHub web upload limit).\nCần dùng git command line để push.\n\nTiếp tục tải xuống?'))return;
+    }
+
+    // 9. Trigger download
     const a=document.createElement('a');
     a.href=URL.createObjectURL(blob);
     a.download='index.html';
@@ -3287,7 +3343,8 @@ async function exportHTML(){
     URL.revokeObjectURL(a.href);
 
     alert('✅ Đã xuất file index.html ('+sizeMB+' MB)\n\n'+
-      '📊 '+SP.length+' loài hoa, '+FAM.length+' họ, '+Object.keys(flowerImages).length+' bộ hình\n\n'+
+      '📊 '+SP.length+' loài hoa, '+FAM.length+' họ, '+Object.keys(compressedImages).length+' bộ hình\n'+
+      '📐 Hình xuất: '+EXPORT_MAX_W+'px, chất lượng '+EXPORT_QUALITY+'\n\n'+
       '📌 Upload file này lên GitHub repo để cập nhật trang web.');
   }catch(e){
     console.error('Export error',e);
